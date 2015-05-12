@@ -9,8 +9,8 @@ COLORTERM=yes
 PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin
 
 HISTFILE=~/.zshhistory
-HISTSIZE=3000
-SAVEHIST=3000
+HISTSIZE=10000
+SAVEHIST=10000
 
 export TERM EDITOR PAGER DISPLAY LS_COLORS COLORTERM PATH HISTFILE HISTSIZE SAVEHIST
 
