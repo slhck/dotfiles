@@ -1,0 +1,78 @@
+# BEGIN: OS-specific configuration file
+
+# Zsh config for OS X
+
+# -----------------------------------------------
+# Shell Aliases
+# -----------------------------------------------
+
+alias bubu='brew update && brew upgrade'
+alias o='open'
+
+# -----------------------------------------------
+# Chained Aliases (Global, OS X specific)
+# -----------------------------------------------
+
+alias -g N='&& terminal-notifier -message "Command finished"'
+alias -g M='|mate'
+alias -g C='|pbcopy'
+
+# -----------------------------------------------
+# User-defined Functions (OS X specific)
+# -----------------------------------------------
+
+spot() {
+  mdfind "kMDItemFSName=='*$@*'cd";
+}
+
+f() {
+  cd "$(osascript -e 'try
+tell app "Finder" to (target of Finder window 1) as text
+POSIX path of result
+on error
+  (system attribute "HOME") & "/Desktop"
+end')"
+}
+
+
+quit() {
+  osascript -e "quit app \"$*\""
+}
+
+reopen() {
+  killall "$*" && open -a "$*"
+}
+
+# close a named window
+# http://superuser.com/questions/526624/
+cw() {
+osascript <<EOF
+tell application "$1"
+    set windowCount to number of windows
+    repeat with x from 1 to windowCount
+        set docName to (name of document of front window)
+        if (docName is equal to "$2") then
+            close window x
+        end if
+    end repeat
+end tell
+EOF
+}
+
+# -----------------------------------------------
+# Python Path
+# -----------------------------------------------
+
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+
+# -----------------------------------------------
+# GRC
+# -----------------------------------------------
+
+if which brew > /dev/null; then source "$(brew --prefix)/etc/grc.bashrc"; fi
+
+# -----------------------------------------------
+# Custom path
+# -----------------------------------------------
+
+export PATH="$PATH:/Users/werner/Documents/Binaries"
