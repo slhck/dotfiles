@@ -59,6 +59,15 @@ end tell
 EOF
 }
 
+chrome-reload() {
+osascript <<EOF
+tell application "Google Chrome" to tell the active tab of its first window
+    reload
+end tell
+tell application "Google Chrome" to activate
+EOF
+}
+
 # -----------------------------------------------
 # Python Path
 # -----------------------------------------------
