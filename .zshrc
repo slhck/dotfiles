@@ -169,7 +169,9 @@ alias -g S='|sort'
   alias mv='mv -i' && \
   alias cp='cp -i'
 
-alias gcamgup='git commit -a -m "update" && git pull --rebase && git push'
+## Git
+alias gcam='git add -A && git commit -m "update" && git pull --rebase && git push'
+alias gups='git submodule update --rebase --remote'
 
 # -----------------------------------------------
 #  User-defined Functions
