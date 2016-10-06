@@ -32,6 +32,7 @@ run "brew cask install " + casks.join(" ")
 
 # Homebrew formulae
 formulae = %w(
+  autojump
   bash
   coreutils
   dos2unix
