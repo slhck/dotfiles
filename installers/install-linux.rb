@@ -38,3 +38,8 @@ run "git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ru
 # fzf
 run "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
 run "~/.fzf/install"
+
+# autojump
+run "git clone git://github.com/joelthelion/autojump.git ~/autojump"
+run "~/autojump/install.py"
+run "rm -rf ~/autojump"
