@@ -32,7 +32,7 @@ ZSH_THEME="blinks"
 COMPLETION_WAITING_DOTS="true"
 
 # Plugins to load
-plugins=(rails git github git-flow textmate ruby brew osx gem svn)
+plugins=(rails git github git-flow textmate ruby brew osx gem svn docker docker-compose vagrant virtualenv python)
 
 source $ZSH/oh-my-zsh.sh
 
