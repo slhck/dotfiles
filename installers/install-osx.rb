@@ -7,6 +7,9 @@ require_relative 'functions.rb'
 # XCode
 run "sudo xcode-select -switch /usr/bin"
 
+# SSH key
+run "ssh-keygen -t rsa"
+
 # Vim Ctrl-P
 run "mkdir -p ~/.vim && cd ~/.vim && git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim"
 
@@ -27,6 +30,8 @@ casks = %w(
   quicknfo
   suspicious-package
   webpquicklook
+  mpv
+  osxfuse
 )
 run "brew cask install " + casks.join(" ")
 
@@ -36,23 +41,28 @@ formulae = %w(
   bash
   coreutils
   dos2unix
-  ffmpeg
   findutils
+  fzf
+  ghostscript
   git
   git-extras
   git-flow
   grc
   id3tool
+  imagemagick
   lesspipe
   man2html
   media-info
   mercurial
   nmap
+  pandoc
   python
+  python3
   rbenv
   ruby-build
   sl
   ssh-copy-id
+  tcl-tk
   terminal-notifier
   tree
   unrar
@@ -62,39 +72,41 @@ formulae = %w(
 )
 run "brew install " + formulae.join(" ")
 
+run "/usr/local/opt/fzf/install"
+
 # ffmpeg
 run "brew install ffmpeg \
---with-faac \
+--with-libebur128 \
 --with-fdk-aac \
---with-ffplay \
+--with-libass \
+--with-libsoxr \
+--with-libssh \
+--with-tesseract \
+--with-libvidstab \
+--with-opencore-amr \
+--with-openh264 \
+--with-openjpeg \
+--with-openssl \
+--with-rtmpdump \
+--with-schroedinger \
+--with-sdl2 \
+--with-tools \
+--with-webp \
+--with-x265 \
+--with-xz \
+--with-zeromq \
 --with-fontconfig \
 --with-freetype \
 --with-frei0r \
---with-libass \
 --with-libbluray \
 --with-libcaca \
---with-libquvi \
---with-libsoxr \
---with-libssh \
---with-libvidstab \
 --with-libvorbis \
 --with-libvpx \
---with-opencore-amr \
---with-openjpeg \
---with-openssl \
 --with-opus \
---with-rtmpdump \
---with-schroedinger \
 --with-speex \
 --with-theora \
---with-tools \
---with-webp \
---with-x265"
+--with-two-lame \
+--with-wavpack"
 
 # oh-my-zsh
 run "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
-
-# FZF
-run "brew reinstall --HEAD fzf"
-# Install shell extensions
-run "/usr/local/Cellar/fzf/HEAD/install"

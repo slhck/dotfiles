@@ -13,8 +13,7 @@ alias o='open'
 # Chained Aliases (Global, OS X specific)
 # -----------------------------------------------
 
-alias -g N='&& terminal-notifier -message "Command finished"'
-alias -g M='|mate'
+alias -g N='&& terminal-notifier -message "Command finished" -sound default -activate com.googlecode.iterm2 -sender com.googlecode.iterm2'
 alias -g C='|pbcopy'
 
 # -----------------------------------------------
@@ -67,12 +66,6 @@ end tell
 tell application "Google Chrome" to activate
 EOF
 }
-
-# -----------------------------------------------
-# Python Path
-# -----------------------------------------------
-
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
 # -----------------------------------------------
 # GRC

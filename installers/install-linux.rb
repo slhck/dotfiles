@@ -32,8 +32,10 @@ run "ssh-keygen -t rsa"
 run "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
 
 # Rbenv and ruby-build
-run "git clone https://github.com/sstephenson/rbenv.git ~/.rbenv"
-run "git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build"
+run "git clone https://github.com/rbenv/rbenv.git ~/.rbenv"
+run "cd ~/.rbenv && src/configure && make -C src"
+run "git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build"
+run "echo 'export PATH=\"$HOME/.rbenv/bin:$PATH\"' >> ~/.bashrc"
 
 # fzf
 run "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
