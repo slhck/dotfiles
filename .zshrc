@@ -171,10 +171,7 @@ alias -g S='|sort'
 
 ## Git
 alias gcam='git add -A && git commit -m "update" && git pull --rebase && git push'
-alias gups='git submodule update --rebase --remote'
-
-## Docker
-alias dc='docker-compose'
+alias gups='git submodule update --rebase --remote --init --recursive'
 
 # -----------------------------------------------
 #  User-defined Functions
