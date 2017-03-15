@@ -48,22 +48,37 @@ formulae = %w(
   git-extras
   git-flow
   grc
+  grep
   id3tool
   imagemagick
+  less
   lesspipe
   man2html
   media-info
   mercurial
   nmap
+  node
+  numpy
   pandoc
+  poppler
   python
   python3
+  qt
+  r
   rbenv
+  readline
+  rename
+  rsync
   ruby-build
+  scipy
   sl
+  sqlite
   ssh-copy-id
+  subversion
   tcl-tk
   terminal-notifier
+  tldr
+  tmux
   tree
   unrar
   wget
