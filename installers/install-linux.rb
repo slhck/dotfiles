@@ -18,6 +18,12 @@ apt_get_tools = %w(
     unrar
     wget
     zsh
+    python-numpy
+    python-scipy
+    python-setuptools
+    python3-numpy
+    python3-scipy
+    python3-setuptools
 )
 run "sudo apt-get update"
 run "sudo apt-get install --assume-yes " + apt_get_tools.join(' ')
@@ -45,3 +51,22 @@ run "~/.fzf/install"
 run "git clone git://github.com/joelthelion/autojump.git ~/autojump"
 run "~/autojump/install.py"
 run "rm -rf ~/autojump"
+
+# Node.js
+run "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
+run "sudo apt-get install -y nodejs"
+
+# tldr
+run "npm install -g tldr"
+
+# PIP
+run "sudo easy_install pip"
+run "sudo easy_install3 pip"
+
+# pips
+pips = %w(
+    youtube_dl
+    ffmpeg-normalize
+)
+run "sudo pip install " + pips.join(' ')
+run "sudo pip3 install " + pips.join(' ')
