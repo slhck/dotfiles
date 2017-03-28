@@ -20,3 +20,5 @@
     ui = auto
 [core]
     precomposeunicode = true
+[credential]
+    helper = store
