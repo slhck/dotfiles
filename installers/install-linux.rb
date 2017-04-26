@@ -24,6 +24,10 @@ apt_get_tools = %w(
     python3-numpy
     python3-scipy
     python3-setuptools
+    vim
+    libreadline-dev
+    libssl-dev
+    zlib1g-dev
 )
 run "sudo apt-get update"
 run "sudo apt-get install --assume-yes " + apt_get_tools.join(' ')
