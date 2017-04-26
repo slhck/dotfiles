@@ -91,7 +91,6 @@ run "/usr/local/opt/fzf/install"
 
 # ffmpeg
 run "brew install ffmpeg \
---with-libebur128 \
 --with-fdk-aac \
 --with-libass \
 --with-libsoxr \
