@@ -11,6 +11,7 @@ apt_get_tools = %w(
     curl
     git
     git-flow
+    git-extras
     htop
     p7zip
     p7zip-full

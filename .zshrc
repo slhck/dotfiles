@@ -32,7 +32,7 @@ ZSH_THEME="blinks"
 COMPLETION_WAITING_DOTS="true"
 
 # Plugins to load
-plugins=(rails git github git-flow textmate ruby brew osx gem svn docker docker-compose vagrant virtualenv python)
+plugins=(rails git git-extras github git-flow textmate ruby brew osx gem svn docker docker-compose vagrant virtualenv python)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -217,6 +217,24 @@ psgrep() {
     else
         echo "!! Need name to grep for"
     fi
+}
+
+embed-fonts() {
+  # http://stackoverflow.com/q/2670809/
+  if [ "$#" -ne 2 ]; then
+    echo "Usage: embed-fonts <input> <output>" && return
+  fi
+  gs \
+   -dCompatibilityLevel=1.4 \
+   -dPDFSETTINGS=/screen \
+   -dCompressFonts=true \
+   -dSubsetFonts=true \
+   -dNOPAUSE \
+   -dBATCH \
+   -sDEVICE=pdfwrite \
+   -sOutputFile="$2" \
+   -c ".setpdfwrite <</NeverEmbed [ ]>> setdistillerparams" \
+   -f "$1"
 }
 
 # -----------------------------------------------
