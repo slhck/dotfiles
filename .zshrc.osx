@@ -72,9 +72,3 @@ EOF
 # -----------------------------------------------
 
 if which brew > /dev/null; then source "$(brew --prefix)/etc/grc.bashrc"; fi
-
-# -----------------------------------------------
-# Custom path
-# -----------------------------------------------
-
-export PATH="$PATH:/Users/werner/Documents/Binaries"

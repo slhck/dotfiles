@@ -1,3 +1,9 @@
 # BEGIN: OS-specific configuration file
 
-# Nothing specific here
+# Zsh config for Linux
+
+# -----------------------------------------------
+# Shell Aliases
+# -----------------------------------------------
+
+alias o='xdg-open'

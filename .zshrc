@@ -249,10 +249,8 @@ export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 #  rbenv
 # -----------------------------------------------
 
-#if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
 # END: Global configuration file
 
