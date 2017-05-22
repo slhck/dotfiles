@@ -226,16 +226,41 @@ embed-fonts() {
   fi
   gs \
    -dCompatibilityLevel=1.4 \
-   -dPDFSETTINGS=/screen \
+   -dPDFSETTINGS=/default \
    -dCompressFonts=true \
    -dSubsetFonts=true \
    -dNOPAUSE \
    -dBATCH \
+   -dQUIET \
    -sDEVICE=pdfwrite \
    -sOutputFile="$2" \
    -c ".setpdfwrite <</NeverEmbed [ ]>> setdistillerparams" \
    -f "$1"
 }
+
+compress-pdf() {
+  # /screen selects low-resolution output similar to the Acrobat Distiller "Screen Optimized" setting.
+  # /ebook selects medium-resolution output similar to the Acrobat Distiller "eBook" setting.
+  # /printer selects output similar to the Acrobat Distiller "Print Optimized" setting.
+  # /prepress selects output similar to Acrobat Distiller "Prepress Optimized" setting.
+  # /default selects output intended to be useful across a wide variety of uses, possibly at the expense of a larger output file.
+  if [ "$#" -ne 3 ]; then
+    echo "Usage: compress-pdf <input> <preset> <output>"
+    echo ""
+    echo "<preset>: one of [screen|ebook|printer|prepress|default]"
+    return
+  fi
+  gs \
+  -dCompatibilityLevel=1.4 \
+  -dPDFSETTINGS=/"$2" \
+  -dNOPAUSE \
+  -dBATCH \
+  -dQUIET \
+  -sDEVICE=pdfwrite \
+  -sOutputFile="$3" \
+  -f "$1"
+}
+
 
 # -----------------------------------------------
 #  Color for ls
