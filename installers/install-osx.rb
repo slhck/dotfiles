@@ -41,6 +41,7 @@ formulae = %w(
   bash
   coreutils
   dos2unix
+  duti
   findutils
   fzf
   ghostscript
