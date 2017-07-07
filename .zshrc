@@ -64,7 +64,6 @@ autoload zmv
 
 # General completion technique
 zstyle ':completion:*' completer _complete _correct _approximate _prefix
-zstyle ':completion:*' completer _complete _prefix
 zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
@@ -94,6 +93,7 @@ zstyle ':completion:*:warnings' format '%B%Uno match for: %d%u%b'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 
+# History
 zstyle ':completion:*:history-words' stop yes
 zstyle ':completion:*:history-words' remove-all-dups yes
 zstyle ':completion:*:history-words' list false

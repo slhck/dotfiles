@@ -6,4 +6,5 @@
 # Shell Aliases
 # -----------------------------------------------
 
-alias o='xdg-open'
+alias o='open'
+alias open='xdg-open &>/dev/null'
