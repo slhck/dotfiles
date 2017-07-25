@@ -70,5 +70,19 @@ EOF
 # -----------------------------------------------
 # GRC
 # -----------------------------------------------
-
 if which brew > /dev/null; then source "$(brew --prefix)/etc/grc.bashrc"; fi
+
+# -----------------------------------------------
+# MacTeX
+# -----------------------------------------------
+export PATH=/Library/TeX/texbin:$PATH
+
+# -----------------------------------------------
+# Python Homebrew
+# -----------------------------------------------
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+# -----------------------------------------------
+# iTerm 2 shell integration
+# -----------------------------------------------
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

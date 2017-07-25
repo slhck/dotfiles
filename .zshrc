@@ -167,8 +167,10 @@ alias -g S='|sort'
   alias cp='cp -i'
 
 ## Git
-alias gcam='git add -A && git commit -m "update" && git pull --rebase && git push'
+alias gcam='git add -A && git commit -m "update" && git pull --rebase && git push --all'
 alias gups='git submodule update --rebase --remote --init --recursive'
+alias gpa='git push --all && git push --tags'
+alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
 
 # -----------------------------------------------
 #  User-defined Functions
@@ -200,6 +202,7 @@ smartextract () {
             *.tgz)      tar -zxvf "$1"        ;;
             *.zip)      unzip "$1"            ;;
             *.Z)        uncompress "$1"       ;;
+            *.7z)       7z x "$1"             ;;
             *)          echo "'$1' cannot be extracted/mounted via smartextract()" ;;
         esac
     else

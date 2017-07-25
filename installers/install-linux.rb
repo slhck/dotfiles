@@ -19,9 +19,13 @@ apt_get_tools = %w(
     unrar
     wget
     zsh
+    python-dev
+    python-pip
     python-numpy
     python-scipy
     python-setuptools
+    python3-dev
+    python3-pip
     python3-numpy
     python3-scipy
     python3-setuptools
@@ -64,14 +68,10 @@ run "sudo apt-get install -y nodejs"
 # tldr
 run "npm install -g tldr"
 
-# PIP
-run "sudo easy_install pip"
-run "sudo easy_install3 pip"
-
 # pips
 pips = %w(
     youtube_dl
     ffmpeg-normalize
 )
-run "sudo pip install " + pips.join(' ')
-run "sudo pip3 install " + pips.join(' ')
+run "pip install " + pips.join(' ')
+run "pip3 install " + pips.join(' ')

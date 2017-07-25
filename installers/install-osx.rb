@@ -4,9 +4,6 @@
 
 require_relative 'functions.rb'
 
-# XCode
-run "sudo xcode-select -switch /usr/bin"
-
 # SSH key
 run "ssh-keygen -t rsa"
 
@@ -16,7 +13,6 @@ run "mkdir -p ~/.vim && cd ~/.vim && git clone https://github.com/kien/ctrlp.vim
 # Homebrew
 run %( ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" )
 run "brew tap caskroom/cask"
-run "brew install brew-cask"
 
 # Homebrew casks
 casks = %w(
@@ -37,6 +33,7 @@ run "brew cask install " + casks.join(" ")
 
 # Homebrew formulae
 formulae = %w(
+  7z
   autojump
   bash
   coreutils
@@ -50,6 +47,7 @@ formulae = %w(
   git-flow
   grc
   grep
+  gpac
   id3tool
   imagemagick
   less
@@ -59,7 +57,6 @@ formulae = %w(
   mercurial
   nmap
   node
-  numpy
   pandoc
   poppler
   python
@@ -71,7 +68,6 @@ formulae = %w(
   rename
   rsync
   ruby-build
-  scipy
   sl
   sqlite
   ssh-copy-id
@@ -88,7 +84,8 @@ formulae = %w(
 )
 run "brew install " + formulae.join(" ")
 
-run "/usr/local/opt/fzf/install"
+run "brew install numpy --with-python3"
+run "brew install scipy --with-python3"
 
 # ffmpeg
 run "brew install ffmpeg \
@@ -125,3 +122,6 @@ run "brew install ffmpeg \
 
 # oh-my-zsh
 run "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
+
+# FZF
+run "/usr/local/opt/fzf/install"
