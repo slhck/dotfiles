@@ -14,7 +14,7 @@ alias o='open'
 # -----------------------------------------------
 
 alias -g N='&& terminal-notifier -message "Command finished" -sound default -activate com.googlecode.iterm2 -sender com.googlecode.iterm2'
-alias -g C='|pbcopy'
+alias -g C='| pbcopy'
 
 # -----------------------------------------------
 # User-defined Functions (OS X specific)

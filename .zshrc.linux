@@ -8,3 +8,9 @@
 
 alias o='open'
 alias open='xdg-open &>/dev/null'
+
+# -----------------------------------------------
+# Chained Aliases (Global, Linux specific)
+# -----------------------------------------------
+
+alias -g C='| xclip -selection clipboard'
