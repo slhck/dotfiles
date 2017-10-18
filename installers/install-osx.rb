@@ -125,3 +125,6 @@ run "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.
 
 # FZF
 run "/usr/local/opt/fzf/install"
+
+# Spaceship theme
+run "curl -o - https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh | zsh"

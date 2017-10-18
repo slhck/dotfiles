@@ -1,7 +1,8 @@
 # Dotfiles
 
 This is a repository of my dotfiles and OS X / Linux-specific installers.
-It's not tested yet.
+
+It's not automated in any way, more or less copypasta.
 
 # Installed Software
 

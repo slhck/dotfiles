@@ -86,3 +86,5 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 # iTerm 2 shell integration
 # -----------------------------------------------
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# END: OS-specific configuration file

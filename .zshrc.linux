@@ -14,3 +14,5 @@ alias open='xdg-open &>/dev/null'
 # -----------------------------------------------
 
 alias -g C='| xclip -selection clipboard'
+
+# END: OS-specific configuration file

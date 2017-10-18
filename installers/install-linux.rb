@@ -62,8 +62,10 @@ run "~/autojump/install.py"
 run "rm -rf ~/autojump"
 
 # Node.js
-run "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
+run "curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -"
 run "sudo apt-get install -y nodejs"
+
+run "npm install -g grunt"
 
 # tldr
 run "npm install -g tldr"
@@ -75,3 +77,6 @@ pips = %w(
 )
 run "pip install " + pips.join(' ')
 run "pip3 install " + pips.join(' ')
+
+# Spaceship theme
+run "curl -o - https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh | zsh"
