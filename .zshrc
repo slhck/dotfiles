@@ -28,6 +28,8 @@ ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load.
 # Use blinks with: http://ethanschoonover.com/solarized
 ZSH_THEME="blinks"
+SPACESHIP_BATTERY_SHOW=false
+SPACESHIP_DIR_TRUNC=0
 
 COMPLETION_WAITING_DOTS="true"
 
