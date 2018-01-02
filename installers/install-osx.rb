@@ -39,6 +39,8 @@ formulae = %w(
   coreutils
   dos2unix
   duti
+  exiftool
+  exiv2
   findutils
   fzf
   ghostscript
@@ -57,6 +59,7 @@ formulae = %w(
   mercurial
   nmap
   node
+  opencv
   pandoc
   poppler
   python
@@ -68,6 +71,7 @@ formulae = %w(
   rename
   rsync
   ruby-build
+  scons
   sl
   sqlite
   ssh-copy-id
