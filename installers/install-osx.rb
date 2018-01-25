@@ -131,4 +131,5 @@ run "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.
 run "/usr/local/opt/fzf/install"
 
 # Spaceship theme
-run "curl -o - https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh | zsh"
+run 'git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"'
+run 'ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"'
