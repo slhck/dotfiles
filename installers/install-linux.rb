@@ -65,11 +65,6 @@ run "rm -rf ~/autojump"
 run "curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -"
 run "sudo apt-get install -y nodejs"
 
-run "npm install -g grunt"
-
-# tldr
-run "npm install -g tldr"
-
 # pips
 pips = %w(
     youtube_dl
@@ -81,3 +76,6 @@ run "pip3 install " + pips.join(' ')
 # Spaceship theme
 run 'git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"'
 run 'ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"'
+
+# Node.js
+run 'npm install -g jsonlint jshint grunt reveal-md web-ext tldr'
