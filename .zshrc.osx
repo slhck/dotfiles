@@ -13,7 +13,7 @@ alias o='open'
 # Chained Aliases (Global, OS X specific)
 # -----------------------------------------------
 
-alias -g N='&& terminal-notifier -message "Command finished" -sound default -activate com.googlecode.iterm2 -sender com.googlecode.iterm2'
+alias -g N='&& terminal-notifier -message "Command finished" -sound default ||  terminal-notifier -message "Command failed" -sound Basso'
 alias -g C='| pbcopy'
 
 # -----------------------------------------------
