@@ -78,6 +78,7 @@ formulae = %w(
   subversion
   tcl-tk
   terminal-notifier
+  thefuck
   tldr
   tmux
   tree

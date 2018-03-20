@@ -69,8 +69,8 @@ run "sudo apt-get install -y nodejs"
 pips = %w(
     youtube_dl
     ffmpeg-normalize
+    thefuck
 )
-run "pip install " + pips.join(' ')
 run "pip3 install " + pips.join(' ')
 
 # Spaceship theme

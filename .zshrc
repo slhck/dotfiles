@@ -281,6 +281,9 @@ if [ -d "$HOME/.rbenv" ]; then
   if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 fi
 
+# -----------------------------------------------
+# TheFuck
+# -----------------------------------------------
+eval $(thefuck --alias)
+
 # END: Global configuration file
-
-
