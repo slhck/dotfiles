@@ -34,7 +34,7 @@ SPACESHIP_DIR_TRUNC=0
 COMPLETION_WAITING_DOTS="true"
 
 # Plugins to load
-plugins=(rails git git-extras github git-flow ruby osx gem svn docker docker-compose vagrant virtualenv python)
+plugins=(rails git git-extras github git-flow ruby osx spotify gem svn docker docker-compose vagrant virtualenv python)
 
 source $ZSH/oh-my-zsh.sh
 
