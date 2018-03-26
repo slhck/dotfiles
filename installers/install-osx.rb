@@ -37,6 +37,7 @@ formulae = %w(
   autojump
   bash
   coreutils
+  ddclient
   dos2unix
   duti
   exiftool
@@ -47,6 +48,7 @@ formulae = %w(
   git
   git-extras
   git-flow
+  gnu-sed
   grc
   grep
   gpac
