@@ -38,6 +38,7 @@ formulae = %w(
   bash
   coreutils
   ddclient
+  ddrescue
   dos2unix
   duti
   exiftool
