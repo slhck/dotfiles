@@ -34,3 +34,8 @@ sudo apt install --assume-yes \
 # Node
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install -y nodejs
+
+# Docker
+sudo apt install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
