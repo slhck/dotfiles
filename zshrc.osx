@@ -1,6 +1,5 @@
 # BEGIN: OS-specific configuration file
-
-# Zsh config for OS X
+# Zsh config for macOS
 
 # -----------------------------------------------
 # Shell Aliases
@@ -32,7 +31,6 @@ on error
   (system attribute "HOME") & "/Desktop"
 end')"
 }
-
 
 quit() {
   osascript -e "quit app \"$*\""
@@ -68,23 +66,28 @@ EOF
 }
 
 # -----------------------------------------------
-# GRC
-# -----------------------------------------------
-if which brew > /dev/null; then source "$(brew --prefix)/etc/grc.bashrc"; fi
-
-# -----------------------------------------------
 # MacTeX
 # -----------------------------------------------
 export PATH=/Library/TeX/texbin:$PATH
 
 # -----------------------------------------------
-# Python Homebrew
-# -----------------------------------------------
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
-# -----------------------------------------------
 # iTerm 2 shell integration
 # -----------------------------------------------
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# -----------------------------------------------
+# LastPass
+# -----------------------------------------------
+alias lps='lpass show -x -G'
+
+# -----------------------------------------------
+# autojump
+# -----------------------------------------------
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+
+# -----------------------------------------------
+# Custom PATH
+# -----------------------------------------------
+export PATH="$PATH:/Users/werner/bin"
 
 # END: OS-specific configuration file

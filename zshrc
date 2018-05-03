@@ -284,6 +284,12 @@ fi
 # -----------------------------------------------
 # TheFuck
 # -----------------------------------------------
-eval $(thefuck --alias)
+if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+
+# -----------------------------------------------
+# fzf
+# -----------------------------------------------
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # END: Global configuration file
+

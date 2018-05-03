@@ -15,4 +15,12 @@ alias open='xdg-open &>/dev/null'
 
 alias -g C='| xclip -selection clipboard'
 
+# -----------------------------------------------
+# Path needed for Python
+# -----------------------------------------------
+
+if [[ -d "${HOME}/.local/bin" ]]; then
+    export PATH="${HOME}/.local/bin:$PATH"
+fi
+
 # END: OS-specific configuration file
