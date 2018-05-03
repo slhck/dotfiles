@@ -36,10 +36,11 @@ brew install \
     git \
     git-extras \
     git-flow \
+    git-lfs \
     gnu-sed \
+    gpac \
     grc \
     grep \
-    gpac \
     id3tool \
     imagemagick \
     less \
@@ -51,8 +52,10 @@ brew install \
     node \
     numpy \
     opencv \
+    p7zip \
     pandoc \
     poppler \
+    pv \
     python \
     python2 \
     qt \
