@@ -4,6 +4,7 @@
 sudo apt update
 
 sudo apt install --assume-yes \
+    autojump \
     build-essential \
     curl \
     git \
