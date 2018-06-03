@@ -30,7 +30,8 @@ sudo apt install --assume-yes \
     vim \
     libreadline-dev \
     libssl-dev \
-    zlib1g-dev
+    zlib1g-dev \
+    libsqlite3-dev
 
 # Node
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
