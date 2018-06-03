@@ -31,7 +31,8 @@ sudo apt install --assume-yes \
     libreadline-dev \
     libssl-dev \
     zlib1g-dev \
-    libsqlite3-dev
+    libsqlite3-dev \
+    libbz2-dev
 
 # Node
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
