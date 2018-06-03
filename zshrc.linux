@@ -23,4 +23,14 @@ if [[ -d "${HOME}/.local/bin" ]]; then
     export PATH="${HOME}/.local/bin:$PATH"
 fi
 
+# -----------------------------------------------
+# Pyenv
+# -----------------------------------------------
+
+export PATH="/home/werner/.pyenv/bin:$PATH"
+if which pyenv > /dev/null; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+
 # END: OS-specific configuration file
