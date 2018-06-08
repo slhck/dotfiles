@@ -37,6 +37,10 @@ sudo apt install --assume-yes \
 # Node
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install -y nodejs
+sudo npm install -g \
+    jsonlint \
+    jshint \
+    grunt
 
 # Docker
 sudo apt install docker.io docker-compose

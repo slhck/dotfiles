@@ -33,16 +33,6 @@ if [[ "$(uname)" == "Linux" ]]; then
     rm -rf ~/autojump
 fi
 
-# Python and pips
-pip3 install \
-    pipenv
-
 # Vim
 mkdir -p ~/.vim
 (cd ~/.vim && git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim)
-
-# Node
-npm install -g \
-    jsonlint \
-    jshint \
-    grunt
