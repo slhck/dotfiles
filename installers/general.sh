@@ -36,3 +36,6 @@ fi
 # Vim
 mkdir -p ~/.vim
 (cd ~/.vim && git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim)
+
+# Node
+./node.sh

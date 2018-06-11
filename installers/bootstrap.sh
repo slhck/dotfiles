@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#
+# Create config files
 
 cp ../gitconfig ~/.gitconfig
 cp ../pdbrc ~/.pdbrc
