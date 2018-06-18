@@ -3,6 +3,7 @@
 # Create config files
 
 cp ../gitconfig ~/.gitconfig
+cp ../flake8 ~/.flake8
 cp ../pdbrc ~/.pdbrc
 cp ../pypirc ~/.pypirc
 cp ../tmux.conf ~/.tmux.conf
