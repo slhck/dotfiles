@@ -41,6 +41,7 @@ brew install \
     gpac \
     grc \
     grep \
+    gron \
     id3tool \
     imagemagick \
     less \
