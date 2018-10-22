@@ -4,6 +4,12 @@ This is a repository of my dotfiles and OS X / Linux-specific installers.
 
 **CAVEAT:** None of this is fully automated. Take whatever you need.
 
+# Brewfile creation
+
+```
+brew bundle dump --force --describe
+```
+
 # Installation
 
 1. Run the `installers/general.sh` script for general tool installation
