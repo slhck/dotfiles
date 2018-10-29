@@ -90,4 +90,10 @@ alias lps='lpass show -x -G'
 # -----------------------------------------------
 export PATH="$PATH:/Users/werner/bin"
 
+# -----------------------------------------------
+# Remove broken Git completion installed through Homebrew
+# -----------------------------------------------
+[[ -f /usr/local/share/zsh/site-functions/_git ]] && \
+  rm  -f /usr/local/share/zsh/site-functions/_git
+
 # END: OS-specific configuration file
