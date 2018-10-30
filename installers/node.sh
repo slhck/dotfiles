@@ -10,4 +10,5 @@ nvm install node
 npm install -g \
     jsonlint \
     jshint \
-    grunt
+    grunt \
+    state-machine-cat
