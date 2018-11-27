@@ -22,3 +22,5 @@
     precomposeunicode = true
 [credential]
     helper = store
+[tag]
+    sort = version:refname
