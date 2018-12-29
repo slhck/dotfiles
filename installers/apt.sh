@@ -36,7 +36,8 @@ sudo apt install --assume-yes \
     libsqlite3-dev \
     libbz2-dev \
     docker.io \
-    docker-compose
+    docker-compose \
+    xclip
 
 sudo systemctl start docker
 sudo systemctl enable docker
