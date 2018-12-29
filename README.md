@@ -33,6 +33,7 @@ Then:
 1. Run the `installers/zsh.sh` script for zsh-specific stuff
 1. Run the `installers/node.sh` script
 1. Run the `installers/python.sh` script
+1. Run the `installers/gui.sh` script for Linux GUI stuff
 
 # Syncing Software
 
