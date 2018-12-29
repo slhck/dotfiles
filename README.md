@@ -32,6 +32,7 @@ Then:
     - Then change the default shell for GNOME Terminal (Linux)
 1. Run the `installers/zsh.sh` script for zsh-specific stuff
 1. Run the `installers/node.sh` script
+1. Run the `installers/python.sh` script
 
 # Syncing Software
 

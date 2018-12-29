@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-#
 # NVM and nodejs
 
 nvm install node
