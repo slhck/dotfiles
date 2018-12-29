@@ -25,7 +25,7 @@ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 if [[ "$(uname)" == "Linux" ]]; then
     # FZF
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
+    ~/.fzf/install --completion --key-bindings --update-rc
 
     # autojump
     git clone git://github.com/joelthelion/autojump.git ~/autojump
@@ -37,11 +37,12 @@ fi
 mkdir -p ~/.vim
 (cd ~/.vim && git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim)
 
-# Node
-./node.sh
+# NVM
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
-# tmux
-cd
-git clone https://github.com/gpakosz/.tmux.git
-ln -s -f .tmux/.tmux.conf
-cp .tmux/.tmux.conf.local .
+echo "Now set zsh as your default shell!"
+# # tmux
+# cd
+# git clone https://github.com/gpakosz/.tmux.git
+# ln -s -f .tmux/.tmux.conf
+# cp .tmux/.tmux.conf.local .

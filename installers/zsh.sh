@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # ZSH-relevant things
 
+zshRoot="/home/$USER/.oh-my-zsh/custom"
+
 # Spaceship theme
-git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+git clone https://github.com/denysdovhan/spaceship-prompt.git "$zshRoot/themes/spaceship-prompt"
+ln -s "$zshRoot/themes/spaceship-prompt/spaceship.zsh-theme" "$zshRoot/themes/spaceship.zsh-theme"
 perl -pi -e 's/blinks/spaceship/' ~/.zshrc

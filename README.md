@@ -12,10 +12,26 @@ brew bundle dump --force --describe
 
 # Installation
 
+Prerequisites under Linux:
+
+```
+sudo apt update && sudo apt install -y git
+mkdir -p ~/Documents/Projects/slhck/
+git clone https://github.com/slhck/dotfiles ~/Documents/Projects/slhck/dotfiles
+cd !$
+```
+
+Under macOS, download the repo manually.
+
+Then:
+
 1. Run the `installers/general.sh` script for general tool installation
-2. Run the `installers/bootstrap.sh` script for copying the relevant files
-3. Switch to ZSH (through `chsh`)
-4. Run the `installers/zsh.sh` script for zsh-specific stuff
+1. Run the `installers/bootstrap.sh` script for copying the relevant files
+1. Switch to ZSH
+    - Through `chsh -s /usr/bin/zsh`
+    - Then change the default shell for GNOME Terminal (Linux)
+1. Run the `installers/zsh.sh` script for zsh-specific stuff
+1. Run the `installers/node.sh` script
 
 # Syncing Software
 

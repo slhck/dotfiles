@@ -33,10 +33,10 @@ sudo apt install --assume-yes \
     libssl-dev \
     zlib1g-dev \
     libsqlite3-dev \
-    libbz2-dev
+    libbz2-dev \
+    docker.io \
+    docker-compose
 
-# Docker
-sudo apt install docker.io docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -aG docker ${USER}

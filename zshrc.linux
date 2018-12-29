@@ -33,4 +33,12 @@ if which pyenv > /dev/null; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
+# -----------------------------------------------
+# Autojump
+# # -----------------------------------------------
+
+if [[ -f /usr/share/autojump/autojump.sh ]]; then
+    . /usr/share/autojump/autojump.sh
+fi
+
 # END: OS-specific configuration file

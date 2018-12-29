@@ -2,6 +2,8 @@
 #
 # Create config files
 
+cd "$(dirname "$0")"
+
 cp ../gitconfig ~/.gitconfig
 cp ../flake8 ~/.flake8
 cp ../pdbrc ~/.pdbrc
