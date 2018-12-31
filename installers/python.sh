@@ -17,4 +17,5 @@ pip3 install \
     pandocfilters \
     youtube-dl \
     tqdm \
-    thefuck
+    thefuck \
+    pyenv
