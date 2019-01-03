@@ -4,7 +4,6 @@
 
 EDITOR=vim
 PAGER=less
-DISPLAY=:0.0
 COLORTERM=yes
 PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin
 
