@@ -17,3 +17,9 @@ sudo apt install \
     numix-gtk-theme \
     numix-icon-theme \
     adapta-gtk-theme
+
+# Other important stuff
+sudo apt install \
+    texlive-full \
+    pandoc \
+    pandoc-citeproc
