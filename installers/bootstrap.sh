@@ -10,6 +10,7 @@ cp ../pdbrc ~/.pdbrc
 cp ../pypirc ~/.pypirc
 cp ../tmux.conf ~/.tmux.conf
 cp ../vimrc ~/.vimrc
+cp ../Rprofile ~/.Rprofile
 
 cp ../zshrc ~/.zshrc
 
