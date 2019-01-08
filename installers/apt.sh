@@ -37,7 +37,8 @@ sudo apt install --assume-yes \
     libbz2-dev \
     docker.io \
     docker-compose \
-    xclip
+    xclip \
+    mosh
 
 sudo systemctl start docker
 sudo systemctl enable docker
