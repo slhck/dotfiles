@@ -18,4 +18,5 @@ pip3 install \
     youtube-dl \
     tqdm \
     thefuck \
-    pyenv
+    pyenv \
+    csvkit
