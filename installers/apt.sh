@@ -38,7 +38,9 @@ sudo apt install --assume-yes \
     docker.io \
     docker-compose \
     xclip \
-    mosh
+    mosh \
+    jq \
+    byobu
 
 sudo systemctl start docker
 sudo systemctl enable docker
