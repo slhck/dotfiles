@@ -40,7 +40,8 @@ sudo apt install --assume-yes \
     xclip \
     mosh \
     jq \
-    byobu
+    byobu \
+    pngquant
 
 sudo systemctl start docker
 sudo systemctl enable docker
