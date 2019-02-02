@@ -7,4 +7,6 @@ npm install -g \
     jshint \
     jslint \
     grunt \
-    state-machine-cat
+    state-machine-cat \
+    write-good \
+    web-ext
