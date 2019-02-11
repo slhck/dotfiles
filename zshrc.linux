@@ -24,6 +24,14 @@ if [[ -d "${HOME}/.local/bin" ]]; then
 fi
 
 # -----------------------------------------------
+# Linuxbrew
+# -----------------------------------------------
+
+if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
+    export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+fi
+
+# -----------------------------------------------
 # Pyenv
 # -----------------------------------------------
 
@@ -39,14 +47,6 @@ fi
 
 if [[ -f /usr/share/autojump/autojump.sh ]]; then
     . /usr/share/autojump/autojump.sh
-fi
-
-# -----------------------------------------------
-# Linuxbrew
-# -----------------------------------------------
-
-if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
-    export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 fi
 
 # END: OS-specific configuration file
