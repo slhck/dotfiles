@@ -49,3 +49,7 @@ sudo usermod -aG docker ${USER}
 
 # Pyenv
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+
+# Linuxbrew
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
