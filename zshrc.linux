@@ -29,6 +29,7 @@ fi
 
 if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
     export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+    export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
 fi
 
 # -----------------------------------------------
