@@ -75,11 +75,6 @@ export PATH=/Library/TeX/texbin:$PATH
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # -----------------------------------------------
-# LastPass
-# -----------------------------------------------
-alias lps='lpass show -x -G'
-
-# -----------------------------------------------
 # autojump
 # -----------------------------------------------
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
