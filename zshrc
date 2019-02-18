@@ -296,5 +296,12 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+# -----------------------------------------------
+# Homebrew
+# -----------------------------------------------
+
+alias bubu='brew update && brew upgrade'
+
+
 # END: Global configuration file
 
