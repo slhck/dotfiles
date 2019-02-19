@@ -9,4 +9,5 @@ npm install -g \
     grunt \
     state-machine-cat \
     write-good \
-    web-ext
+    web-ext \
+    eslint
