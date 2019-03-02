@@ -19,4 +19,5 @@ pip3 install \
     tqdm \
     thefuck \
     pyenv \
-    csvkit
+    csvkit \
+    gitchangelog
