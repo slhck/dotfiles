@@ -302,6 +302,10 @@ export NVM_DIR="$HOME/.nvm"
 
 alias bubu='brew update && brew upgrade'
 
+# Remove Git completion that Homebrew ships
+[[ -f /usr/local/share/zsh/site-functions/_git ]] && \
+  rm  -f /usr/local/share/zsh/site-functions/_git
+
 
 # END: Global configuration file
 
