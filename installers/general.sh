@@ -8,6 +8,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
 elif [[ "$(uname)" == "Linux" ]]; then
     ./apt.sh
 else
+    echo "Wrong OS"
 fi
 
 # SSH

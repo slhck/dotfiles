@@ -19,4 +19,5 @@ if [[ "$(uname)" == "Darwin" ]]; then
 elif [[ "$(uname)" == "Linux" ]]; then
     cat ../zshrc.linux >> ~/.zshrc
 else
+    echo "Wrong OS"
 fi
