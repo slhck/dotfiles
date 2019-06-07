@@ -5,6 +5,7 @@
 cd "$(dirname "$0")"
 
 cp ../gitconfig ~/.gitconfig
+cp ../gitignore ~/.gitignore
 cp ../flake8 ~/.flake8
 cp ../pdbrc ~/.pdbrc
 cp ../pypirc ~/.pypirc
