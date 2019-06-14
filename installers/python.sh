@@ -20,4 +20,7 @@ pip3 install \
     thefuck \
     pyenv \
     csvkit \
-    gitchangelog
+    gitchangelog \
+    pandas \
+    tqdm \
+    twine

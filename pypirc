@@ -1,3 +1,11 @@
+[distutils]
+index-servers =
+    pypi
+
+[pypi]
+repository: https://upload.pypi.org/legacy/
+username: slhck
+
 [server-login]
 username:slhck
 password:<redacted>

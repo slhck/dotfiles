@@ -10,4 +10,5 @@ npm install -g \
     state-machine-cat \
     write-good \
     web-ext \
-    eslint
+    eslint \
+    auto-changelog
