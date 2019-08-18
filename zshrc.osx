@@ -95,4 +95,13 @@ export PATH="$PATH:/Users/werner/bin"
 # -----------------------------------------------
 eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 
+# -----------------------------------------------
+# Pyenv
+# -----------------------------------------------
+
+export PATH="${HOME}/.pyenv/bin:$PATH"
+if which pyenv > /dev/null; then
+    eval "$(pyenv init -)"
+fi
+
 # END: OS-specific configuration file
