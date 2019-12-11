@@ -18,7 +18,6 @@ pip3 install \
     youtube-dl \
     tqdm \
     thefuck \
-    pyenv \
     csvkit \
     gitchangelog \
     pandas \
