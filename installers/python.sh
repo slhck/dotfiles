@@ -1,6 +1,6 @@
 # Pyenv and Python pips
 
-pythonVersion="3.7.2"
+pythonVersion="3.7.5"
 
 pyenv install "$pythonVersion"
 pyenv rehash
