@@ -1,10 +1,10 @@
+tap "caskroom/cask"
+tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
 tap "homebrew/cask", "https://github.com/caskroom/homebrew-cask"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "randy3k/r"
-# Library for command-line editing
-brew "readline"
 # Command-line interface for SQLite
 brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
@@ -19,6 +19,10 @@ brew "bento4"
 brew "freetype"
 # Vector graphics library with cross-device output support
 brew "cairo"
+# GNU compiler collection
+brew "gcc"
+# Rich and complete approach to parallelism in C++
+brew "tbb"
 # Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
 # Utility that creates projects from templates
@@ -45,6 +49,8 @@ brew "e2fsprogs"
 brew "exiftool"
 # EXIF and IPTC metadata manipulation library and tools
 brew "exiv2"
+# International domain name library (IDNA2008, Punycode and TR46)
+brew "libidn2"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Play, record, convert, and stream audio and video
@@ -57,8 +63,8 @@ brew "foremost"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
-# GNU compiler collection
-brew "gcc"
+# Toolkit for image loading and pixel buffer manipulation
+brew "gdk-pixbuf"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
 # Highest-quality GIF encoder based on pngquant
@@ -75,8 +81,8 @@ brew "gitup"
 brew "gnu-sed"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
-# Manage compile and link flags for libraries
-brew "pkg-config"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
 # Colorize logfiles and command output
@@ -89,6 +95,8 @@ brew "gron"
 brew "gtk+"
 # File format designed to store large amounts of data
 brew "hdf5"
+# Interactive parallel SSH client
+brew "hss"
 # Improved top (interactive process viewer)
 brew "htop"
 # ID3 tag manipulation
@@ -99,6 +107,8 @@ brew "id3tool"
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Tool to move from `docker-compose` to Kubernetes
+brew "kompose"
 # Pager program similar to more
 brew "less"
 # Input filter for the pager less
@@ -107,16 +117,22 @@ brew "lesspipe"
 brew "lftp"
 # Access DVDs as block devices without the decryption
 brew "libdvdcss"
+# Perceptual video quality assessment based on multi-method fusion
+brew "libvmaf"
 # Convert nroff man pages to HTML
 brew "man2html"
 # Unified display of technical and tag data for audio/video
 brew "media-info"
-# Interpreted, interactive, object-oriented programming language
-brew "python@2"
 # Scalable distributed version control system
 brew "mercurial"
 # Remote terminal application
 brew "mosh"
+# Embeddable Javascript interpreter
+brew "mujs"
+# Scaling, colorspace conversion, and dithering library
+brew "zimg"
+# Download YouTube videos from the command-line
+brew "youtube-dl"
 # Media player based on MPlayer and mplayer2
 brew "mpv"
 # Open source relational database management system
@@ -127,6 +143,8 @@ brew "nmap"
 brew "node"
 # Package for scientific computing with Python
 brew "numpy"
+# Manage multiple Node.js versions
+brew "nvm"
 # Open source computer vision library
 brew "opencv"
 # Swiss-army knife of markup format conversion
@@ -136,7 +154,7 @@ brew "parallel"
 # Highly capable, feature-rich programming language
 brew "perl"
 # Python dependency management tool
-brew "pipenv"
+brew "pipenv", link: false
 # PNG image optimizing utility
 brew "pngquant"
 # Cross-platform application and UI framework
@@ -145,18 +163,28 @@ brew "qt"
 brew "poppler"
 # Object-relational database system
 brew "postgresql"
+# Parallel versions of OpenSSH and related tools
+brew "pssh"
 # Monitor data's progress through a pipe
 brew "pv"
 # Password generator
 brew "pwgen"
 # Python version management
 brew "pyenv"
+# Tool Command Language
+brew "tcl-tk"
 # Highly performant implementation of Python 2 in Python
 brew "pypy"
+# Interpreted, interactive, object-oriented programming language
+brew "python@2"
 # Software environment for statistical computing
 brew "r"
+# Install various Ruby versions and implementations
+brew "ruby-build"
 # Ruby version manager
 brew "rbenv"
+# Reattach process (e.g., tmux) to background
+brew "reattach-to-user-namespace"
 # Perl-powered file rename script with many helpful built-ins
 brew "rename"
 # Utility that provides fast incremental file transfer
@@ -173,10 +201,10 @@ brew "shellcheck"
 brew "sox"
 # Add a public key to a remote machine's authorized_keys file
 brew "ssh-copy-id"
+# CLI for extracting streams from various websites to a video player
+brew "streamlink"
 # Version control system designed to be a better CVS
 brew "subversion"
-# Tool Command Language
-brew "tcl-tk"
 # User interface to the TELNET protocol (built from macOS Sierra sources)
 brew "telnet"
 # Send macOS User Notifications from the command-line
@@ -195,8 +223,12 @@ brew "udunits"
 brew "unison"
 # Extract, view, and test RAR archives
 brew "unrar"
+# Executes a program periodically, showing output fullscreen
+brew "watch"
 # Internet file retriever
 brew "wget"
+# Tools for the WireGuard secure network tunnel
+brew "wireguard-tools"
 # Makes XML and HTML more amenable to classic UNIX text tools
 brew "xml2"
 # General-purpose lossless data-compression library
@@ -204,3 +236,9 @@ brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
 cask "mactex"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "quicklook-json"
+cask "webpquicklook"

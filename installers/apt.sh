@@ -4,52 +4,44 @@
 sudo apt update
 
 sudo apt install --assume-yes \
-    autojump \
     build-essential \
+    byobu \
     curl \
+    docker-compose \
+    docker.io \
     git \
-    git-flow \
     git-extras \
+    git-flow \
     htop \
+    jq \
+    libbz2-dev \
+    libffi-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    mosh \
     p7zip \
     p7zip-full \
-    rar \
-    unrar \
-    wget \
-    zsh \
+    pngquant
+    pv \
     python-dev \
-    python-pip \
     python-numpy \
+    python-pip \
     python-scipy \
     python-setuptools \
     python3-dev \
-    python3-pip \
     python3-numpy \
+    python3-pip \
     python3-scipy \
     python3-setuptools \
-    pv \
+    rar \
+    ufw \
+    unrar \
     vim \
-    libffi-dev \
-    libreadline-dev \
-    libssl-dev \
-    zlib1g-dev \
-    libsqlite3-dev \
-    libbz2-dev \
-    docker.io \
-    docker-compose \
+    wget \
     xclip \
-    mosh \
-    jq \
-    byobu \
-    pngquant
+    zlib1g-dev \
+    zsh
 
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -aG docker ${USER}
-
-# Pyenv
-curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-
-# Linuxbrew
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+# Linuxbrew is optional
+# sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"

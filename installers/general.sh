@@ -15,14 +15,14 @@ fi
 cat /dev/zero | ssh-keygen -t rsa -q -N ""
 
 # oh-my-zsh
-curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
+# Not handled by apt:
+# FZF
+# Autojump
 # Rbenv
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-(cd ~/.rbenv && src/configure && make -C src)
-
-# FZF and autojump are not handled by apt
+# Pyenv
+# NVM
 if [[ "$(uname)" == "Linux" ]]; then
     # FZF
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -32,19 +32,30 @@ if [[ "$(uname)" == "Linux" ]]; then
     git clone git://github.com/joelthelion/autojump.git ~/autojump
     (cd ~/autojump && ./install.py)
     rm -rf ~/autojump
+
+    # Rbenv
+    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+    (cd ~/.rbenv && src/configure && make -C src)
+
+    # Pyenv
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+
+    # NVM
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+else
+    echo "No installing FZF, Autojump, Rbenv, Pyenv and NVM since they come from Homebrew"
 fi
 
 # Vim
 mkdir -p ~/.vim
 (cd ~/.vim && git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim)
 
-# NVM
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-
 # tmux
 cd
 mkdir -p ~/.tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+./copy_dotfiles.sh
 
-echo "Now set zsh as your default shell!"
+echo "Now set zsh as your default shell using chsh, and reload the shell!"

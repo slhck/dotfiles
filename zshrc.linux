@@ -16,20 +16,20 @@ alias open='xdg-open &>/dev/null'
 alias -g C='| xclip -selection clipboard'
 
 # -----------------------------------------------
-# Path needed for Python
-# -----------------------------------------------
-
-if [[ -d "${HOME}/.local/bin" ]]; then
-    export PATH="${HOME}/.local/bin:$PATH"
-fi
-
-# -----------------------------------------------
 # Linuxbrew
 # -----------------------------------------------
 
 if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
     export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
     export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
+fi
+
+# -----------------------------------------------
+# Path needed for Python local installs
+# -----------------------------------------------
+
+if [[ -d "${HOME}/.local/bin" ]]; then
+    export PATH="${HOME}/.local/bin:$PATH"
 fi
 
 # -----------------------------------------------

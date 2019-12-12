@@ -1,8 +1,7 @@
 # NVM and nodejs
 
-nvm install node
-
-npm install -g \
+nvm install node && \
+    npm install -g \
     jsonlint \
     jshint \
     jslint \
