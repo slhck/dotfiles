@@ -1,4 +1,5 @@
 tap "caskroom/cask"
+tap "github/gh"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
 tap "homebrew/cask", "https://github.com/caskroom/homebrew-cask"
@@ -25,6 +26,8 @@ brew "gcc"
 brew "tbb"
 # Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
+# Dependency manager for Cocoa projects
+brew "cocoapods"
 # Utility that creates projects from templates
 brew "cookiecutter"
 # GNU File, Shell, and Text utilities
@@ -32,7 +35,7 @@ brew "coreutils"
 # Get, unpack, build, and install modules from CPAN
 brew "cpanminus"
 # Update dynamic DNS entries
-brew "ddclient", restart_service: true
+brew "ddclient"
 # GNU data recovery tool
 brew "ddrescue"
 # XML vocabulary to create presentation-neutral documents
@@ -75,6 +78,12 @@ brew "git"
 brew "git-extras"
 # Extensions to follow Vincent Driessen's branching model
 brew "git-flow"
+# Tool Command Language
+brew "tcl-tk"
+# Tcl/Tk UI for the git revision control system
+brew "git-gui"
+# Git extension for versioning large files
+brew "git-lfs"
 # Update multiple git repositories at once
 brew "gitup"
 # GNU implementation of the famous stream editor
@@ -137,10 +146,10 @@ brew "youtube-dl"
 brew "mpv"
 # Open source relational database management system
 brew "mysql"
+# NCurses Disk Usage
+brew "ncdu"
 # Port scanning utility for large networks
 brew "nmap"
-# Platform built on V8 to build network applications
-brew "node"
 # Package for scientific computing with Python
 brew "numpy"
 # Manage multiple Node.js versions
@@ -171,8 +180,6 @@ brew "pv"
 brew "pwgen"
 # Python version management
 brew "pyenv"
-# Tool Command Language
-brew "tcl-tk"
 # Highly performant implementation of Python 2 in Python
 brew "pypy"
 # Interpreted, interactive, object-oriented programming language
@@ -189,6 +196,8 @@ brew "reattach-to-user-namespace"
 brew "rename"
 # Utility that provides fast incremental file transfer
 brew "rsync"
+# Safe, concurrent, practical language
+brew "rust"
 # Software for mathematics, science, and engineering
 brew "scipy"
 # Substitute for classic 'make' tool with autoconf/automake functionality
@@ -235,6 +244,9 @@ brew "xml2"
 brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
+# GitHub CLI
+brew "github/gh/gh"
+cask "java"
 cask "mactex"
 cask "qlcolorcode"
 cask "qlimagesize"
