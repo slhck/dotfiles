@@ -2,12 +2,17 @@
 
 nvm install node && \
     npm install -g \
-    jsonlint \
+    auto-changelog \
+    eslint \
+    git-changelog \
+    grunt \
+    js-beautify \
     jshint \
     jslint \
-    grunt \
+    jsonlint \
+    npm-check-updates \
+    prettier \
     state-machine-cat \
-    write-good \
+    tldr \
     web-ext \
-    eslint \
-    auto-changelog
+    yarn

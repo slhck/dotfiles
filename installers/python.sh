@@ -1,6 +1,6 @@
 # Pyenv and Python pips
 
-pythonVersion="3.7.5"
+pythonVersion="3.8.1"
 
 if ! command -v pyenv >/dev/null; then
     echo "pyenv not installed!"
@@ -15,17 +15,18 @@ if [[ "$(pyenv version-name)" != "$pythonVersion" ]]; then
 fi
 
 pip3 install \
-    gitup \
+    csvkit \
+    dephell \
     flake8 \
-    pyflakes \
-    pylint \
+    gitchangelog \
+    gitup \
+    pandas \
     pandoc \
     pandocfilters \
-    youtube-dl \
-    tqdm \
+    pyflakes \
+    pylint \
     thefuck \
-    csvkit \
-    gitchangelog \
-    pandas \
     tqdm \
-    twine
+    twine \
+    wheel \
+    youtube-dl
