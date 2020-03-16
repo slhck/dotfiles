@@ -170,6 +170,7 @@ alias -g S='|sort'
 ## Git
 alias gcam='git add -A && git commit -m "update" && git pull --rebase && git push --all'
 alias gups='git submodule update --rebase --remote --init --recursive'
+alias gcane='git add -A && git commit --amend --no-edit'
 alias gpa='git push --all && git push --tags'
 alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
 
