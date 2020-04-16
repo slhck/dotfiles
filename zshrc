@@ -266,6 +266,11 @@ compress-pdf() {
   -f "$1"
 }
 
+doc-to-json() {
+  # convert a document to a valid JSON string in GFM format
+  pandoc "$1" -t gfm-raw_html --wrap=preserve -o - | python -c 'import json; import sys; print(json.dumps(sys.stdin.read()))'
+}
+
 
 # -----------------------------------------------
 #  Color for ls
