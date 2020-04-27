@@ -4,7 +4,6 @@ nvm install node && \
     npm install -g \
     auto-changelog \
     eslint \
-    git-changelog \
     grunt \
     js-beautify \
     jshint \

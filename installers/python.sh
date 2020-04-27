@@ -15,6 +15,7 @@ if [[ "$(pyenv version-name)" != "$pythonVersion" ]]; then
 fi
 
 pip3 install \
+    black \
     csvkit \
     dephell \
     flake8 \
@@ -25,6 +26,7 @@ pip3 install \
     pandocfilters \
     pyflakes \
     pylint \
+    pystache \
     thefuck \
     tqdm \
     twine \
