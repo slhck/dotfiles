@@ -22,7 +22,7 @@ sudo apt install --assume-yes \
     mosh \
     p7zip \
     p7zip-full \
-    pngquant
+    pngquant \
     pv \
     python-dev \
     python-numpy \

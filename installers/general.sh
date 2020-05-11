@@ -2,6 +2,8 @@
 # General installation stuff
 set -e
 
+cd "$(dirname "$0")"
+
 # apt or Homebrew
 if [[ "$(uname)" == "Darwin" ]]; then
     ./brew.sh
