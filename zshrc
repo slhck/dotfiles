@@ -179,7 +179,7 @@ alias git-update-fork='git fetch upstream && git checkout master && git merge up
 # -----------------------------------------------
 
 # check the weather
-weather() { curl wttr.in }
+weather() { curl v2.wttr.in }
 
 # upload a file to transfer.sh
 transfer() { if [ $# -eq 0 ]; then echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi
