@@ -53,8 +53,12 @@ bindkey '^b' vi-backward-word
 # Load zsh modules
 # -----------------------------------------------
 
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+
 # compinit initializes various advanced completions for zsh
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit
 
 # zmv is a batch file rename tool; e.g. zmv '(*).text' '$1.txt'
 autoload zmv
