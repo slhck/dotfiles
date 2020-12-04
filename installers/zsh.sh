@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # ZSH-relevant things
 
 if [ -n "$ZSH_VERSION" ]; then
