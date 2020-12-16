@@ -312,8 +312,12 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 # -----------------------------------------------
 # NVM
 # -----------------------------------------------
+
+# broken, see: https://github.com/nvm-sh/nvm/issues/2362#issuecomment-746108881
+setopt no_aliases
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+setopt aliases
 
 # -----------------------------------------------
 # Homebrew
