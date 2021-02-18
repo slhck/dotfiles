@@ -33,7 +33,7 @@ SPACESHIP_DIR_TRUNC=0
 COMPLETION_WAITING_DOTS="true"
 
 # Plugins to load
-plugins=(git git-extras github ruby osx gem svn docker docker-compose vagrant virtualenv python web-search)
+plugins=(git git-extras github ruby osx gem svn docker docker-compose vagrant virtualenv python web-search zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
