@@ -259,6 +259,8 @@ compress-pdf() {
   # /printer selects output similar to the Acrobat Distiller "Print Optimized" setting.
   # /prepress selects output similar to Acrobat Distiller "Prepress Optimized" setting.
   # /default selects output intended to be useful across a wide variety of uses, possibly at the expense of a larger output file.
+  #
+  # You can add this as a macOS Automator action, see "workflows/Compress PDF"
   if [ "$#" -ne 3 ]; then
     echo "Usage: compress-pdf <input> <preset> <output>"
     echo ""
