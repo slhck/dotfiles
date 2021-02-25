@@ -10,7 +10,8 @@ if [ -n "$ZSH_VERSION" ]; then
     perl -pi -e 's/blinks/spaceship/' ~/.zshrc
 
     # Syntax highlighting
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${zshRoot}/plugins/zsh-syntax-highlighting"
+    # Deactivated for performance reasons
+    # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${zshRoot}/plugins/zsh-syntax-highlighting"
 
     # Auto suggestions
     git clone https://github.com/zsh-users/zsh-autosuggestions "${zshRoot}/plugins/zsh-autosuggestions"
