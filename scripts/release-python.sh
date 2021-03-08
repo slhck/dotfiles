@@ -115,7 +115,7 @@ shift $((OPTIND-1))
 if [[ $# -eq 1 ]]; then
 	projectDir=$(realpath "$1")
 else
-	projectDir="$(dirname "$0")"
+	projectDir=$(pwd)
 fi
 
 cd "$projectDir" || exit 1
