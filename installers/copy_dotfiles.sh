@@ -2,7 +2,7 @@
 #
 # Create config files
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 
 cp -v ../gitconfig ~/.gitconfig
 cp -v ../gitignore ~/.gitignore
