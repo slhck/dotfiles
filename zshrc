@@ -5,7 +5,10 @@
 EDITOR=vim
 PAGER=less
 COLORTERM=yes
-PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin
+
+PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH
+# de-dupe path, https://unix.stackexchange.com/a/149054/5893
+PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
 
 HISTFILE=~/.zshhistory
 HISTSIZE=10000
