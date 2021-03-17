@@ -27,55 +27,55 @@ NOTICE_FLAG="❯"
 # FUNCTIONS
 
 _warn() {
-	echo -e "$YELLOW$WARNING_FLAG $1$RESET"
+  echo -e "$YELLOW$WARNING_FLAG $1$RESET"
 }
 
 _info() {
-	echo -e "$WHITE$NOTICE_FLAG $1$RESET"
+  echo -e "$WHITE$NOTICE_FLAG $1$RESET"
 }
 
 _question() {
-	echo -e "$GREEN$QUESTION_FLAG  $1$RESET"
+  echo -e "$GREEN$QUESTION_FLAG  $1$RESET"
 }
 
 _error() {
-	echo -e "$RED$ERROR_FLAG $1$RESET"
+  echo -e "$RED$ERROR_FLAG $1$RESET"
 }
 
 _check_packages() {
-	for package in pypandoc twine wheel gitchangelog; do
-		python -c "import ${package}" || \
-			{ _error "${package} is not installed. Install via pip!"; exit 1; }
-	done
+  for package in pypandoc twine wheel gitchangelog; do
+    python -c "import ${package}" || \
+      { _error "${package} is not installed. Install via pip!"; exit 1; }
+  done
 }
 
 _check_repo() {
-	[[ -d "$1/.git" ]] || \
-		{ _error "Project directory $projectDir is not a Git repo!"; exit 1; }
+  [[ -d "$1/.git" ]] || \
+    { _error "Project directory $projectDir is not a Git repo!"; exit 1; }
 }
 
 _check_repo_status() {
-	[[ -z $(git status -s) ]] || \
-		{ _error "repo is not clean, commit everything first!"; exit 1; }
+  [[ -z $(git status -s) ]] || \
+    { _error "repo is not clean, commit everything first!"; exit 1; }
 
-	# https://stackoverflow.com/a/25109122/435093
-	_info "Fetching remote changes ..."
-	git fetch --all
-	[[ "$(git rev-parse HEAD)" == "$(git rev-parse @{u})" ]] || \
-		{ _error "Git repo not up to date! Pull/merge first."; exit 1; }
+  # https://stackoverflow.com/a/25109122/435093
+  _info "Fetching remote changes ..."
+  git fetch --all
+  [[ "$(git rev-parse HEAD)" == "$(git rev-parse @{u})" ]] || \
+    { _error "Git repo not up to date! Pull/merge first."; exit 1; }
 }
 
 _read_version() {
-	grep "__version__ =" "$1" | head -n 1 | cut -d '=' -f 2 | tr -d '"' | tr -d "'" | tr -d ' '
+  grep "__version__ =" "$1" | head -n 1 | cut -d '=' -f 2 | tr -d '"' | tr -d "'" | tr -d ' '
 }
 
 _incrementVersion() {
-	# https://stackoverflow.com/a/64390598/435093
-	local array=($(echo "$1" | tr . '\n'))
-	array[$2]=$((array[$2]+1))
-	if [ $2 -lt 2 ]; then array[2]=0; fi
-	if [ $2 -lt 1 ]; then array[1]=0; fi
-	echo "$(local IFS=. ; echo "${array[*]}")"
+  # https://stackoverflow.com/a/64390598/435093
+  local array=($(echo "$1" | tr . '\n'))
+  array[$2]=$((array[$2]+1))
+  if [ $2 -lt 2 ]; then array[2]=0; fi
+  if [ $2 -lt 1 ]; then array[1]=0; fi
+  echo "$(local IFS=. ; echo "${array[*]}")"
 }
 
 # ==============================================================================
@@ -92,9 +92,10 @@ usage() {
   echo ""
   echo "Release Python scripts"
   echo ""
-  echo "-h		show help"
-  echo "-v		verbose"
-  echo "-n		do not push or publish to PyPI"
+  echo "-h	show help"
+  echo "-v	verbose"
+  echo "-n	do not push or publish to PyPI"
+  echo "-t	release type (patch, minor, major)"
 }
 
 while getopts "h?vfnt:" opt; do
@@ -105,7 +106,7 @@ while getopts "h?vfnt:" opt; do
     v)  verbose=1;;
     f)  force=1;;
     n)  noPush=1;;
-	t)  releaseType="$OPTARG";;
+    t)  releaseType="$OPTARG";;
     esac
 done
 
@@ -113,9 +114,9 @@ shift $((OPTIND-1))
 [ "${1:-}" = "--" ] && shift
 
 if [[ $# -eq 1 ]]; then
-	projectDir=$(realpath "$1")
+  projectDir=$(realpath "$1")
 else
-	projectDir=$(pwd)
+  projectDir=$(pwd)
 fi
 
 cd "$projectDir" || exit 1
@@ -129,7 +130,7 @@ _check_repo "$projectDir"
 versionFile=$(grep -l --include \*.py -r '__version__ =' "$packageName" | head -n 1)
 
 if [[ -z $versionFile ]]; then
-	_error "No version file found!"; exit 1
+  _error "No version file found!"; exit 1
 fi
 
 latestHash=$(git log --pretty=format:'%h' -n 1)
@@ -146,29 +147,29 @@ echo "Current version:   $currentVersion"
 # RELEASE VERSION
 
 if [[ -z $releaseType ]]; then
-	echo
-	_question "Which type of release?"
-	PS3="Release type: "
-	select releaseType in major minor patch; do break; done
+  echo
+  _question "Which type of release?"
+  PS3="Release type: "
+  select releaseType in major minor patch; do break; done
 else
-	_info "Release type chosen: $releaseType"
+  _info "Release type chosen: $releaseType"
 fi
 
 separators=$(tr -dc '.' <<< "$currentVersion" | wc -c)
 if [[ $separators -eq 1 ]]; then
-	if [[ $releaseType = "patch" ]]; then position=1;
-	elif [[ $releaseType = "minor" ]]; then position=1;
-	elif [[ $releaseType = "major" ]]; then position=0;
-	else _error "Wrong release type!"; exit 1;
-	fi
+  if [[ $releaseType = "patch" ]]; then position=1;
+  elif [[ $releaseType = "minor" ]]; then position=1;
+  elif [[ $releaseType = "major" ]]; then position=0;
+  else _error "Wrong release type!"; exit 1;
+  fi
 elif [[ $separators -eq 2 ]]; then
-	if [[ $releaseType = "patch" ]]; then position=2;
-	elif [[ $releaseType = "minor" ]]; then position=1;
-	elif [[ $releaseType = "major" ]]; then position=0;
-	else _error "Wrong release type!"; exit 1;
-	fi
+  if [[ $releaseType = "patch" ]]; then position=2;
+  elif [[ $releaseType = "minor" ]]; then position=1;
+  elif [[ $releaseType = "major" ]]; then position=0;
+  else _error "Wrong release type!"; exit 1;
+  fi
 else
-	_warn "Could not parse separators from version: $currentVersion"; exit 1
+  _warn "Could not parse separators from version: $currentVersion"; exit 1
 fi
 
 newVersion=$(_incrementVersion "$currentVersion" "$position")
@@ -179,10 +180,10 @@ _info "Setting new version to: $newVersion"
 # THE RELEASE ITSELF
 
 _restore() {
-	_warn "To restore, run something like:"
-	echo "cd '$projectDir'"
-	echo "git reset --hard origin/master"
-	echo "git tag -d v$newVersion"
+  _warn "To restore, run something like:"
+  echo "cd '$projectDir'"
+  echo "git reset --hard origin/master"
+  echo "git tag -d v$newVersion"
 }
 
 # give the user some info in case of errors
@@ -205,8 +206,8 @@ git commit --amend --no-edit
 git tag -a -f -m "Tag version ${newVersion}" "v$newVersion"
 
 if [[ $noPush -eq 1 ]]; then
-	_warn "Skipping push/publish!"
-	exit
+  _warn "Skipping push/publish!"
+  exit
 fi
 
 # Push to Git
