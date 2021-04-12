@@ -12,10 +12,18 @@ tap "randy3k/r"
 tap "slhck/moreutils"
 # Search tool like grep, but optimized for programmers
 brew "ack"
-# GNU compiler collection
-brew "gcc"
+# Software library to render fonts
+brew "freetype"
 # Tool Command Language
 brew "tcl-tk"
+# Vector graphics library with cross-device output support
+brew "cairo"
+# Toolkit for image loading and pixel buffer manipulation
+brew "gdk-pixbuf"
+# Library to render SVG files using Cairo
+brew "librsvg"
+# GNU compiler collection
+brew "gcc"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.8"
 # Shell extension to jump to frequently used directories
@@ -23,13 +31,9 @@ brew "autojump"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Full-featured MP4 format and MPEG DASH library and tools
-brew "bento4"
+brew "bento4", link: false
 # Collection of portable C++ source libraries
 brew "boost"
-# Software library to render fonts
-brew "freetype"
-# Vector graphics library with cross-device output support
-brew "cairo"
 # Rich and complete approach to parallelism in C++
 brew "tbb"
 # Suite of Sparse Matrix Software
@@ -90,12 +94,8 @@ brew "fzf"
 brew "gawk"
 # GNU debugger
 brew "gdb"
-# Toolkit for image loading and pixel buffer manipulation
-brew "gdk-pixbuf"
 # GitHub command-line tool
 brew "gh"
-# Highest-quality GIF encoder based on pngquant
-brew "gifski"
 # Distributed revision control system
 brew "git"
 # Small git utilities
@@ -116,8 +116,6 @@ brew "gnu-tar"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
-# Library to render SVG files using Cairo
-brew "librsvg"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
 # Colorize logfiles and command output
@@ -176,10 +174,6 @@ brew "mitmproxy"
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
-# Download YouTube videos from the command-line
-brew "youtube-dl"
-# Media player based on MPlayer and mplayer2
-brew "mpv"
 # Open source relational database management system
 brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
@@ -192,8 +186,6 @@ brew "nmap"
 brew "numpy"
 # High-level interpreted language for numerical computing
 brew "octave"
-# Open source computer vision library
-brew "opencv"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
 brew "openvpn"
 # Swiss-army knife of markup format conversion
@@ -280,6 +272,8 @@ brew "wget"
 brew "wireguard-tools"
 # Makes XML and HTML more amenable to classic UNIX text tools
 brew "xml2"
+# Download YouTube videos from the command-line
+brew "youtube-dl"
 # General-purpose lossless data-compression library
 brew "zlib"
 # UNIX shell (command interpreter)
@@ -287,7 +281,7 @@ brew "zsh"
 # Lock file during command
 brew "discoteq/discoteq/flock"
 # Collection of tools that nobody wrote when UNIX was young
-brew "slhck/moreutils/moreutils", args: ["without-parallel"]
+brew "slhck/moreutils/moreutils", args: ["without-parallel"], link: false
 # Always on top window preview
 cask "amitv87-pip"
 cask "java"
