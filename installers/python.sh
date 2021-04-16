@@ -1,6 +1,6 @@
 # Pyenv and Python pips
 
-pythonVersion="3.8.1"
+pythonVersion="3.9.0"
 
 if ! command -v pyenv >/dev/null; then
     echo "pyenv not installed!"
@@ -18,6 +18,7 @@ pip3 install \
     black \
     csvkit \
     dephell \
+    docx2pdf \
     flake8 \
     gitchangelog \
     gitup \
