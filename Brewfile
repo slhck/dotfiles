@@ -29,6 +29,8 @@ brew "python@3.8"
 brew "autojump"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
 # Full-featured MP4 format and MPEG DASH library and tools
 brew "bento4", link: false
 # Collection of portable C++ source libraries

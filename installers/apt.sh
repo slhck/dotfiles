@@ -39,11 +39,39 @@ sudo apt install --assume-yes \
     zlib1g-dev \
     zsh
 
+# other, non-apt tools
+
+export DEBIAN_FRONTEND=noninteractive
+mkdir -p "$HOME/.local/bin"
+
 # fd
-fdUrl=$(curl --silent "https://api.github.com/repos/sharkdp/fd/releases/latest" | jq -r '.assets[] | .browser_download_url' | grep 'amd64' | grep -v musl)
-wget -O fd.deb "$fdUrl"
+curl --silent "https://api.github.com/repos/sharkdp/fd/releases/latest" | \
+    jq -r '.assets[] | .browser_download_url' | \
+    grep 'amd64' | \
+    grep -v musl | \
+    xargs -L 1 wget -O fd.deb
 sudo dpkg -i fd.deb
-rm -rf fd.deb
+rm -f fd.deb
+[[ -f /usr/bin/fdfind ]] && ln -s /usr/bin/fdfind "$HOME/.local/bin/fd"
+
+# bat
+curl --silent "https://api.github.com/repos/sharkdp/fd/releases/latest" | \
+    jq -r '.assets[] | .browser_download_url' | \
+    grep 'amd64' | \
+    grep -v musl | \
+    xargs -L 1 wget -O bat.deb
+sudo dpkg -i bat.deb
+rm -f bat.deb
+[[ -f /usr/bin/batcat ]] && ln -s /usr/bin/batcat "$HOME/.local/bin/bat"
+
+# hyperfine
+curl --silent "https://api.github.com/repos/sharkdp/hyperfine/releases/latest" | \
+    jq -r '.assets[] | .browser_download_url' | \
+    grep 'amd64' | \
+    grep -v musl | \
+    xargs -L 1 wget -O hyperfine.deb
+sudo dpkg -i hyperfine.deb
+rm -f hyperfine.deb
 
 # Linuxbrew is optional
 # sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
