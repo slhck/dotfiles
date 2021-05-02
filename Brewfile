@@ -1,4 +1,3 @@
-tap "caskroom/cask"
 tap "discoteq/discoteq"
 tap "github/gh"
 tap "homebrew-ffmpeg/ffmpeg"
@@ -72,6 +71,8 @@ brew "ghostscript"
 brew "exiftool"
 # EXIF and IPTC metadata manipulation library and tools
 brew "exiv2"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Validating, recursive, caching DNS resolver
@@ -214,8 +215,6 @@ brew "pyenv"
 brew "pypy"
 # Python bindings for v6 of Qt
 brew "pyqt"
-# Interpreted, interactive, object-oriented programming language
-brew "python@2", link: false
 # Software environment for statistical computing
 brew "r"
 # Install various Ruby versions and implementations
@@ -262,8 +261,6 @@ brew "tree"
 brew "udunits"
 # File synchronization tool for OSX
 brew "unison"
-# Extract, view, and test RAR archives
-brew "unrar"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
 # Internet file retriever
@@ -280,8 +277,6 @@ brew "zlib"
 brew "zsh"
 # Lock file during command
 brew "discoteq/discoteq/flock"
-# Collection of tools that nobody wrote when UNIX was young
-brew "slhck/moreutils/moreutils", args: ["without-parallel"], link: false
 # Always on top window preview
 cask "amitv87-pip"
 cask "java"

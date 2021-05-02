@@ -24,11 +24,6 @@ sudo apt install --assume-yes \
     p7zip-full \
     pngquant \
     pv \
-    python-dev \
-    python-numpy \
-    python-pip \
-    python-scipy \
-    python-setuptools \
     python3-dev \
     python3-numpy \
     python3-pip \
@@ -43,6 +38,12 @@ sudo apt install --assume-yes \
     xclip \
     zlib1g-dev \
     zsh
+
+# fd
+fdUrl=$(curl --silent "https://api.github.com/repos/sharkdp/fd/releases/latest" | jq -r '.assets[] | .browser_download_url' | grep 'amd64' | grep -v musl)
+wget -O fd.deb "$fdUrl"
+sudo dpkg -i fd.deb
+rm -rf fd.deb
 
 # Linuxbrew is optional
 # sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
