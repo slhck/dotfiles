@@ -29,6 +29,7 @@ sudo apt install --assume-yes \
     python3-pip \
     python3-scipy \
     python3-setuptools \
+    pwgen \
     rar \
     tree \
     ufw \
