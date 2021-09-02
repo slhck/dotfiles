@@ -56,7 +56,7 @@ rm -f fd.deb
 [[ -f /usr/bin/fdfind ]] && ln -s /usr/bin/fdfind "$HOME/.local/bin/fd"
 
 # bat
-curl --silent "https://api.github.com/repos/sharkdp/fd/releases/latest" | \
+curl --silent "https://api.github.com/repos/sharkdp/bat/releases/latest" | \
     jq -r '.assets[] | .browser_download_url' | \
     grep 'amd64' | \
     grep -v musl | \
