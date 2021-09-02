@@ -19,6 +19,7 @@ sudo apt install --assume-yes \
     libreadline-dev \
     libsqlite3-dev \
     libssl-dev \
+    miller \
     mosh \
     p7zip \
     p7zip-full \
@@ -35,6 +36,7 @@ sudo apt install --assume-yes \
     ufw \
     unrar \
     vim \
+    visidata \
     wget \
     xclip \
     zlib1g-dev \
