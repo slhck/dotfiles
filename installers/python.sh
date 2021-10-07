@@ -17,7 +17,6 @@ fi
 pip3 install \
     black \
     csvkit \
-    dephell \
     docx2pdf \
     flake8 \
     gitchangelog \
@@ -27,7 +26,7 @@ pip3 install \
     pandocfilters \
     pyflakes \
     pylint \
-    pystache \
+    git+https://github.com/sarnold/pystache \
     thefuck \
     tqdm \
     twine \
