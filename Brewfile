@@ -8,33 +8,57 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
 tap "randy3k/r"
+tap "saulpw/vd"
 tap "slhck/moreutils"
+tap "teamookla/speedtest"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # Software library to render fonts
 brew "freetype"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Tool Command Language
 brew "tcl-tk"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # Toolkit for image loading and pixel buffer manipulation
 brew "gdk-pixbuf"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Framework for layout and rendering of i18n text
+brew "pango"
 # Library to render SVG files using Cairo
 brew "librsvg"
+# Icons for the GNOME project
+brew "adwaita-icon-theme"
+# Tool for reverse engineering 3rd party, closed, binary Android apps
+brew "apktool"
 # GNU compiler collection
 brew "gcc"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.8"
+# Configuration editing tool and API
+brew "augeas"
 # Shell extension to jump to frequently used directories
 brew "autojump"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Google's own build tool
+brew "bazel"
 # Full-featured MP4 format and MPEG DASH library and tools
-brew "bento4", link: false
+brew "bento4"
 # Collection of portable C++ source libraries
 brew "boost"
+# Freely available high-quality data compressor
+brew "bzip2"
+# Multimedia framework for research and academic purposes
+brew "gpac", link: false
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# Free, GPL licensed closed caption tool
+brew "ccextractor"
 # Rich and complete approach to parallelism in C++
 brew "tbb"
 # Suite of Sparse Matrix Software
@@ -43,6 +67,8 @@ brew "suite-sparse"
 brew "ceres-solver"
 # Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
+# Cross-platform make
+brew "cmake"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
 # Utility that creates projects from templates
@@ -75,20 +101,24 @@ brew "exiftool"
 brew "exiv2"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# GNU Ubiquitous Intelligent Language for Extensions
+brew "guile"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
+# HTTP/2 C Library
+brew "nghttp2"
 # Validating, recursive, caching DNS resolver
 brew "unbound"
 # C library for files containing sampled sound
 brew "libsndfile"
-# OCR (Optical Character Recognition) engine
-brew "tesseract"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
+# C routines to compute the Discrete Fourier Transform
+brew "fftw"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
+# Real-time software synthesizer based on the SoundFont 2 specs
+brew "fluid-synth"
 # Console program to recover files based on their headers and footers
 brew "foremost"
 # Command-line fuzzy finder written in Go
@@ -115,8 +145,12 @@ brew "gitup"
 brew "gnu-sed"
 # GNU version of the tar archiving utility
 brew "gnu-tar"
+# Library for USB device access
+brew "libusb"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Cross-platform application and UI framework
+brew "qt@5"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
 # Graph visualization software from AT&T and Bell Labs
@@ -127,8 +161,12 @@ brew "grc"
 brew "grep"
 # Make JSON greppable
 brew "gron"
+# GSettings schemas for desktop components
+brew "gsettings-desktop-schemas"
 # GUI toolkit
 brew "gtk+"
+# Toolkit for creating graphical user interfaces
+brew "gtk+3"
 # File format designed to store large amounts of data
 brew "hdf5"
 # Interactive parallel SSH client
@@ -141,14 +179,22 @@ brew "hyperfine"
 brew "id3lib"
 # ID3 editing tool
 brew "id3tool"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
+# Image loading and rendering library
+brew "imlib2"
+# Audio Connection Kit
+brew "jack"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Tool to move from `docker-compose` to Kubernetes
 brew "kompose"
 # Network authentication protocol
 brew "krb5"
+# DNS library written in C
+brew "ldns"
 # Pager program similar to more
 brew "less"
 # Input filter for the pager less
@@ -157,12 +203,20 @@ brew "lesspipe"
 brew "lftp"
 # Access DVDs as block devices without the decryption
 brew "libdvdcss"
+# C library implementing the SSH2 protocol
+brew "libssh2"
 # C library of Git core methods that is re-entrant and linkable
 brew "libgit2"
+# Portable library for network traffic capture
+brew "libpcap"
+# Postgres C API library
+brew "libpq"
 # Perceptual video quality assessment based on multi-method fusion
-brew "libvmaf", link: false
+brew "libvmaf"
 # Convert nroff man pages to HTML
 brew "man2html"
+# Development kit for the Java programming language
+brew "openjdk"
 # Java-based project management
 brew "maven"
 # Unified display of technical and tag data for audio/video
@@ -171,30 +225,46 @@ brew "media-info"
 brew "mercurial"
 # Fast and user friendly build system
 brew "meson"
+# Like sed, awk, cut, join & sort for name-indexed data such as CSV
+brew "miller"
 # Intercept, modify, replay, save HTTP/S traffic
 brew "mitmproxy"
+# Cross-platform application and UI framework
+brew "qt"
+# Matroska media files manipulation tools
+brew "mkvtoolnix"
 # Remote terminal application
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
+# Download YouTube videos from the command-line
+brew "youtube-dl"
+# Media player based on MPlayer and mplayer2
+brew "mpv"
 # Open source relational database management system
 brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
 brew "nasm"
 # NCurses Disk Usage
 brew "ncdu"
+# HTTP and WebDAV client library with a C interface
+brew "neon"
+# Libraries and data formats for array-oriented scientific data
+brew "netcdf"
 # Port scanning utility for large networks
 brew "nmap"
 # Package for scientific computing with Python
 brew "numpy"
-# High-level interpreted language for numerical computing
-brew "octave"
+# Open source computer vision library
+brew "opencv"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
 brew "openvpn"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Shell command parallelization utility
 brew "parallel"
+# C++ network sniffing, packet parsing and crafting framework
+brew "pcapplusplus"
 # Highly capable, feature-rich programming language
 brew "perl"
 # Python dependency management tool
@@ -211,8 +281,12 @@ brew "pssh"
 brew "pv"
 # Password generator
 brew "pwgen"
+# Seamless operability between C++11 and Python
+brew "pybind11"
 # Python version management
 brew "pyenv"
+# GNOME Python bindings (based on GObject Introspection)
+brew "pygobject3"
 # Highly performant implementation of Python 2 in Python
 brew "pypy"
 # Python bindings for v6 of Qt
@@ -237,8 +311,14 @@ brew "scipy"
 brew "scons"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
+# Library for using TrueType fonts in SDL applications
+brew "sdl2_ttf"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# Tool to create Python bindings for C and C++ libraries
+brew "sip"
+# SIP User-Agent library
+brew "sofia-sip"
 # SOund eXchange: universal sound sample translator
 brew "sox"
 # Add a public key to a remote machine's authorized_keys file
@@ -247,12 +327,16 @@ brew "ssh-copy-id", link: true
 brew "streamlink"
 # Version control system designed to be a better CVS
 brew "subversion"
+# Nonlinear and differential/algebraic equations solver
+brew "sundials"
 # User interface to the TELNET protocol
 brew "telnet"
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
 # Programmatically correct mistyped console commands
 brew "thefuck"
+# Terminal image and video viewer
+brew "timg"
 # Simplified and community-driven man pages
 brew "tldr"
 # Terminal multiplexer
@@ -271,21 +355,28 @@ brew "wget"
 brew "wireguard-tools"
 # Makes XML and HTML more amenable to classic UNIX text tools
 brew "xml2"
-# Download YouTube videos from the command-line
-brew "youtube-dl"
 # General-purpose lossless data-compression library
 brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
 # Lock file during command
 brew "discoteq/discoteq/flock"
+# Terminal utility for exploring and arranging tabular data
+brew "saulpw/vd/visidata"
+# Ookla Speedtest
+brew "teamookla/speedtest/speedtest"
 # Always on top window preview
 cask "amitv87-pip"
+# Command-line display management utility
+cask "cscreen"
 cask "java"
 # Password manager app
 cask "keepassxc"
 # Full TeX Live distribution with GUI applications
 cask "mactex"
+# Adjustable weather viewing application
+cask "meteorologist"
+cask "qctools"
 # QuickLook plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
 # Display image info and preview unsupported formats in QuickLook
