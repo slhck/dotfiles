@@ -395,6 +395,8 @@ cask "discord"
 cask "docker"
 # Client for the Dropbox cloud storage service
 cask "dropbox"
+# Matrix collaboration client
+cask "element"
 cask "font-glegoo"
 cask "font-lato"
 cask "font-merriweather"
@@ -404,16 +406,24 @@ cask "font-source-code-pro"
 cask "font-source-sans-pro"
 # Client for the Google Drive storage service
 cask "google-drive"
+# Hex editor focussing on speed
+cask "hex-fiend"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Personal data manager focusing on security
 cask "keepassx"
 # Password manager app
 cask "keepassxc"
+# File archiver
+cask "keka"
 # Full TeX Live distribution with GUI applications
 cask "mactex"
 # Adjustable weather viewing application
 cask "meteorologist"
+# Open-source software for live streaming and screen recording
+cask "obs"
+# Collaboration platform for API development
+cask "postman"
 cask "qctools"
 # QuickLook plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
@@ -423,9 +433,33 @@ cask "qlimagesize"
 cask "qlmarkdown"
 cask "qlstephen"
 cask "quicklook-json"
+# Environment for statistical computing and graphics
+cask "r"
+# Screencasting software
+cask "recordit"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
+# Official desktop client for Rocket.Chat
+cask "rocket-chat"
+# Data science software focusing on R and Python
+cask "rstudio"
+# Instant messaging application focusing on security
+cask "signal"
+# Team communication and collaboration software
+cask "slack"
+# Remote access and connectivity software focused on security
+cask "teamviewer"
+# Messaging app with a focus on speed and security
+cask "telegram"
+# Unpacks archive files
+cask "the-unarchiver"
+# Open-source code editor
+cask "visual-studio-code"
 # Multimedia player
 cask "vlc"
 cask "webpquicklook"
+# Desktop client for WhatsApp
+cask "whatsapp"
 cask "yemuzip"
+# Video communication and virtual meeting platform
+cask "zoom"
