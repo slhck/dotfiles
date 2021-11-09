@@ -406,6 +406,10 @@ cask "font-source-code-pro"
 cask "font-source-sans-pro"
 # Client for the Google Drive storage service
 cask "google-drive"
+# Graphically shows disk usage within a file system
+cask "grandperspective"
+# Open-source video transcoder
+cask "handbrake"
 # Hex editor focussing on speed
 cask "hex-fiend"
 # Terminal emulator as alternative to Apple's Terminal app
@@ -416,6 +420,10 @@ cask "keepassx"
 cask "keepassxc"
 # File archiver
 cask "keka"
+# Helper application for the Keka file archiver
+cask "kekaexternalhelper"
+# Open-source keystroke visualizer
+cask "keycastr"
 # Full TeX Live distribution with GUI applications
 cask "mactex"
 # Adjustable weather viewing application
@@ -447,6 +455,8 @@ cask "rstudio"
 cask "signal"
 # Team communication and collaboration software
 cask "slack"
+# Music streaming service
+cask "spotify"
 # Remote access and connectivity software focused on security
 cask "teamviewer"
 # Messaging app with a focus on speed and security
