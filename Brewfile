@@ -2,7 +2,8 @@ tap "discoteq/discoteq"
 tap "github/gh"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
-tap "homebrew/cask", "https://github.com/caskroom/homebrew-cask"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
@@ -36,12 +37,6 @@ brew "librsvg"
 brew "adwaita-icon-theme"
 # Perceptual video quality assessment based on multi-method fusion
 brew "libvmaf"
-# Tool for reverse engineering 3rd party, closed, binary Android apps
-brew "apktool"
-# GNU compiler collection
-brew "gcc"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.8"
 # Configuration editing tool and API
 brew "augeas"
 # Shell extension to jump to frequently used directories
@@ -52,8 +47,6 @@ brew "bash"
 brew "bat"
 # Google's own build tool
 brew "bazel"
-# Full-featured MP4 format and MPEG DASH library and tools
-brew "bento4"
 # Interface bandwidth monitor
 brew "bmon"
 # Collection of portable C++ source libraries
@@ -61,11 +54,13 @@ brew "boost"
 # Freely available high-quality data compressor
 brew "bzip2"
 # Multimedia framework for research and academic purposes
-brew "gpac", link: false
+brew "gpac"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Free, GPL licensed closed caption tool
 brew "ccextractor"
+# GNU compiler collection
+brew "gcc"
 # Suite of Sparse Matrix Software
 brew "suite-sparse"
 # Rich and complete approach to parallelism in C++
@@ -85,7 +80,7 @@ brew "coreutils"
 # Get, unpack, build, and install modules from CPAN
 brew "cpanminus"
 # Update dynamic DNS entries
-brew "ddclient", restart_service: true
+brew "ddclient"
 # GNU data recovery tool
 brew "ddrescue"
 # XML vocabulary to create presentation-neutral documents
@@ -102,8 +97,6 @@ brew "doxygen"
 brew "duti"
 # Utilities for the ext2, ext3, and ext4 file systems
 brew "e2fsprogs"
-# Interpreter for PostScript and PDF
-brew "ghostscript"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
 # EXIF and IPTC metadata manipulation library and tools
@@ -134,10 +127,10 @@ brew "foremost"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
-# GNU debugger
-brew "gdb"
 # GitHub command-line tool
 brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Distributed revision control system
 brew "git"
 # Small git utilities
@@ -156,8 +149,6 @@ brew "gnu-sed"
 brew "gnu-tar"
 # Library for USB device access
 brew "libusb"
-# HTTP/2 C Library
-brew "nghttp2"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -210,8 +201,6 @@ brew "less"
 brew "lesspipe"
 # Sophisticated file transfer program
 brew "lftp"
-# Access DVDs as block devices without the decryption
-brew "libdvdcss"
 # C library implementing the SSH2 protocol
 brew "libssh2"
 # C library of Git core methods that is re-entrant and linkable
@@ -240,8 +229,6 @@ brew "meson"
 brew "miller"
 # Intercept, modify, replay, save HTTP/S traffic
 brew "mitmproxy"
-# Cross-platform application and UI framework
-brew "qt"
 # Matroska media files manipulation tools
 brew "mkvtoolnix"
 # Remote terminal application
@@ -266,12 +253,14 @@ brew "neon"
 brew "netcdf"
 # Net top tool grouping bandwidth per process
 brew "nethogs"
+# HTTP/2 C Library
+brew "nghttp2"
 # Port scanning utility for large networks
 brew "nmap"
 # Package for scientific computing with Python
 brew "numpy"
-# Open source computer vision library
-brew "opencv"
+# Manage multiple Node.js versions
+brew "nvm"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
@@ -304,10 +293,10 @@ brew "pybind11"
 brew "pyenv"
 # GNOME Python bindings (based on GObject Introspection)
 brew "pygobject3"
-# Highly performant implementation of Python 2 in Python
-brew "pypy"
 # Python bindings for v6 of Qt
 brew "pyqt"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.8"
 # Port to Qt of the Scintilla editing component
 brew "qscintilla2"
 # Software environment for statistical computing
@@ -382,17 +371,43 @@ brew "yt-dlp"
 brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
-# Lock file during command
-brew "discoteq/discoteq/flock"
 # Terminal utility for exploring and arranging tabular data
 brew "saulpw/vd/visidata"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
+# Application launcher and productivity software
+cask "alfred"
 # Always on top window preview
 cask "amitv87-pip"
+# Multi-track audio editor and recorder
+cask "audacity"
+# Edit and manage bibliographies
+cask "bibdesk"
 # Command-line display management utility
 cask "cscreen"
-cask "java"
+# Server and cloud storage browser
+cask "cyberduck"
+# Voice and text chat software
+cask "discord"
+# App to build and share containerized applications and microservices
+cask "docker"
+# Client for the Dropbox cloud storage service
+cask "dropbox"
+cask "font-glegoo"
+cask "font-lato"
+cask "font-merriweather"
+cask "font-oswald"
+cask "font-quicksand"
+cask "font-source-code-pro"
+cask "font-source-sans-pro"
+# Client for the Google Drive storage service
+cask "google-drive"
+# Terminal emulator as alternative to Apple's Terminal app
+cask "iterm2"
+# Personal data manager focusing on security
+cask "keepassx"
 # Password manager app
 cask "keepassxc"
 # Full TeX Live distribution with GUI applications
@@ -408,4 +423,9 @@ cask "qlimagesize"
 cask "qlmarkdown"
 cask "qlstephen"
 cask "quicklook-json"
+# Move and resize windows using keyboard shortcuts or snap areas
+cask "rectangle"
+# Multimedia player
+cask "vlc"
 cask "webpquicklook"
+cask "yemuzip"
