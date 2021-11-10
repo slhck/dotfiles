@@ -418,8 +418,6 @@ cask "iterm2"
 cask "keepassx"
 # Password manager app
 cask "keepassxc"
-# File archiver
-cask "keka"
 # Helper application for the Keka file archiver
 cask "kekaexternalhelper"
 # Open-source keystroke visualizer
@@ -441,7 +439,6 @@ cask "qlcolorcode"
 cask "qlimagesize"
 # QuickLook generator for Markdown files
 cask "qlmarkdown"
-cask "qlstephen"
 cask "quicklook-json"
 # Environment for statistical computing and graphics
 cask "r"
