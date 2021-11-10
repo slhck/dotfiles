@@ -31,4 +31,5 @@ pip3 install \
     tqdm \
     twine \
     wheel \
-    youtube-dl
+    youtube-dl \
+    yt-dlp

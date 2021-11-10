@@ -259,8 +259,6 @@ brew "nghttp2"
 brew "nmap"
 # Package for scientific computing with Python
 brew "numpy"
-# Manage multiple Node.js versions
-brew "nvm"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
@@ -404,6 +402,8 @@ cask "font-oswald"
 cask "font-quicksand"
 cask "font-source-code-pro"
 cask "font-source-sans-pro"
+# Tool to measure the computer system's performance
+cask "geekbench"
 # Client for the Google Drive storage service
 cask "google-drive"
 # Graphically shows disk usage within a file system
@@ -430,6 +430,8 @@ cask "mactex"
 cask "meteorologist"
 # Open-source software for live streaming and screen recording
 cask "obs"
+# Image editor
+cask "paintbrush"
 # Collaboration platform for API development
 cask "postman"
 cask "qctools"
@@ -470,6 +472,8 @@ cask "vlc"
 cask "webpquicklook"
 # Desktop client for WhatsApp
 cask "whatsapp"
+# Network protocol analyzer
+cask "wireshark"
 cask "yemuzip"
 # Video communication and virtual meeting platform
 cask "zoom"
