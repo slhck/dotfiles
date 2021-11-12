@@ -32,4 +32,6 @@ pip3 install \
     twine \
     wheel \
     youtube-dl \
+    visidata \
     yt-dlp
+
