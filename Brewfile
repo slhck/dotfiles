@@ -12,6 +12,7 @@ tap "randy3k/r"
 tap "saulpw/vd"
 tap "slhck/moreutils"
 tap "teamookla/speedtest"
+tap "tsduck/tsduck"
 tap "yt-dlp/taps"
 # Search tool like grep, but optimized for programmers
 brew "ack"
@@ -61,6 +62,8 @@ brew "tesseract"
 brew "ccextractor"
 # GNU compiler collection
 brew "gcc"
+# Optimized BLAS library
+brew "openblas"
 # Suite of Sparse Matrix Software
 brew "suite-sparse"
 # Rich and complete approach to parallelism in C++
@@ -86,7 +89,7 @@ brew "ddrescue"
 # XML vocabulary to create presentation-neutral documents
 brew "docbook-xsl"
 # Text processing system for reStructuredText
-brew "docutils"
+brew "docutils", link: false
 # Replay stored shell commands for live presentations
 brew "doitlive"
 # Convert text between DOS, UNIX, and Mac formats
@@ -235,12 +238,6 @@ brew "mkvtoolnix"
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
-# Video processing framework with simplicity in mind
-brew "vapoursynth"
-# Download YouTube videos from the command-line
-brew "youtube-dl"
-# Media player based on MPlayer and mplayer2
-brew "mpv"
 # Open source relational database management system
 brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
@@ -355,6 +352,8 @@ brew "tree"
 brew "udunits"
 # File synchronization tool for OSX
 brew "unison"
+# Video processing framework with simplicity in mind
+brew "vapoursynth"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
 # Internet file retriever
@@ -363,6 +362,8 @@ brew "wget"
 brew "wireguard-tools"
 # Makes XML and HTML more amenable to classic UNIX text tools
 brew "xml2"
+# Download YouTube videos from the command-line
+brew "youtube-dl"
 # Fork of youtube-dl with additional features and fixes
 brew "yt-dlp"
 # General-purpose lossless data-compression library
@@ -373,6 +374,8 @@ brew "zsh"
 brew "saulpw/vd/visidata"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
+# MPEG Transport Stream Toolkit
+brew "tsduck/tsduck/tsduck"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Application launcher and productivity software
@@ -402,6 +405,8 @@ cask "font-oswald"
 cask "font-quicksand"
 cask "font-source-code-pro"
 cask "font-source-sans-pro"
+# Horizontal and vertical rulers
+cask "free-ruler"
 # Tool to measure the computer system's performance
 cask "geekbench"
 # Client for the Google Drive storage service
@@ -426,6 +431,8 @@ cask "keycastr"
 cask "mactex"
 # Adjustable weather viewing application
 cask "meteorologist"
+# Media player based on MPlayer and mplayer2
+cask "mpv"
 # Open-source software for live streaming and screen recording
 cask "obs"
 # Image editor
@@ -433,8 +440,6 @@ cask "paintbrush"
 # Collaboration platform for API development
 cask "postman"
 cask "qctools"
-# QuickLook plug-in that renders source code with syntax highlighting
-cask "qlcolorcode"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
 # QuickLook generator for Markdown files
@@ -450,6 +455,8 @@ cask "rectangle"
 cask "rocket-chat"
 # Data science software focusing on R and Python
 cask "rstudio"
+# Tool to reverse the direction of scrolling
+cask "scroll-reverser"
 # Instant messaging application focusing on security
 cask "signal"
 # Team communication and collaboration software
