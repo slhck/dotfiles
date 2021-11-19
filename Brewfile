@@ -459,6 +459,8 @@ cask "rstudio"
 cask "scroll-reverser"
 # Instant messaging application focusing on security
 cask "signal"
+# PDF reader and note-taking application
+cask "skim"
 # Team communication and collaboration software
 cask "slack"
 # Music streaming service
