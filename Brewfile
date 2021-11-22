@@ -471,6 +471,8 @@ cask "teamviewer"
 cask "telegram"
 # Unpacks archive files
 cask "the-unarchiver"
+# Free and open-source OpenVPN client
+cask "tunnelblick"
 # Open-source code editor
 cask "visual-studio-code"
 # Multimedia player
