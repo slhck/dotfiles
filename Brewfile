@@ -89,7 +89,7 @@ brew "ddrescue"
 # XML vocabulary to create presentation-neutral documents
 brew "docbook-xsl"
 # Text processing system for reStructuredText
-brew "docutils", link: false
+brew "docutils"
 # Replay stored shell commands for live presentations
 brew "doitlive"
 # Convert text between DOS, UNIX, and Mac formats
@@ -382,6 +382,8 @@ cask "1password"
 cask "alfred"
 # Always on top window preview
 cask "amitv87-pip"
+# Tools for building Android applications
+cask "android-studio"
 # Multi-track audio editor and recorder
 cask "audacity"
 # Edit and manage bibliographies
@@ -419,10 +421,14 @@ cask "handbrake"
 cask "hex-fiend"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# Professional audio software for audio recording, mixing, broadcast and others
+cask "izotope-product-portal"
 # Personal data manager focusing on security
 cask "keepassx"
 # Password manager app
 cask "keepassxc"
+# File archiver
+cask "keka"
 # Helper application for the Keka file archiver
 cask "kekaexternalhelper"
 # Open-source keystroke visualizer
@@ -442,8 +448,6 @@ cask "postman"
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
-# QuickLook generator for Markdown files
-cask "qlmarkdown"
 cask "quicklook-json"
 # Environment for statistical computing and graphics
 cask "r"
