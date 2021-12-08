@@ -46,6 +46,8 @@ brew "autojump"
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Development kit for the Java programming language
+brew "openjdk@11"
 # Google's own build tool
 brew "bazel"
 # Interface bandwidth monitor
@@ -83,7 +85,7 @@ brew "coreutils"
 # Get, unpack, build, and install modules from CPAN
 brew "cpanminus"
 # Update dynamic DNS entries
-brew "ddclient"
+brew "ddclient", restart_service: true
 # GNU data recovery tool
 brew "ddrescue"
 # XML vocabulary to create presentation-neutral documents
@@ -111,7 +113,7 @@ brew "guile"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Validating, recursive, caching DNS resolver
-brew "unbound"
+brew "unbound", restart_service: true
 # C library for files containing sampled sound
 brew "libsndfile"
 # Scaling, colorspace conversion, and dithering library
@@ -189,7 +191,7 @@ brew "imagemagick"
 # Image loading and rendering library
 brew "imlib2"
 # Audio Connection Kit
-brew "jack"
+brew "jack", restart_service: true
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Tool to move from `docker-compose` to Kubernetes
@@ -239,7 +241,7 @@ brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
 # Open source relational database management system
-brew "mysql"
+brew "mysql", restart_service: true
 # Netwide Assembler (NASM) is an 80x86 assembler
 brew "nasm"
 # NCurses Disk Usage
@@ -259,7 +261,7 @@ brew "numpy"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
-brew "openvpn"
+brew "openvpn", restart_service: true
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Shell command parallelization utility
@@ -275,7 +277,7 @@ brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # Object-relational database system
-brew "postgresql"
+brew "postgresql", restart_service: true
 # Parallel versions of OpenSSH and related tools
 brew "pssh"
 # Monitor data's progress through a pipe
@@ -348,6 +350,8 @@ brew "tldr"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# MPEG Transport Stream Toolkit
+brew "tsduck"
 # Unidata unit conversion library
 brew "udunits"
 # File synchronization tool for OSX
@@ -356,6 +360,8 @@ brew "unison"
 brew "vapoursynth"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
+# Watch files and take action when they change
+brew "watchman"
 # Internet file retriever
 brew "wget"
 # Tools for the WireGuard secure network tunnel
@@ -374,8 +380,6 @@ brew "zsh"
 brew "saulpw/vd/visidata"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
-# MPEG Transport Stream Toolkit
-brew "tsduck/tsduck/tsduck"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Application launcher and productivity software
@@ -433,10 +437,14 @@ cask "keka"
 cask "kekaexternalhelper"
 # Open-source keystroke visualizer
 cask "keycastr"
+# Office suite
+cask "libreoffice"
 # Full TeX Live distribution with GUI applications
 cask "mactex"
 # Adjustable weather viewing application
 cask "meteorologist"
+# Online collaborative whiteboard platform
+cask "miro"
 # Media player based on MPlayer and mplayer2
 cask "mpv"
 # Open-source software for live streaming and screen recording
@@ -473,6 +481,8 @@ cask "spotify"
 cask "teamviewer"
 # Messaging app with a focus on speed and security
 cask "telegram"
+# JDK from the Eclipse Foundation (Adoptium)
+cask "temurin8"
 # Unpacks archive files
 cask "the-unarchiver"
 # Free and open-source OpenVPN client
