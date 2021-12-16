@@ -216,6 +216,8 @@ brew "libpcap"
 brew "libpq"
 # Library that provides automatic proxy configuration management
 brew "libproxy"
+# Text-based web browser
+brew "lynx"
 # Convert nroff man pages to HTML
 brew "man2html"
 # Development kit for the Java programming language
@@ -234,6 +236,8 @@ brew "meson"
 brew "miller"
 # Intercept, modify, replay, save HTTP/S traffic
 brew "mitmproxy"
+# Cross-platform application and UI framework
+brew "qt"
 # Matroska media files manipulation tools
 brew "mkvtoolnix"
 # Remote terminal application
@@ -445,6 +449,8 @@ cask "mactex"
 cask "meteorologist"
 # Online collaborative whiteboard platform
 cask "miro"
+# Tool to control external monitor brightness & volume
+cask "monitorcontrol"
 # Media player based on MPlayer and mplayer2
 cask "mpv"
 # Open-source software for live streaming and screen recording
