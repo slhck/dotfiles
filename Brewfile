@@ -42,6 +42,8 @@ brew "libvmaf"
 brew "augeas"
 # Shell extension to jump to frequently used directories
 brew "autojump"
+# Official Amazon AWS command-line interface
+brew "awscli"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -244,8 +246,6 @@ brew "mkvtoolnix"
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
-# Open source relational database management system
-brew "mysql", restart_service: true
 # Netwide Assembler (NASM) is an 80x86 assembler
 brew "nasm"
 # NCurses Disk Usage
@@ -373,7 +373,7 @@ brew "wireguard-tools"
 # Makes XML and HTML more amenable to classic UNIX text tools
 brew "xml2"
 # Download YouTube videos from the command-line
-brew "youtube-dl"
+brew "youtube-dl", link: false
 # Fork of youtube-dl with additional features and fixes
 brew "yt-dlp"
 # General-purpose lossless data-compression library
