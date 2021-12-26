@@ -408,6 +408,8 @@ cask "docker"
 cask "dropbox"
 # Matrix collaboration client
 cask "element"
+# Web browser
+cask "firefox"
 cask "font-glegoo"
 cask "font-lato"
 cask "font-merriweather"
@@ -415,6 +417,7 @@ cask "font-oswald"
 cask "font-quicksand"
 cask "font-source-code-pro"
 cask "font-source-sans-pro"
+cask "font-source-serif-pro"
 # Horizontal and vertical rulers
 cask "free-ruler"
 # Tool to measure the computer system's performance
