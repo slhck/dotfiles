@@ -1,6 +1,6 @@
 # Pyenv and Python pips
 
-pythonVersion="3.9.0"
+pythonVersion="3.9.7"
 
 if ! command -v pyenv >/dev/null; then
     echo "pyenv not installed!"
@@ -17,6 +17,7 @@ fi
 pip3 install \
     black \
     csvkit \
+    "dask[complete]" \
     docx2pdf \
     flake8 \
     gitchangelog \
@@ -24,6 +25,7 @@ pip3 install \
     pandas \
     pandoc \
     pandocfilters \
+    paramiko \
     pyflakes \
     pylint \
     git+https://github.com/sarnold/pystache \
