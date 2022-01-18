@@ -60,6 +60,8 @@ brew "boost"
 brew "bzip2"
 # Multimedia framework for research and academic purposes
 brew "gpac"
+# Zstandard is a real-time compression algorithm
+brew "zstd"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Free, GPL licensed closed caption tool
@@ -87,7 +89,7 @@ brew "coreutils"
 # Get, unpack, build, and install modules from CPAN
 brew "cpanminus"
 # Update dynamic DNS entries
-brew "ddclient", restart_service: true
+brew "ddclient"
 # GNU data recovery tool
 brew "ddrescue"
 # XML vocabulary to create presentation-neutral documents
@@ -115,7 +117,7 @@ brew "guile"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Validating, recursive, caching DNS resolver
-brew "unbound", restart_service: true
+brew "unbound"
 # C library for files containing sampled sound
 brew "libsndfile"
 # Scaling, colorspace conversion, and dithering library
@@ -193,7 +195,7 @@ brew "imagemagick"
 # Image loading and rendering library
 brew "imlib2"
 # Audio Connection Kit
-brew "jack", restart_service: true
+brew "jack"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Tool to move from `docker-compose` to Kubernetes
@@ -246,6 +248,8 @@ brew "mkvtoolnix"
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
+# Open source relational database management system
+brew "mysql", restart_service: true
 # Netwide Assembler (NASM) is an 80x86 assembler
 brew "nasm"
 # NCurses Disk Usage
@@ -265,7 +269,7 @@ brew "numpy"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
-brew "openvpn", restart_service: true
+brew "openvpn"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Shell command parallelization utility
@@ -281,7 +285,7 @@ brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # Object-relational database system
-brew "postgresql", restart_service: true
+brew "postgresql"
 # Parallel versions of OpenSSH and related tools
 brew "pssh"
 # Monitor data's progress through a pipe
@@ -380,6 +384,8 @@ brew "yt-dlp"
 brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
+# Lock file during command
+brew "discoteq/discoteq/flock"
 # Terminal utility for exploring and arranging tabular data
 brew "saulpw/vd/visidata"
 # Ookla Speedtest
@@ -478,6 +484,8 @@ cask "rocket-chat"
 cask "rstudio"
 # Tool to reverse the direction of scrolling
 cask "scroll-reverser"
+# MySQL/MariaDB database management platform
+cask "sequel-pro"
 # Instant messaging application focusing on security
 cask "signal"
 # PDF reader and note-taking application
@@ -494,6 +502,8 @@ cask "telegram"
 cask "temurin8"
 # Unpacks archive files
 cask "the-unarchiver"
+# Open-source BitTorrent client
+cask "transmission"
 # Free and open-source OpenVPN client
 cask "tunnelblick"
 # Open-source code editor
