@@ -4,6 +4,8 @@
 sudo apt update
 
 sudo apt install --assume-yes \
+    autoconf \
+    bison \
     build-essential \
     byobu \
     curl \
@@ -15,21 +17,27 @@ sudo apt install --assume-yes \
     htop \
     jq \
     libbz2-dev \
+    libdb-dev \
     libffi-dev \
+    libgdbm-dev \
+    libgdbm6 \
+    libncurses5-dev \
     libreadline-dev \
+    libreadline6-dev \
     libsqlite3-dev \
     libssl-dev \
+    libyaml-dev \
     mosh \
     p7zip \
     p7zip-full \
     pngquant \
     pv \
+    pwgen \
     python3-dev \
     python3-numpy \
     python3-pip \
     python3-scipy \
     python3-setuptools \
-    pwgen \
     rar \
     tree \
     ufw \

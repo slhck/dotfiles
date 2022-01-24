@@ -36,9 +36,7 @@ if [[ "$(uname)" == "Linux" ]]; then
     rm -rf ~/autojump
 
     # Rbenv
-    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-    (cd ~/.rbenv && src/configure && make -C src)
+    curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
     # Pyenv
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
