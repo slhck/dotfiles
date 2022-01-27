@@ -92,6 +92,8 @@ brew "cpanminus"
 brew "ddclient"
 # GNU data recovery tool
 brew "ddrescue"
+# Tool for exploring each layer in a docker image
+brew "dive"
 # XML vocabulary to create presentation-neutral documents
 brew "docbook-xsl"
 # Text processing system for reStructuredText
