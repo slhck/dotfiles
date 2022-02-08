@@ -28,7 +28,7 @@ pip3 install \
     paramiko \
     pyflakes \
     pylint \
-    git+https://github.com/sarnold/pystache \
+    pystache \
     thefuck \
     tqdm \
     twine \
