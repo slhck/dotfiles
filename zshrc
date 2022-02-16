@@ -251,7 +251,7 @@ embed-fonts() {
    -dQUIET \
    -sDEVICE=pdfwrite \
    -sOutputFile="$2" \
-   -c ".setpdfwrite <</NeverEmbed [ ]>> setdistillerparams" \
+   -c "<</NeverEmbed [ ]>> setdistillerparams" \
    -f "$1"
 }
 
