@@ -8,6 +8,7 @@ tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
+tap "octave-app/octave-app"
 tap "randy3k/r"
 tap "saulpw/vd"
 tap "slhck/moreutils"
@@ -38,8 +39,14 @@ brew "librsvg"
 brew "adwaita-icon-theme"
 # Perceptual video quality assessment based on multi-method fusion
 brew "libvmaf"
+# Zstandard is a real-time compression algorithm
+brew "zstd"
+# GNU compiler collection
+brew "gcc"
 # Configuration editing tool and API
 brew "augeas"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
 # Shell extension to jump to frequently used directories
 brew "autojump"
 # Official Amazon AWS command-line interface
@@ -60,16 +67,12 @@ brew "boost"
 brew "bzip2"
 # Multimedia framework for research and academic purposes
 brew "gpac"
-# Zstandard is a real-time compression algorithm
-brew "zstd"
+# Color management engine supporting ICC profiles
+brew "little-cms2"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Free, GPL licensed closed caption tool
 brew "ccextractor"
-# GNU compiler collection
-brew "gcc"
-# Optimized BLAS library
-brew "openblas"
 # Suite of Sparse Matrix Software
 brew "suite-sparse"
 # Rich and complete approach to parallelism in C++
@@ -80,6 +83,8 @@ brew "ceres-solver"
 brew "certbot"
 # Cross-platform make
 brew "cmake"
+# Powerful, clean, object-oriented scripting language
+brew "ruby"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
 # Utility that creates projects from templates
@@ -108,26 +113,40 @@ brew "doxygen"
 brew "duti"
 # Utilities for the ext2, ext3, and ext4 file systems
 brew "e2fsprogs"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
 # EXIF and IPTC metadata manipulation library and tools
 brew "exiv2"
+# Collection of reusable C++ library artifacts developed at Facebook
+brew "folly"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Identify or delete duplicate files
+brew "fdupes"
 # GNU Ubiquitous Intelligent Language for Extensions
 brew "guile"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
+# Library to load and enumerate PKCS#11 modules
+brew "p11-kit"
 # Validating, recursive, caching DNS resolver
 brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
 # C library for files containing sampled sound
 brew "libsndfile"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg@4"
 # C routines to compute the Discrete Fourier Transform
 brew "fftw"
+# Image manipulation
+brew "netpbm"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # Real-time software synthesizer based on the SoundFont 2 specs
@@ -140,14 +159,14 @@ brew "fzf"
 brew "gawk"
 # GitHub command-line tool
 brew "gh"
-# Interpreter for PostScript and PDF
-brew "ghostscript"
 # Distributed revision control system
 brew "git"
 # Small git utilities
 brew "git-extras"
 # Extensions to follow Vincent Driessen's branching model
 brew "git-flow"
+# Tool Command Language
+brew "tcl-tk"
 # Tcl/Tk UI for the git revision control system
 brew "git-gui"
 # Git extension for versioning large files
@@ -198,6 +217,8 @@ brew "imagemagick"
 brew "imlib2"
 # Audio Connection Kit
 brew "jack"
+# Command-line pager for JSON data
+brew "jless"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Tool to move from `docker-compose` to Kubernetes
@@ -251,7 +272,7 @@ brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
 # Open source relational database management system
-brew "mysql", restart_service: true
+brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
 brew "nasm"
 # NCurses Disk Usage
@@ -268,8 +289,18 @@ brew "nghttp2"
 brew "nmap"
 # Package for scientific computing with Python
 brew "numpy"
+# Python bindings for v5 of Qt
+brew "pyqt@5"
+# Port to Qt of the Scintilla editing component
+brew "qscintilla2"
+# Nonlinear and differential/algebraic equations solver
+brew "sundials"
+# High-level interpreted language for numerical computing
+brew "octave"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# Library to simplify the interaction with PKCS#11
+brew "pkcs11-helper"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
 brew "openvpn"
 # Swiss-army knife of markup format conversion
@@ -304,8 +335,6 @@ brew "pygobject3"
 brew "pyqt"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.8"
-# Port to Qt of the Scintilla editing component
-brew "qscintilla2"
 # Software environment for statistical computing
 brew "r"
 # Install various Ruby versions and implementations
@@ -332,6 +361,8 @@ brew "sdl2_ttf"
 brew "shellcheck"
 # Tool to create Python bindings for C and C++ libraries
 brew "sip"
+# Work with remote images registries
+brew "skopeo"
 # Yet another network load monitor
 brew "slurm"
 # SIP User-Agent library
@@ -344,8 +375,6 @@ brew "ssh-copy-id", link: true
 brew "streamlink"
 # Version control system designed to be a better CVS
 brew "subversion"
-# Nonlinear and differential/algebraic equations solver
-brew "sundials"
 # User interface to the TELNET protocol
 brew "telnet"
 # Send macOS User Notifications from the command-line
@@ -379,7 +408,7 @@ brew "wireguard-tools"
 # Makes XML and HTML more amenable to classic UNIX text tools
 brew "xml2"
 # Download YouTube videos from the command-line
-brew "youtube-dl", link: false
+brew "youtube-dl"
 # Fork of youtube-dl with additional features and fixes
 brew "yt-dlp"
 # General-purpose lossless data-compression library
@@ -466,6 +495,7 @@ cask "monitorcontrol"
 cask "mpv"
 # Open-source software for live streaming and screen recording
 cask "obs"
+cask "octave-app"
 # Image editor
 cask "paintbrush"
 # Collaboration platform for API development
