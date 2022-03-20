@@ -11,8 +11,8 @@ PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bi
 PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
 
 HISTFILE=~/.zshhistory
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 
 export TERM EDITOR PAGER DISPLAY LS_COLORS COLORTERM PATH HISTFILE HISTSIZE SAVEHIST
 
