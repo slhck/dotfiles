@@ -1,5 +1,6 @@
 tap "discoteq/discoteq"
 tap "github/gh"
+tap "grusell/vivictpp"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -37,6 +38,10 @@ brew "pango"
 brew "librsvg"
 # Icons for the GNOME project
 brew "adwaita-icon-theme"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
+# Automate deployment, configuration, and upgrading
+brew "ansible"
 # Perceptual video quality assessment based on multi-method fusion
 brew "libvmaf"
 # Zstandard is a real-time compression algorithm
@@ -45,8 +50,6 @@ brew "zstd"
 brew "gcc"
 # Configuration editing tool and API
 brew "augeas"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
 # Shell extension to jump to frequently used directories
 brew "autojump"
 # Official Amazon AWS command-line interface
@@ -121,6 +124,14 @@ brew "exiftool"
 brew "exiv2"
 # Collection of reusable C++ library artifacts developed at Facebook
 brew "folly"
+# C++14 implementation of the TLS-1.3 standard
+brew "fizz"
+# Modular, composable client/server abstractions framework
+brew "wangle"
+# Facebook's branch of Apache Thrift, including a new C++ server
+brew "fbthrift"
+# Thrift functions for querying information from a service
+brew "fb303"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Identify or delete duplicate files
@@ -173,16 +184,22 @@ brew "git-gui"
 brew "git-lfs"
 # Update multiple git repositories at once
 brew "gitup"
+# Multi-platform library for OpenGL applications
+brew "glfw"
 # GNU implementation of the famous stream editor
 brew "gnu-sed"
 # GNU version of the tar archiving utility
 brew "gnu-tar"
+# GNU implementation of time utility
+brew "gnu-time"
 # Library for USB device access
 brew "libusb"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Library access to GnuPG
+brew "gpgme"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
 # Colorize logfiles and command output
@@ -263,6 +280,8 @@ brew "meson"
 brew "miller"
 # Intercept, modify, replay, save HTTP/S traffic
 brew "mitmproxy"
+# Simple tool to make locally trusted development certificates
+brew "mkcert"
 # Cross-platform application and UI framework
 brew "qt"
 # Matroska media files manipulation tools
@@ -325,6 +344,8 @@ brew "pssh"
 brew "pv"
 # Password generator
 brew "pwgen"
+# Python 3 bindings for the Cairo graphics library
+brew "py3cairo"
 # Seamless operability between C++11 and Python
 brew "pybind11"
 # Python version management
@@ -336,7 +357,7 @@ brew "pyqt"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.8"
 # Software environment for statistical computing
-brew "r"
+brew "r", link: false
 # Install various Ruby versions and implementations
 brew "ruby-build"
 # Ruby version manager
@@ -417,12 +438,16 @@ brew "zlib"
 brew "zsh"
 # Lock file during command
 brew "discoteq/discoteq/flock"
+# Vivict++ is an easy to use tool for subjective comparison of the visual quality of different encodings of the same video source.
+brew "grusell/vivictpp/vivictpp"
 # Terminal utility for exploring and arranging tabular data
 brew "saulpw/vd/visidata"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
+# Command-line helper for the 1Password password manager
+cask "1password-cli"
 # Application launcher and productivity software
 cask "alfred"
 # Always on top window preview
@@ -452,6 +477,8 @@ cask "font-lato"
 cask "font-merriweather"
 cask "font-oswald"
 cask "font-quicksand"
+# Font with a mechanical skeleton and the forms are largely geometric
+cask "font-roboto"
 cask "font-source-code-pro"
 cask "font-source-sans-pro"
 cask "font-source-serif-pro"
