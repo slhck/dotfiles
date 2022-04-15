@@ -22,7 +22,7 @@ spot() {
   mdfind "kMDItemFSName=='*$@*'cd";
 }
 
-f() {
+rf() {
   cd "$(osascript -e 'try
 tell app "Finder" to (target of Finder window 1) as text
 POSIX path of result
