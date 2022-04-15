@@ -84,6 +84,8 @@ brew "tbb"
 brew "ceres-solver"
 # Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
+# Human-friendly and fast alternative to cut and (sometimes) awk
+brew "choose-rust"
 # Cross-platform make
 brew "cmake"
 # Powerful, clean, object-oriented scripting language
@@ -96,6 +98,8 @@ brew "cookiecutter"
 brew "coreutils"
 # Get, unpack, build, and install modules from CPAN
 brew "cpanminus"
+# Securely send things from one computer to another
+brew "croc"
 # Update dynamic DNS entries
 brew "ddclient"
 # GNU data recovery tool
@@ -376,6 +380,8 @@ brew "scipy"
 brew "scons"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
+# Intuitive find & replace CLI
+brew "sd"
 # Library for using TrueType fonts in SDL applications
 brew "sdl2_ttf"
 # Static analysis and lint tool, for (ba)sh scripts
@@ -527,6 +533,7 @@ cask "octave-app"
 cask "paintbrush"
 # Collaboration platform for API development
 cask "postman"
+# Audiovisual analytics and filtering for video files
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
