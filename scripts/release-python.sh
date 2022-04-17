@@ -43,7 +43,7 @@ _error() {
 }
 
 _check_packages() {
-  for package in pypandoc twine wheel gitchangelog; do
+  for package in pypandoc twine wheel gitchangelog pystache; do
     python -c "import ${package}" || \
       { _error "${package} is not installed. Install via pip!"; exit 1; }
   done
