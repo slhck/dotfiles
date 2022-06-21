@@ -232,6 +232,8 @@ brew "id3lib"
 brew "id3tool"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
+# Library for reading RAW files from digital photo cameras
+brew "libraw"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
 # Image loading and rendering library
@@ -378,6 +380,8 @@ brew "rust"
 brew "scipy"
 # Substitute for classic 'make' tool with autoconf/automake functionality
 brew "scons"
+# Display and control your Android device
+brew "scrcpy"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
 # Intuitive find & replace CLI
@@ -518,8 +522,8 @@ cask "keycastr"
 cask "libreoffice"
 # Full TeX Live distribution with GUI applications
 cask "mactex"
-# Adjustable weather viewing application
-cask "meteorologist"
+# Scanner app for math and science
+cask "mathpix-snipping-tool"
 # Online collaborative whiteboard platform
 cask "miro"
 # Tool to control external monitor brightness & volume
@@ -552,10 +556,14 @@ cask "rstudio"
 cask "scroll-reverser"
 # MySQL/MariaDB database management platform
 cask "sequel-pro"
+# Screenshot measurement and annotation tool
+cask "shottr"
 # Instant messaging application focusing on security
 cask "signal"
 # PDF reader and note-taking application
 cask "skim"
+# Video chat, voice call and instant messaging application
+cask "skype"
 # Team communication and collaboration software
 cask "slack"
 # Music streaming service
