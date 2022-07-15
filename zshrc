@@ -285,6 +285,22 @@ doc-to-json() {
   pandoc "$1" -t gfm-raw_html --wrap=preserve -o - | python -c 'import json; import sys; print(json.dumps(sys.stdin.read()))'
 }
 
+# select a directory and cd to it upon exit
+# based on: https://news.ycombinator.com/item?id=32106770
+fcd() {
+  local dir;
+
+  while true; do
+    # exit with ^D
+    dir="$(ls -a1p | grep '/$' | grep -v '^./$' | fzf --reverse --no-multi --preview 'pwd' --preview-window=up,1,border-none --no-info)"
+    if [[ -z "${dir}" ]]; then
+      break
+    else
+      cd "${dir}"
+    fi
+  done
+}
+
 # fco - checkout git branch/tag
 fco() {
   local tags branches target
