@@ -13,6 +13,7 @@ tap "octave-app/octave-app"
 tap "randy3k/r"
 tap "saulpw/vd"
 tap "slhck/moreutils"
+tap "svt/avtools"
 tap "teamookla/speedtest"
 tap "tsduck/tsduck"
 tap "yt-dlp/taps"
@@ -20,10 +21,10 @@ tap "yt-dlp/taps"
 brew "ack"
 # Software library to render fonts
 brew "freetype"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Core application library for C
 brew "glib"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # Toolkit for image loading and pixel buffer manipulation
@@ -296,6 +297,8 @@ brew "mkvtoolnix"
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
+# General-purpose lossless data-compression library
+brew "zlib"
 # Open source relational database management system
 brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
@@ -442,8 +445,6 @@ brew "xml2"
 brew "youtube-dl"
 # Fork of youtube-dl with additional features and fixes
 brew "yt-dlp"
-# General-purpose lossless data-compression library
-brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
 # Lock file during command
@@ -541,6 +542,8 @@ cask "postman"
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
+cask "qlvideo"
+# QuickLook plugin for JSON files
 cask "quicklook-json"
 # Environment for statistical computing and graphics
 cask "r"
