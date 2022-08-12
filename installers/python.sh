@@ -16,6 +16,7 @@ fi
 
 pip3 install \
     black \
+    commitizen \
     csvkit \
     "dask[complete]" \
     docx2pdf \
