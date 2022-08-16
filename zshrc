@@ -10,7 +10,7 @@ PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bi
 # de-dupe path, https://unix.stackexchange.com/a/149054/5893
 PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
 
-HISTFILE=~/.zshhistory
+HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
