@@ -1,6 +1,8 @@
 tap "discoteq/discoteq"
 tap "github/gh"
 tap "grusell/vivictpp"
+tap "hashicorp/tap"
+tap "heroku/brew"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -23,14 +25,14 @@ brew "ack"
 brew "freetype"
 # Core application library for C
 brew "glib"
+# Command-line interface for SQLite
+brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.9"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # Toolkit for image loading and pixel buffer manipulation
 brew "gdk-pixbuf"
-# Generate introspection data for GObject libraries
-brew "gobject-introspection"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Framework for layout and rendering of i18n text
@@ -49,6 +51,10 @@ brew "libvmaf"
 brew "zstd"
 # GNU compiler collection
 brew "gcc"
+# High performance message passing library
+brew "open-mpi"
+# Routines to solve large scale eigenvalue problems
+brew "arpack"
 # Configuration editing tool and API
 brew "augeas"
 # Shell extension to jump to frequently used directories
@@ -67,6 +73,8 @@ brew "bazel"
 brew "bmon"
 # Collection of portable C++ source libraries
 brew "boost"
+# Install RubyGems as Homebrew formulae
+brew "brew-gem"
 # Freely available high-quality data compressor
 brew "bzip2"
 # Multimedia framework for research and academic purposes
@@ -89,8 +97,6 @@ brew "certbot"
 brew "choose-rust"
 # Cross-platform make
 brew "cmake"
-# Powerful, clean, object-oriented scripting language
-brew "ruby"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
 # Utility that creates projects from templates
@@ -121,14 +127,16 @@ brew "doxygen"
 brew "duti"
 # Utilities for the ext2, ext3, and ext4 file systems
 brew "e2fsprogs"
+# Collection of reusable C++ library artifacts developed at Facebook
+brew "folly"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
+# C library SSHv1/SSHv2 client and server protocols
+brew "libssh"
 # EXIF and IPTC metadata manipulation library and tools
 brew "exiv2"
-# Collection of reusable C++ library artifacts developed at Facebook
-brew "folly"
 # C++14 implementation of the TLS-1.3 standard
 brew "fizz"
 # Modular, composable client/server abstractions framework
@@ -151,8 +159,12 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Generate introspection data for GObject libraries
+brew "gobject-introspection"
 # C library for files containing sampled sound
 brew "libsndfile"
+# Secure Reliable Transport
+brew "srt"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
 # Play, record, convert, and stream audio and video
@@ -173,6 +185,7 @@ brew "foremost"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
+brew "gem-bashly"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -201,6 +214,8 @@ brew "gnu-time"
 brew "libusb"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Command-driven, interactive function plotting
+brew "gnuplot"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
 # Library access to GnuPG
@@ -225,6 +240,8 @@ brew "hdf5"
 brew "hss"
 # Improved top (interactive process viewer)
 brew "htop"
+# Spell checker and morphological analyzer
+brew "hunspell"
 # Command-line benchmarking tool
 brew "hyperfine"
 # ID3 tag manipulation
@@ -257,6 +274,8 @@ brew "less"
 brew "lesspipe"
 # Sophisticated file transfer program
 brew "lftp"
+# Provides library functionality for FIDO U2F & FIDO 2.0, including USB
+brew "libfido2"
 # C library implementing the SSH2 protocol
 brew "libssh2"
 # C library of Git core methods that is re-entrant and linkable
@@ -267,6 +286,8 @@ brew "libpcap"
 brew "libpq"
 # Library that provides automatic proxy configuration management
 brew "libproxy"
+# GNOME XML library
+brew "libxml2"
 # Text-based web browser
 brew "lynx"
 # Convert nroff man pages to HTML
@@ -297,8 +318,6 @@ brew "mkvtoolnix"
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
-# General-purpose lossless data-compression library
-brew "zlib"
 # Open source relational database management system
 brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
@@ -325,6 +344,8 @@ brew "qscintilla2"
 brew "sundials"
 # High-level interpreted language for numerical computing
 brew "octave"
+# C library to read whole-slide images (a.k.a. virtual slides)
+brew "openslide"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # Library to simplify the interaction with PKCS#11
@@ -346,7 +367,7 @@ brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # Object-relational database system
-brew "postgresql"
+brew "postgresql@14"
 # Parallel versions of OpenSSH and related tools
 brew "pssh"
 # Monitor data's progress through a pipe
@@ -443,6 +464,8 @@ brew "wireguard-tools"
 brew "xml2"
 # Download YouTube videos from the command-line
 brew "youtube-dl"
+# Process YAML documents from the CLI
+brew "yq"
 # Fork of youtube-dl with additional features and fixes
 brew "yt-dlp"
 # UNIX shell (command interpreter)
@@ -451,6 +474,10 @@ brew "zsh"
 brew "discoteq/discoteq/flock"
 # Vivict++ is an easy to use tool for subjective comparison of the visual quality of different encodings of the same video source.
 brew "grusell/vivictpp/vivictpp"
+# Packer
+brew "hashicorp/tap/packer"
+# Everything you need to get started with Heroku
+brew "heroku/brew/heroku"
 # Terminal utility for exploring and arranging tabular data
 brew "saulpw/vd/visidata"
 # Ookla Speedtest
@@ -542,6 +569,7 @@ cask "postman"
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
+# QuickLook generator for video files
 cask "qlvideo"
 # QuickLook plugin for JSON files
 cask "quicklook-json"
@@ -583,6 +611,10 @@ cask "the-unarchiver"
 cask "transmission"
 # Free and open-source OpenVPN client
 cask "tunnelblick"
+# Development environment
+cask "vagrant"
+# Gives Vagrant VMware plugin access to various VMware functionalities
+cask "vagrant-vmware-utility"
 # Open-source code editor
 cask "visual-studio-code"
 # Multimedia player
