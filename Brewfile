@@ -17,7 +17,6 @@ tap "saulpw/vd"
 tap "slhck/moreutils"
 tap "svt/avtools"
 tap "teamookla/speedtest"
-tap "tsduck/tsduck"
 tap "yt-dlp/taps"
 # Search tool like grep, but optimized for programmers
 brew "ack"
@@ -55,6 +54,8 @@ brew "gcc"
 brew "open-mpi"
 # Routines to solve large scale eigenvalue problems
 brew "arpack"
+# Record and share terminal sessions
+brew "asciinema"
 # Configuration editing tool and API
 brew "augeas"
 # Shell extension to jump to frequently used directories
@@ -95,6 +96,8 @@ brew "ceres-solver"
 brew "certbot"
 # Human-friendly and fast alternative to cut and (sometimes) awk
 brew "choose-rust"
+# Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
+brew "clang-format"
 # Cross-platform make
 brew "cmake"
 # Dependency manager for Cocoa projects
@@ -346,8 +349,6 @@ brew "sundials"
 brew "octave"
 # C library to read whole-slide images (a.k.a. virtual slides)
 brew "openslide"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
 # Library to simplify the interaction with PKCS#11
 brew "pkcs11-helper"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
@@ -430,6 +431,8 @@ brew "ssh-copy-id", link: true
 brew "streamlink"
 # Version control system designed to be a better CVS
 brew "subversion"
+# Command-line packet analyzer
+brew "tcpdump"
 # User interface to the TELNET protocol
 brew "telnet"
 # Send macOS User Notifications from the command-line
