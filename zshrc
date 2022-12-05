@@ -332,6 +332,19 @@ f() {
 # Like f, but not recursive.
 fm() f "$@" --max-depth 1
 
+# shortcut to bump a file containing just a version number
+semver-bump() {
+  if ! command -v semver >/dev/null 2>&1; then
+    echo "Installing semver ..."
+    wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+    chmod +x /usr/local/bin/semver
+  fi
+  local file="$1"
+  local version=$(cat "$file" | tr -d '[:space:]')
+  local bumpType="${2:-patch}"
+  semver bump "$bumpType" "$version" > "$file"
+}
+
 # -----------------------------------------------
 #  Color for ls
 # -----------------------------------------------
