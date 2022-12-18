@@ -105,7 +105,7 @@ green "Song downloaded successfully."
 echo "Normalizing song ..."
 
 outputFile="${downloadedFile%.*}.mp3"
-ffmpeg-normalize "$downloadedFile" -ext mp3 -c:a libmp3lame -b:a 128k -ar 44100 -e="-ac 1" -o "$outputFile"
+ffmpeg-normalize "$downloadedFile" -t -14 -ext mp3 -c:a libmp3lame -b:a 128k -ar 44100 -e="-ac 1" -o "$outputFile"
 
 if [ $? -ne 0 ]; then
     red "Error: Could not normalize the song."
