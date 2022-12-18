@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # A script to download a YouTube music video and normalize it.
-# This is opinionated and normalizes to an 128k mono mp3 file for our kid's music box.
+#
+# This can normalize to an 128k mono mp3 file for our kid's music box.
 #
 # Author: Werner Robitza
 # License: MIT
@@ -65,6 +66,61 @@ cyan_underlined() { print_in_color "\e[4;36m" "$*"; }
 
 # ==============================================================================
 
+codec="aac"
+bitrate="192k"
+mono=false
+extension="m4a"
+force=false
+
+usage() {
+    echo "Usage: $0 <name of the song>"
+    echo ""
+    echo "Options:"
+    echo "  -o, --output  Output file name. Default: <song name>-normalized.$extension"
+    echo "  -c, --codec   Codec to use for the output file. Default: $codec"
+    echo "  -e, --extension   Extension to use for the output file. Default: $extension"
+    echo "  -b, --bitrate Bitrate to use for the output file. Default: $bitrate"
+    echo "  -m, --mono    Convert the output file to mono"
+    echo "  -f, --force   Force overwriting the output file if it exists"
+    echo "  -h, --help    Show this help message and exit"
+    exit 1
+}
+
+# parse options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -o|--output)
+            output="$2"
+            shift
+            ;;
+        -c|--codec)
+            codec="$2"
+            shift
+            ;;
+        -e|--extension)
+            extension="$2"
+            shift
+            ;;
+        -b|--bitrate)
+            bitrate="$2"
+            shift
+            ;;
+        -m|--mono)
+            mono=true
+            ;;
+        -f|--force)
+            force=true
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            break
+            ;;
+    esac
+    shift
+done
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <name of the song>"
     exit 1
@@ -104,14 +160,25 @@ green "Song downloaded successfully."
 
 echo "Normalizing song ..."
 
-outputFile="${downloadedFile%.*}.mp3"
-ffmpeg-normalize "$downloadedFile" -t -14 -ext mp3 -c:a libmp3lame -b:a 128k -ar 44100 -e="-ac 1" -o "$outputFile"
+if [ -z "$output" ]; then
+    output="${downloadedFile%.*}-normalized.$extension"
+fi
+
+if [ "$mono" = true ]; then
+    extraOpts=(-e="-ac 1")
+fi
+
+if [ "$force" = true ]; then
+    extraOpts+=(-f)
+fi
+
+ffmpeg-normalize "$downloadedFile" -t -14 -ext mp3 -c:a "$codec" -b:a "$bitrate" -ar 44100 "${extraOpts[@]}" -o "$output"
 
 if [ $? -ne 0 ]; then
     red "Error: Could not normalize the song."
     exit 1
 fi
 
-green "Song normalized successfully to '$outputFile'."
+green "Song normalized successfully to '$output'."
 
 echo "Done."
