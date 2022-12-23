@@ -85,6 +85,7 @@ _incrementVersion() {
 verbose=0
 force=0
 noPush=0
+noPublish=0
 releaseType=
 
 usage() {
@@ -94,11 +95,12 @@ usage() {
   echo ""
   echo "-h	show help"
   echo "-v	verbose"
-  echo "-n	do not push or publish to PyPI"
+  echo "-n	do not push to remote"
+  echo "-p  do not publish to PyPI"
   echo "-t	release type (patch, minor, major)"
 }
 
-while getopts "h?vfnt:" opt; do
+while getopts "h?vfnpt:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -106,6 +108,7 @@ while getopts "h?vfnt:" opt; do
     v)  verbose=1;;
     f)  force=1;;
     n)  noPush=1;;
+    p)  noPublish=1;;
     t)  releaseType="$OPTARG";;
     esac
 done
@@ -216,21 +219,24 @@ fi
 
 git tag -a -f -m "Tag version ${newVersion}" "v$newVersion"
 
-if [[ $noPush -eq 1 ]]; then
-  _warn "Skipping push/publish!"
-  exit
-fi
-
-# Push to Git
-_info "Pushing to remote ..."
-git push && git push --tags
-
-# upload to PyPi
 rm -rf dist/* build
 _info "Building package ..."
 python3 setup.py sdist bdist_wheel
 
-_info "Pushing to PyPI ..."
-python3 -m twine upload dist/*
+if [[ $noPush -eq 1 ]]; then
+  _warn "Skipping push!"
+else
+  # Push to Git
+  _info "Pushing to remote ..."
+  git push && git push --tags
+fi
+
+if [[ $noPublish -eq 1 ]]; then
+  _warn "Skipping publish!"
+else
+  # upload to PyPi
+  _info "Pushing to PyPI ..."
+  python3 -m twine upload dist/*
+fi
 
 _info "Finished!"
