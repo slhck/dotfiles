@@ -43,7 +43,7 @@ _error() {
 }
 
 _check_packages() {
-  for package in pypandoc twine wheel gitchangelog pystache; do
+  for package in pypandoc twine wheel gitchangelog pystache pdoc; do
     python -c "import ${package}" || \
       { _error "${package} is not installed. Install via pip!"; exit 1; }
   done
@@ -203,6 +203,17 @@ gitchangelog > CHANGELOG.md
 # add the changelog and amend it to the previous commit and tag
 git add CHANGELOG.md
 git commit --amend --no-edit
+
+# generate the docs, if available
+if [[ -d docs ]]; then
+  _info "Generating docs ..."
+  pdoc -d google -o docs "$packageName"
+  git add docs
+  git commit --amend --no-edit
+else
+  _info "No docs directory found, skipping ... (if you want to generate docs, create an empty docs directory first)"
+fi
+
 git tag -a -f -m "Tag version ${newVersion}" "v$newVersion"
 
 if [[ $noPush -eq 1 ]]; then
