@@ -207,7 +207,7 @@ git commit --amend --no-edit
 # generate the docs, if available
 if [[ -d docs ]]; then
   _info "Generating docs ..."
-  pdoc -d google -o docs "$packageName"
+  pdoc -d google -o docs "./$packageName"
   git add docs
   git commit --amend --no-edit
 else
