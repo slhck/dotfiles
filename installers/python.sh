@@ -30,6 +30,7 @@ pip3 install \
     pyflakes \
     pylint \
     pystache \
+    ruff \
     thefuck \
     tqdm \
     twine \
@@ -37,4 +38,3 @@ pip3 install \
     youtube-dl \
     visidata \
     yt-dlp
-
