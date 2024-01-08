@@ -7,5 +7,4 @@ nvm install node && \
     prettier \
     state-machine-cat \
     tldr \
-    yarn \
-    @githubnext/github-copilot-cli
+    yarn

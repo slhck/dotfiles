@@ -1,6 +1,6 @@
 # Pyenv and Python pips
 
-pythonVersion="3.9.7"
+pythonVersion="3.12.1"
 
 if ! command -v pyenv >/dev/null; then
     echo "pyenv not installed!"
@@ -35,6 +35,5 @@ pip3 install \
     tqdm \
     twine \
     wheel \
-    youtube-dl \
     visidata \
     yt-dlp

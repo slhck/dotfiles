@@ -330,7 +330,9 @@ f() {
 }
 
 # Like f, but not recursive.
-fm() f "$@" --max-depth 1
+fm() {
+  f "$@" --max-depth 1
+}
 
 # shortcut to bump a file containing just a version number
 semver-bump() {
@@ -343,6 +345,11 @@ semver-bump() {
   local version=$(cat "$file" | tr -d '[:space:]')
   local bumpType="${2:-patch}"
   semver bump "$bumpType" "$version" > "$file"
+}
+
+# generate a random password
+pw() {
+  pwgen -y 24 -1 "$@"
 }
 
 # -----------------------------------------------
@@ -394,4 +401,3 @@ alias bubu='brew update && brew upgrade'
 
 
 # END: Global configuration file
-

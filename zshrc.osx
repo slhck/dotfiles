@@ -105,12 +105,17 @@ if which pyenv > /dev/null; then
     eval "$(pyenv init -)"
 fi
 
-# ----------------------------------------------- 
+# -----------------------------------------------
 # Tailscale
-# ----------------------------------------------- 
+# -----------------------------------------------
 
 if [[ -f /Applications/Tailscale.app/Contents/MacOS/Tailscale ]]; then
   alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 fi
+
+# -----------------------------------------------
+# XCode path
+# -----------------------------------------------
+export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
 
 # END: OS-specific configuration file
