@@ -130,19 +130,27 @@ _check_packages
 _check_repo "$projectDir"
 [[ "$force" -eq 1 ]] || _check_repo_status
 
-versionFile=$(grep -l --include \*.py -r '__version__ =' "$packageName" | head -n 1)
+pythonVersionFile=$(grep -l --include \*.py -r '__version__ =' "$packageName" | head -n 1)
+pyprojectVersionFile=pyproject.toml
 
-if [[ -z $versionFile ]]; then
+if [[ -z $pythonVersionFile ]]; then
   _error "No version file found!"; exit 1
 fi
 
+if [[ -f $pyprojectVersionFile ]]; then
+  _info "Found pyproject.toml file in addition to Python version file!"
+else
+  pyprojectVersionFile=
+fi
+
 latestHash=$(git log --pretty=format:'%h' -n 1)
-currentVersion=$(_read_version "$versionFile")
+currentVersion=$(_read_version "$pythonVersionFile")
 
 echo
 echo "Project directory: $(realpath "$projectDir")"
 echo "Package name:      $packageName"
-echo "Version file:      $versionFile"
+echo "Version file:      $pythonVersionFile"
+echo "Pyproject file:    $pyprojectVersionFile"
 echo "Repo hash:         $latestHash"
 echo "Current version:   $currentVersion"
 
@@ -193,8 +201,14 @@ _restore() {
 trap _restore ERR
 
 # replace the Python version
-perl -pi -e "s/\Q$currentVersion\E/$newVersion/" "$versionFile"
-git add "$versionFile"
+perl -pi -e "s/\Q$currentVersion\E/$newVersion/" "$pythonVersionFile"
+git add "$pythonVersionFile"
+
+# replace the pyproject version, if applicable
+if [[ -n $pyprojectVersionFile ]]; then
+  perl -pi -e "s/\Q$currentVersion\E/$newVersion/" "$pyprojectVersionFile"
+  git add "$pyprojectVersionFile"
+fi
 
 # bump initially but to not push yet
 git commit -m "Bump version to ${newVersion}"

@@ -8,6 +8,7 @@ if [ -n "$ZSH_VERSION" ]; then
     git clone https://github.com/denysdovhan/spaceship-prompt.git "$zshRoot/themes/spaceship-prompt"
     ln -s "$zshRoot/themes/spaceship-prompt/spaceship.zsh-theme" "$zshRoot/themes/spaceship.zsh-theme"
     perl -pi -e 's/blinks/spaceship/' ~/.zshrc
+    perl -pi -e 's/robbyrussell/spaceship/' ~/.zshrc
 
     # Syntax highlighting
     # Deactivated for performance reasons
