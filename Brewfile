@@ -205,10 +205,12 @@ brew "findutils"
 brew "fluid-synth"
 # Console program to recover files based on their headers and footers
 brew "foremost"
-# Libraries to talk to Microsoft SQL Server and Sybase databases
-brew "freetds"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Interactive git commands in the terminal
+brew "forgit"
+# Libraries to talk to Microsoft SQL Server and Sybase databases
+brew "freetds"
 # GNU awk utility
 brew "gawk"
 # Graphics library to dynamically manipulate images
@@ -517,6 +519,8 @@ brew "watch"
 brew "watchman"
 # Internet file retriever
 brew "wget"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper-cpp"
 # Tools for the WireGuard secure network tunnel
 brew "wireguard-tools"
 # Command-line tool that draw plots on the terminal
@@ -545,6 +549,8 @@ brew "teamookla/speedtest/speedtest"
 cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
+# GPU-accelerated terminal emulator
+cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
 # Distribution of the Python and R programming languages for scientific computing
@@ -599,6 +605,8 @@ cask "grandperspective"
 cask "handbrake"
 # Hex editor focussing on speed
 cask "hex-fiend"
+# Vector graphics editor
+cask "inkscape"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Professional audio software for audio recording, mixing, broadcast and others
@@ -625,8 +633,6 @@ cask "mathpix-snipping-tool"
 cask "miro"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
-# Media player based on MPlayer and mplayer2
-cask "mpv"
 # Open-source software for live streaming and screen recording
 cask "obs"
 cask "octave-app"
@@ -672,6 +678,8 @@ cask "skype"
 cask "slack"
 # Music streaming service
 cask "spotify"
+# Media player based on MPlayer and mplayer2
+cask "stolendata-mpv"
 # Replacement for RCDefaultApps, written in Swift
 cask "swiftdefaultappsprefpane"
 # Remote access and connectivity software focused on security
@@ -828,6 +836,7 @@ vscode "stkb.rewrap"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "streetsidesoftware.code-spell-checker-german"
 vscode "surajbarkale.ninja"
+vscode "tadayosi.vscode-makefile-outliner"
 vscode "tamasfe.even-better-toml"
 vscode "telesoho.vscode-markdown-paste-image"
 vscode "timonwong.shellcheck"
