@@ -14,6 +14,7 @@ tap "homebrew/test-bot"
 tap "octave-app/octave-app"
 tap "randy3k/r"
 tap "saulpw/vd"
+tap "segment-integrations/formulae"
 tap "slhck/moreutils"
 tap "supabase/tap"
 tap "svt/avtools"
@@ -26,7 +27,7 @@ brew "freetype"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # Core application library for C
-brew "glib", link: false
+brew "glib"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # Zstandard is a real-time compression algorithm
@@ -41,6 +42,8 @@ brew "pango"
 brew "librsvg"
 # Icons for the GNOME project
 brew "adwaita-icon-theme"
+# C library SSHv1/SSHv2 client and server protocols
+brew "libssh"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
 # Color management engine supporting ICC profiles
@@ -117,6 +120,8 @@ brew "libass"
 brew "libbluray"
 # C library for files containing sampled sound
 brew "libsndfile"
+# Package for scientific computing with Python
+brew "numpy"
 # Low-level access to audio, keyboard, mouse, joystick, and graphics
 brew "sdl2"
 # Secure Reliable Transport
@@ -126,7 +131,7 @@ brew "tesseract"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
 # Play, record, convert, and stream audio and video
-brew "ffmpeg@4"
+brew "ffmpeg"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -183,18 +188,16 @@ brew "enscript"
 brew "ghostscript"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
-# C library SSHv1/SSHv2 client and server protocols
-brew "libssh"
 # EXIF and IPTC metadata manipulation library and tools
 brew "exiv2"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Identify or delete duplicate files
 brew "fdupes"
-# Package for scientific computing with Python
-brew "numpy"
 # Play, record, convert, and stream audio and video
-brew "ffmpeg"
+brew "ffmpeg@4"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg@6"
 # C routines to compute the Discrete Fourier Transform
 brew "fftw"
 # Image manipulation
@@ -333,6 +336,8 @@ brew "libproxy"
 brew "libuv"
 # Access large language models from the command-line
 brew "llm"
+# Next-gen compiler infrastructure
+brew "llvm@17"
 # Text-based web browser
 brew "lynx"
 # LZMA-based compression program similar to gzip or bzip2
@@ -391,6 +396,8 @@ brew "qscintilla2"
 brew "sundials"
 # High-level interpreted language for numerical computing
 brew "octave"
+# Create, run, and share large language models (LLMs)
+brew "ollama", restart_service: true
 # Open source computer vision library
 brew "opencv"
 # Development kit for the Java programming language
@@ -447,6 +454,8 @@ brew "rbenv"
 brew "reattach-to-user-namespace"
 # Perl-powered file rename script with many helpful built-ins
 brew "rename"
+# Standard unix software packaging tool
+brew "rpm"
 # Utility that provides fast incremental file transfer
 brew "rsync"
 # Safe, concurrent, practical language
@@ -489,6 +498,8 @@ brew "ssh-copy-id", link: true
 brew "streamlink"
 # Version control system designed to be a better CVS
 brew "subversion"
+# Formatting technology for Swift source code
+brew "swift-format"
 # Command-line packet analyzer
 brew "tcpdump"
 # Send macOS User Notifications from the command-line
@@ -541,6 +552,8 @@ brew "hashicorp/tap/packer"
 brew "heroku/brew/heroku"
 # Terminal utility for exploring and arranging tabular data
 brew "saulpw/vd/visidata"
+# Creates an XCFramework out of a Swift Package using xcodebuild
+brew "segment-integrations/formulae/swift-create-xcframework"
 # Supabase CLI
 brew "supabase/tap/supabase"
 # Ookla Speedtest
@@ -580,8 +593,12 @@ cask "fig"
 # Web browser
 cask "firefox"
 cask "font-glegoo"
+# Typeface made for developers
+cask "font-jetbrains-mono"
 cask "font-lato"
 cask "font-merriweather"
+# Superfamily of fonts for code
+cask "font-monaspace"
 cask "font-oswald"
 cask "font-quicksand"
 # Font with a mechanical skeleton and the forms are largely geometric
@@ -638,8 +655,6 @@ cask "obs"
 cask "octave-app"
 # Image editor
 cask "paintbrush"
-# Headless web browser
-cask "phantomjs"
 # Collaboration platform for API development
 cask "postman"
 # Command-line shell and scripting language
@@ -654,8 +669,6 @@ cask "qlvideo"
 cask "quicklook-json"
 # Environment for statistical computing and graphics
 cask "r"
-# Screencasting software
-cask "recordit"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
 # Official desktop client for Rocket.Chat
@@ -664,8 +677,6 @@ cask "rocket-chat"
 cask "rstudio"
 # Tool to reverse the direction of scrolling
 cask "scroll-reverser"
-# MySQL/MariaDB database management platform
-cask "sequel-pro"
 # Screenshot measurement and annotation tool
 cask "shottr"
 # Instant messaging application focusing on security
@@ -687,7 +698,7 @@ cask "teamviewer"
 # Messaging app with a focus on speed and security
 cask "telegram"
 # JDK from the Eclipse Foundation (Adoptium)
-cask "temurin8"
+cask "temurin@8"
 # Unpacks archive files
 cask "the-unarchiver"
 # Open-source BitTorrent client
@@ -748,6 +759,9 @@ vscode "dotjoshjohnson.xml"
 vscode "eamodio.gitlens"
 vscode "editorconfig.editorconfig"
 vscode "emilast.logfilehighlighter"
+vscode "equinusocio.vsc-community-material-theme"
+vscode "equinusocio.vsc-material-theme"
+vscode "equinusocio.vsc-material-theme-icons"
 vscode "esbenp.prettier-vscode"
 vscode "expixel.vscode-eval"
 vscode "flesler.url-encode"
@@ -774,6 +788,7 @@ vscode "konstantin.wrapselection"
 vscode "loyieking.smalise"
 vscode "mads-hartmann.bash-ide-vscode"
 vscode "magicstack.magicpython"
+vscode "marcoms.oceanic-plus"
 vscode "matangover.mypy"
 vscode "mathiasfrohlich.kotlin"
 vscode "mathworks.language-matlab"
@@ -804,6 +819,7 @@ vscode "ms-vscode-remote.vscode-remote-extensionpack"
 vscode "ms-vscode.cmake-tools"
 vscode "ms-vscode.cpptools"
 vscode "ms-vscode.cpptools-extension-pack"
+vscode "ms-vscode.cpptools-themes"
 vscode "ms-vscode.powershell"
 vscode "ms-vscode.remote-explorer"
 vscode "ms-vscode.remote-repositories"
@@ -818,6 +834,7 @@ vscode "mtxr.sqltools-driver-pg"
 vscode "mtxr.sqltools-driver-sqlite"
 vscode "naumovs.color-highlight"
 vscode "njpwerner.autodocstring"
+vscode "pkief.material-icon-theme"
 vscode "pustelto.bracketeer"
 vscode "qcz.text-power-tools"
 vscode "randomfractalsinc.duckdb-sql-tools"
@@ -840,6 +857,7 @@ vscode "tadayosi.vscode-makefile-outliner"
 vscode "tamasfe.even-better-toml"
 vscode "telesoho.vscode-markdown-paste-image"
 vscode "timonwong.shellcheck"
+vscode "tokoph.ghosttext"
 vscode "twxs.cmake"
 vscode "vadimcn.vscode-lldb"
 vscode "visualstudioexptteam.intellicode-api-usage-examples"
@@ -850,7 +868,9 @@ vscode "vscjava.vscode-java-pack"
 vscode "vscjava.vscode-java-test"
 vscode "vscjava.vscode-maven"
 vscode "wholroyd.jinja"
+vscode "wingrunr21.vscode-ruby"
 vscode "wmaurer.change-case"
 vscode "yo1dog.cursor-align"
 vscode "yoavbls.pretty-ts-errors"
 vscode "yzhang.markdown-all-in-one"
+vscode "zhuangtongfa.material-theme"
