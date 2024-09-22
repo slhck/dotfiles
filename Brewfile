@@ -1,3 +1,4 @@
+tap "cube2222/octosql"
 tap "discoteq/discoteq"
 tap "github/gh"
 tap "grusell/vivictpp"
@@ -82,8 +83,6 @@ brew "libssh2"
 brew "libgit2"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Development kit for the Java programming language
-brew "openjdk@11"
 # Google's own build tool
 brew "bazel"
 # GNU binary tools for native development
@@ -120,8 +119,6 @@ brew "libass"
 brew "libbluray"
 # C library for files containing sampled sound
 brew "libsndfile"
-# Package for scientific computing with Python
-brew "numpy"
 # Low-level access to audio, keyboard, mouse, joystick, and graphics
 brew "sdl2"
 # Secure Reliable Transport
@@ -132,6 +129,8 @@ brew "tesseract"
 brew "zimg"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
+# Package for scientific computing with Python
+brew "numpy"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -174,6 +173,8 @@ brew "e2fsprogs"
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
 brew "fizz"
+# QUIC transport protocol implementation
+brew "mvfst"
 # Modular, composable client/server abstractions framework
 brew "wangle"
 # Facebook's branch of Apache Thrift, including a new C++ server
@@ -222,6 +223,8 @@ brew "gd"
 brew "gh"
 # Distributed revision control system
 brew "git"
+# Highly customizable changelog generator
+brew "git-cliff"
 # Small git utilities
 brew "git-extras"
 # Extensions to follow Vincent Driessen's branching model
@@ -254,12 +257,18 @@ brew "gnuplot"
 brew "go"
 # Generate introspection data for GObject libraries
 brew "gobject-introspection"
+# Fast linters runner for Go
+brew "golangci-lint"
 # Multimedia framework for research and academic purposes
 brew "gpac"
 # Library access to GnuPG
 brew "gpgme"
 # Ping, but with a graph
 brew "gping"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
+# Image processing tools collection
+brew "graphicsmagick"
 # GNU triangulated surface library
 brew "gts"
 # Graph visualization software from AT&T and Bell Labs
@@ -294,10 +303,6 @@ brew "hyperfine"
 brew "id3lib"
 # ID3 editing tool
 brew "id3tool"
-# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
-brew "libheif"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Library for reading RAW files from digital photo cameras
 brew "libraw"
 # Tools and libraries to manipulate images in many formats
@@ -316,8 +321,6 @@ brew "jq"
 brew "k3d"
 # Tool to move from `docker-compose` to Kubernetes
 brew "kompose"
-# Network authentication protocol
-brew "krb5"
 # DNS library written in C
 brew "ldns"
 # Pager program similar to more
@@ -346,8 +349,6 @@ brew "lzip"
 brew "man2html"
 # Mac App Store command-line interface
 brew "mas"
-# Development kit for the Java programming language
-brew "openjdk"
 # Java-based project management
 brew "maven"
 # Unified display of technical and tag data for audio/video
@@ -388,6 +389,8 @@ brew "nghttp2"
 brew "nmap"
 # Platform built on V8 to build network applications
 brew "node"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Python bindings for v6 of Qt
 brew "pyqt"
 # Port to Qt of the Scintilla editing component
@@ -400,6 +403,8 @@ brew "octave"
 brew "ollama", restart_service: true
 # Open source computer vision library
 brew "opencv"
+# Development kit for the Java programming language
+brew "openjdk@11"
 # Development kit for the Java programming language
 brew "openjdk@17"
 # C library to read whole-slide images (a.k.a. virtual slides)
@@ -420,6 +425,8 @@ brew "perl"
 brew "php"
 # Python dependency management tool
 brew "pipenv"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
 # PNG image optimizing utility
 brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
@@ -520,6 +527,8 @@ brew "tsduck"
 brew "udunits"
 # File synchronization tool
 brew "unison"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Video processing framework with simplicity in mind
 brew "vapoursynth"
 # Command-line interface for Vercel
@@ -542,6 +551,8 @@ brew "yq"
 brew "yt-dlp"
 # UNIX shell (command interpreter)
 brew "zsh"
+# OctoSQL is a query tool that allows you to join, analyse and transform data from multiple databases and file formats using SQL.
+brew "cube2222/octosql/octosql"
 # Lock file during command
 brew "discoteq/discoteq/flock"
 # Vivict++ is an easy to use tool for subjective comparison of the visual quality of different encodings of the same video source.
@@ -593,15 +604,12 @@ cask "fig"
 # Web browser
 cask "firefox"
 cask "font-glegoo"
-# Typeface made for developers
 cask "font-jetbrains-mono"
 cask "font-lato"
 cask "font-merriweather"
-# Superfamily of fonts for code
 cask "font-monaspace"
 cask "font-oswald"
 cask "font-quicksand"
-# Font with a mechanical skeleton and the forms are largely geometric
 cask "font-roboto"
 cask "font-source-code-pro"
 cask "font-source-sans-pro"
@@ -741,6 +749,7 @@ mas "Xcode", id: 497799835
 vscode "asabil.meson"
 vscode "bibhasdn.unique-lines"
 vscode "bierner.markdown-mermaid"
+vscode "biomejs.biome"
 vscode "bladnman.auto-align"
 vscode "bradlc.vscode-tailwindcss"
 vscode "buster.ndjson-colorizer"
@@ -772,6 +781,7 @@ vscode "github.copilot"
 vscode "github.copilot-chat"
 vscode "github.github-vscode-theme"
 vscode "github.remotehub"
+vscode "github.vscode-github-actions"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"
 vscode "gruntfuggly.todo-tree"
@@ -799,6 +809,7 @@ vscode "mikestead.dotenv"
 vscode "misogi.ruby-rubocop"
 vscode "mrmlnc.vscode-json5"
 vscode "ms-azuretools.vscode-docker"
+vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
 vscode "ms-playwright.playwright"
 vscode "ms-python.black-formatter"
 vscode "ms-python.debugpy"
@@ -862,6 +873,8 @@ vscode "twxs.cmake"
 vscode "vadimcn.vscode-lldb"
 vscode "visualstudioexptteam.intellicode-api-usage-examples"
 vscode "visualstudioexptteam.vscodeintellicode"
+vscode "vknabel.vscode-apple-swift-format"
+vscode "vscjava.vscode-gradle"
 vscode "vscjava.vscode-java-debug"
 vscode "vscjava.vscode-java-dependency"
 vscode "vscjava.vscode-java-pack"
