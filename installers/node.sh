@@ -1,10 +1,7 @@
+#!/usr/bin/env bash
 # NVM and nodejs
 
-nvm install node && \
-    npm install -g \
-    auto-changelog \
-    npm-check-updates \
-    prettier \
-    state-machine-cat \
-    tldr \
+nvm install --lts
+
+npm install -g \
     yarn

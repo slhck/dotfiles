@@ -3,4 +3,5 @@
 
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-echo "Manually install the Homebrew formulae..."
+# then load from brew bundle:
+brew bundle install --file="$(dirname "$0")/Brewfile"

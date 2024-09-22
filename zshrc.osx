@@ -70,40 +70,14 @@ EOF
 export PATH=/Library/TeX/texbin:$PATH
 
 # -----------------------------------------------
-# iTerm 2 shell integration
-# -----------------------------------------------
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# -----------------------------------------------
 # autojump
 # -----------------------------------------------
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 
 # -----------------------------------------------
-# Custom PATH
-# -----------------------------------------------
-export PATH="$PATH:/Users/werner/bin"
-
-# -----------------------------------------------
-# Remove broken Git completion installed through Homebrew
-# -----------------------------------------------
-[[ -f /usr/local/share/zsh/site-functions/_git ]] && \
-  rm  -f /usr/local/share/zsh/site-functions/_git
-
-# -----------------------------------------------
 # Perl
 # -----------------------------------------------
 eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
-
-# -----------------------------------------------
-# Pyenv
-# -----------------------------------------------
-
-export PATH="${HOME}/.pyenv/bin:$PATH"
-if which pyenv > /dev/null; then
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-fi
 
 # -----------------------------------------------
 # Tailscale
@@ -114,8 +88,54 @@ if [[ -f /Applications/Tailscale.app/Contents/MacOS/Tailscale ]]; then
 fi
 
 # -----------------------------------------------
+# JAVA
+# -----------------------------------------------
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+
+# -----------------------------------------------
 # XCode path
 # -----------------------------------------------
 export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
+
+# -----------------------------------------------
+# Android
+# -----------------------------------------------
+
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
+
+
+# -----------------------------------------------
+# pnpm
+# -----------------------------------------------
+
+export PNPM_HOME="/Users/werner/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# -----------------------------------------------
+# Extra Paths
+# -----------------------------------------------
+
+# XCode tools
+export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Go
+export PATH="$HOME/go/bin:$PATH"
+
+# Whisper
+export GGML_METAL_PATH_RESOURCES="$(brew --prefix whisper-cpp)/share/whisper-cpp"
+
+# -----------------------------------------------
+# Forgit
+# -----------------------------------------------
+
+forgit_rebase=grbi
+[ -f $HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh ] && source $HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh
 
 # END: OS-specific configuration file

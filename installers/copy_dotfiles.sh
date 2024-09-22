@@ -6,7 +6,6 @@ cd "$(dirname "$0")" || exit 1
 
 cp -v ../gitconfig ~/.gitconfig
 cp -v ../gitignore ~/.gitignore
-cp -v ../flake8 ~/.flake8
 cp -v ../pdbrc ~/.pdbrc
 cp -v ../pypirc ~/.pypirc
 cp -v ../tmux.conf ~/.tmux.conf

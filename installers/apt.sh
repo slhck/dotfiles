@@ -30,6 +30,7 @@ sudo apt install --assume-yes \
     mosh \
     p7zip \
     p7zip-full \
+    pipx \
     pngquant \
     pv \
     pwgen \

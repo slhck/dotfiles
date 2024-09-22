@@ -6,7 +6,7 @@ EDITOR=vim
 PAGER=less
 COLORTERM=yes
 
-PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH
+PATH=/opt/homebrew/bin:$HOME/bin:$HOME/.bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH
 # de-dupe path, https://unix.stackexchange.com/a/149054/5893
 PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
 
@@ -180,6 +180,7 @@ alias gups='git submodule update --rebase --remote --init --recursive'
 alias gcane='git add -A && git commit --amend --no-edit'
 alias gpa='git push --all && git push --tags'
 alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
+alias grsh='git reset --soft "HEAD^"'
 
 # -----------------------------------------------
 #  User-defined Functions
@@ -210,6 +211,7 @@ smartextract () {
         case $1 in
             *.tar.bz2)  tar -jxvf "$1"        ;;
             *.tar.gz)   tar -zxvf "$1"        ;;
+            *.tar.xz)   tar -Jxvf "$1"        ;;
             *.bz2)      bunzip2 "$1"          ;;
             *.dmg)      hdiutil mount "$1"    ;;
             *.gz)       gunzip "$1"           ;;
@@ -383,11 +385,8 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 # NVM
 # -----------------------------------------------
 
-# broken, see: https://github.com/nvm-sh/nvm/issues/2362#issuecomment-746108881
-setopt no_aliases
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-setopt aliases
 
 # -----------------------------------------------
 # Homebrew
@@ -399,5 +398,15 @@ alias bubu='brew update && brew upgrade'
 [[ -f /usr/local/share/zsh/site-functions/_git ]] && \
   rm  -f /usr/local/share/zsh/site-functions/_git
 
+
+# -----------------------------------------------
+# Pyenv
+# -----------------------------------------------
+
+export PATH="${HOME}/.pyenv/bin:$PATH"
+if which pyenv > /dev/null; then
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+fi
 
 # END: Global configuration file

@@ -14,25 +14,15 @@ if [[ "$(pyenv version-name)" != "$pythonVersion" ]]; then
     exit 1
 fi
 
-pip3 install \
-    black \
+pipx install \
     commitizen \
     csvkit \
-    "dask[complete]" \
     docx2pdf \
-    flake8 \
     gitchangelog \
     gitup \
-    pandas \
-    pandoc \
-    pandocfilters \
-    paramiko \
-    pyflakes \
-    pylint \
     pystache \
     ruff \
     thefuck \
-    tqdm \
     twine \
     wheel \
     visidata \
