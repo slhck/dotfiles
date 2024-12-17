@@ -20,6 +20,7 @@ pipx install \
     docx2pdf \
     gitchangelog \
     gitup \
+    markitdown \
     pystache \
     ruff \
     thefuck \
