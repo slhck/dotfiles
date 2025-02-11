@@ -35,3 +35,12 @@ smudge = git-lfs smudge -- %f
 autoStash = true
 [pull]
 rebase = true
+[core]
+pager = delta
+[interactive]
+diffFilter = delta --color-only
+[delta]
+navigate = true
+dark = true
+[merge]
+conflictstyle = zdiff3
