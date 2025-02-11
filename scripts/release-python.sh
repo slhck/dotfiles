@@ -224,8 +224,12 @@ git commit --amend --no-edit
 # generate the docs, if available
 if [[ -d docs ]]; then
   _info "Generating docs ..."
-  pdoc -d google -o docs "./$packageName"
-  git add docs
+  if [[ -f mkdocs.yml ]]; then
+    echo "Skipping pdoc, you should use mkdocs to generate the docs"
+  else
+    pdoc -d google -o docs "./$packageName"
+    git add docs
+  fi
   git commit --amend --no-edit
 else
   _info "No docs directory found, skipping ... (if you want to generate docs, create an empty docs directory first)"
