@@ -13,6 +13,7 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
 tap "octave-app/octave-app"
+tap "pamburus/tap"
 tap "randy3k/r"
 tap "saulpw/vd"
 tap "segment-integrations/formulae"
@@ -43,6 +44,8 @@ brew "pango"
 brew "librsvg"
 # Icons for the GNOME project
 brew "adwaita-icon-theme"
+# Cryptographic recipes and primitives for Python
+brew "cryptography"
 # C library SSHv1/SSHv2 client and server protocols
 brew "libssh"
 # Automate deployment, configuration, and upgrading
@@ -51,6 +54,8 @@ brew "ansible"
 brew "little-cms2"
 # Perceptual video quality assessment based on multi-method fusion
 brew "libvmaf"
+# Codec library for encoding and decoding AV1 video streams
+brew "aom"
 # GNU compiler collection
 brew "gcc"
 # High performance message passing library
@@ -71,8 +76,6 @@ brew "python@3.10"
 brew "autojump"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Bourne-Again SHell, a UNIX command interpreter
@@ -103,8 +106,18 @@ brew "tbb"
 brew "ceres-solver"
 # Tool to obtain certs from Let's Encrypt and autoenable HTTPS
 brew "certbot"
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
+# File format designed to store large amounts of data
+brew "hdf5"
 # Human-friendly and fast alternative to cut and (sometimes) awk
 brew "choose-rust"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# Low-level access to audio, keyboard, mouse, joystick, and graphics
+brew "sdl2"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Library to load and enumerate PKCS#11 modules
@@ -113,24 +126,20 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
 # Blu-Ray disc playback library for media players like VLC
 brew "libbluray"
 # C library for files containing sampled sound
 brew "libsndfile"
-# Low-level access to audio, keyboard, mouse, joystick, and graphics
-brew "sdl2"
+# Package for scientific computing with Python
+brew "numpy"
+# Open Visual Inference And Optimization toolkit for AI inference
+brew "openvino"
 # Secure Reliable Transport
 brew "srt"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
-# Package for scientific computing with Python
-brew "numpy"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -147,6 +156,8 @@ brew "coreutils"
 brew "cpanminus"
 # Securely send things from one computer to another
 brew "croc"
+# Suite of command-line tools for converting to and working with CSV
+brew "csvkit"
 # Update dynamic DNS entries
 brew "ddclient"
 # GNU data recovery tool
@@ -173,8 +184,6 @@ brew "e2fsprogs"
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
 brew "fizz"
-# QUIC transport protocol implementation
-brew "mvfst"
 # Modular, composable client/server abstractions framework
 brew "wangle"
 # Facebook's branch of Apache Thrift, including a new C++ server
@@ -225,6 +234,8 @@ brew "gh"
 brew "git"
 # Highly customizable changelog generator
 brew "git-cliff"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
 # Small git utilities
 brew "git-extras"
 # Extensions to follow Vincent Driessen's branching model
@@ -287,8 +298,8 @@ brew "gtk+"
 brew "gtk+3"
 # GNU Ubiquitous Intelligent Language for Extensions
 brew "guile"
-# File format designed to store large amounts of data
-brew "hdf5"
+# Command-line interface for Hetzner Cloud
+brew "hcloud"
 # Kubernetes package manager
 brew "helm"
 # Interactive parallel SSH client
@@ -363,14 +374,14 @@ brew "meson"
 brew "miller"
 # Simple tool to make locally trusted development certificates
 brew "mkcert"
-# JSON for modern C++
-brew "nlohmann-json"
 # Matroska media files manipulation tools
 brew "mkvtoolnix"
 # Remote terminal application
 brew "mosh"
 # Embeddable Javascript interpreter
 brew "mujs"
+# QUIC transport protocol implementation
+brew "mvfst"
 # Open source relational database management system
 brew "mysql"
 # Netwide Assembler (NASM) is an 80x86 assembler
@@ -385,12 +396,12 @@ brew "netcdf"
 brew "nethogs"
 # HTTP/2 C Library
 brew "nghttp2"
+# JSON for modern C++
+brew "nlohmann-json"
 # Port scanning utility for large networks
 brew "nmap"
 # Platform built on V8 to build network applications
 brew "node"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Python bindings for v6 of Qt
 brew "pyqt"
 # Port to Qt of the Scintilla editing component
@@ -400,7 +411,9 @@ brew "sundials"
 # High-level interpreted language for numerical computing
 brew "octave"
 # Create, run, and share large language models (LLMs)
-brew "ollama", restart_service: true
+brew "ollama", restart_service: :changed
+# Toolkit for 3D computer graphics, image processing, and visualization
+brew "vtk"
 # Open source computer vision library
 brew "opencv"
 # Development kit for the Java programming language
@@ -427,6 +440,8 @@ brew "php"
 brew "pipenv"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
+# Single-file executable tool for creating, reading and uploading PMTiles archives
+brew "pmtiles"
 # PNG image optimizing utility
 brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
@@ -450,7 +465,11 @@ brew "pygobject3"
 # Python bindings for v5 of Qt
 brew "pyqt@5"
 # Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
+# Interpreted, interactive, object-oriented programming language
 brew "python@3.8"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
 # Install various Ruby versions and implementations
@@ -467,8 +486,6 @@ brew "rpm"
 brew "rsync"
 # Safe, concurrent, practical language
 brew "rust"
-# Format Rust code
-brew "rustfmt"
 # Software for mathematics, science, and engineering
 brew "scipy"
 # Substitute for classic 'make' tool with autoconf/automake functionality
@@ -491,6 +508,8 @@ brew "sip"
 brew "skopeo"
 # Yet another network load monitor
 brew "slurm"
+# Scans and monitors projects for security vulnerabilities
+brew "snyk-cli"
 # SIP User-Agent library
 brew "sofia-sip"
 # Ruby language server
@@ -509,6 +528,8 @@ brew "subversion"
 brew "swift-format"
 # Command-line packet analyzer
 brew "tcpdump"
+# User interface to the TELNET protocol
+brew "telnet"
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
 # Programmatically correct mistyped console commands
@@ -539,6 +560,8 @@ brew "watch"
 brew "watchman"
 # Internet file retriever
 brew "wget"
+# Successor of GNU Wget, a file and recursive website downloader
+brew "wget2"
 # Port of OpenAI's Whisper model in C/C++
 brew "whisper-cpp"
 # Tools for the WireGuard secure network tunnel
@@ -561,6 +584,8 @@ brew "grusell/vivictpp/vivictpp"
 brew "hashicorp/tap/packer"
 # Everything you need to get started with Heroku
 brew "heroku/brew/heroku"
+# Log viewer for JSON and logfmt logs
+brew "pamburus/tap/hl"
 # Terminal utility for exploring and arranging tabular data
 brew "saulpw/vd/visidata"
 # Creates an XCFramework out of a Swift Package using xcodebuild
@@ -577,8 +602,6 @@ cask "1password-cli"
 cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
-# Distribution of the Python and R programming languages for scientific computing
-cask "anaconda"
 # Tools for building Android applications
 cask "android-studio"
 # Multi-track audio editor and recorder
@@ -591,6 +614,8 @@ cask "blackhole-2ch"
 cask "cscreen"
 # Server and cloud storage browser
 cask "cyberduck"
+# Virtual monitor for screen sharing
+cask "deskpad"
 # Voice and text chat software
 cask "discord"
 # App to build and share containerised applications and microservices
@@ -618,6 +643,8 @@ cask "font-source-serif-pro"
 cask "free-ruler"
 # Tool to measure the computer system's performance
 cask "geekbench"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Free and open-source image editor
 cask "gimp"
 # Set of tools to manage resources and applications hosted on Google Cloud
@@ -650,10 +677,10 @@ cask "kekaexternalhelper"
 cask "keycastr"
 # Free cross-platform office suite, fresh version
 cask "libreoffice"
-# Full TeX Live distribution with GUI applications
-cask "mactex"
 # Scanner app for math and science
 cask "mathpix-snipping-tool"
+# Minimal installer for conda
+cask "miniconda"
 # Online collaborative whiteboard platform
 cask "miro"
 # Tool to control external monitor brightness & volume
@@ -740,6 +767,7 @@ mas "GarageBand", id: 682658836
 mas "Gifski", id: 1351639930
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
+mas "LanScan", id: 472226235
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
@@ -768,7 +796,6 @@ vscode "dotjoshjohnson.xml"
 vscode "eamodio.gitlens"
 vscode "editorconfig.editorconfig"
 vscode "emilast.logfilehighlighter"
-vscode "equinusocio.vsc-community-material-theme"
 vscode "equinusocio.vsc-material-theme"
 vscode "equinusocio.vsc-material-theme-icons"
 vscode "esbenp.prettier-vscode"
@@ -868,7 +895,6 @@ vscode "tadayosi.vscode-makefile-outliner"
 vscode "tamasfe.even-better-toml"
 vscode "telesoho.vscode-markdown-paste-image"
 vscode "timonwong.shellcheck"
-vscode "tokoph.ghosttext"
 vscode "twxs.cmake"
 vscode "vadimcn.vscode-lldb"
 vscode "visualstudioexptteam.intellicode-api-usage-examples"
@@ -881,7 +907,7 @@ vscode "vscjava.vscode-java-pack"
 vscode "vscjava.vscode-java-test"
 vscode "vscjava.vscode-maven"
 vscode "wholroyd.jinja"
-vscode "wingrunr21.vscode-ruby"
+vscode "withfig.fig"
 vscode "wmaurer.change-case"
 vscode "yo1dog.cursor-align"
 vscode "yoavbls.pretty-ts-errors"
