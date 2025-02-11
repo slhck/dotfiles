@@ -44,3 +44,14 @@ navigate = true
 dark = true
 [merge]
 conflictstyle = zdiff3
+[tag]
+sort = version:refname
+[credential]
+helper = store
+[sendemail]
+smtpencryption = tls
+smtpserver = smtp.gmail.com
+smtpuser = <redacted>
+smtpserverport = 587
+smtppass = <redacted>
+from = "<redacted> <redacted>"
