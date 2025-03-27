@@ -409,4 +409,18 @@ if which pyenv > /dev/null; then
     eval "$(pyenv init -)"
 fi
 
+# -----------------------------------------------
+# uv fix
+# https://github.com/astral-sh/uv/issues/8432#issuecomment-2453494736
+# -----------------------------------------------
+_uv_run_mod() {
+    if [[ "$words[2]" == "run" && "$words[CURRENT]" != -* ]]; then
+        _arguments '*:filename:_files'
+    else
+        _uv "$@"
+    fi
+}
+compdef _uv_run_mod uv
+
+
 # END: Global configuration file

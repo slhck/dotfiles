@@ -26,8 +26,6 @@ tap "yt-dlp/taps"
 brew "ack"
 # Software library to render fonts
 brew "freetype"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
 # Core application library for C
 brew "glib"
 # Vector graphics library with cross-device output support
@@ -44,6 +42,8 @@ brew "pango"
 brew "librsvg"
 # Icons for the GNOME project
 brew "adwaita-icon-theme"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
 # Cryptographic recipes and primitives for Python
 brew "cryptography"
 # C library SSHv1/SSHv2 client and server protocols
@@ -112,12 +112,6 @@ brew "pkgconf"
 brew "hdf5"
 # Human-friendly and fast alternative to cut and (sometimes) awk
 brew "choose-rust"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
-# Low-level access to audio, keyboard, mouse, joystick, and graphics
-brew "sdl2"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Library to load and enumerate PKCS#11 modules
@@ -126,20 +120,26 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
 # Blu-Ray disc playback library for media players like VLC
 brew "libbluray"
 # C library for files containing sampled sound
 brew "libsndfile"
-# Package for scientific computing with Python
-brew "numpy"
-# Open Visual Inference And Optimization toolkit for AI inference
-brew "openvino"
+# Low-level access to audio, keyboard, mouse, joystick, and graphics
+brew "sdl2"
 # Secure Reliable Transport
 brew "srt"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
+# Package for scientific computing with Python
+brew "numpy"
+# Open Visual Inference And Optimization toolkit for AI inference
+brew "openvino"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -275,7 +275,7 @@ brew "gpac"
 # Library access to GnuPG
 brew "gpgme"
 # Ping, but with a graph
-brew "gping"
+brew "gping", link: false
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Image processing tools collection
@@ -306,6 +306,8 @@ brew "helm"
 brew "hss"
 # Improved top (interactive process viewer)
 brew "htop"
+# User-friendly cURL replacement (command-line HTTP client)
+brew "httpie"
 # Run and Test HTTP Requests with plain text and curl
 brew "hurl"
 # Command-line benchmarking tool
@@ -321,7 +323,7 @@ brew "imagemagick"
 # Image loading and rendering library
 brew "imlib2"
 # GNU utilities for networking
-brew "inetutils", link: false
+brew "inetutils"
 # Audio Connection Kit
 brew "jack"
 # Command-line pager for JSON data
@@ -352,6 +354,8 @@ brew "libuv"
 brew "llm"
 # Next-gen compiler infrastructure
 brew "llvm@17"
+# Curses-based tool for viewing and analyzing log files
+brew "lnav"
 # Text-based web browser
 brew "lynx"
 # LZMA-based compression program similar to gzip or bzip2
@@ -529,7 +533,7 @@ brew "swift-format"
 # Command-line packet analyzer
 brew "tcpdump"
 # User interface to the TELNET protocol
-brew "telnet"
+brew "telnet", link: false
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
 # Programmatically correct mistyped console commands
@@ -687,6 +691,8 @@ cask "miro"
 cask "monitorcontrol"
 # Open-source software for live streaming and screen recording
 cask "obs"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
 cask "octave-app"
 # Image editor
 cask "paintbrush"
@@ -796,8 +802,6 @@ vscode "dotjoshjohnson.xml"
 vscode "eamodio.gitlens"
 vscode "editorconfig.editorconfig"
 vscode "emilast.logfilehighlighter"
-vscode "equinusocio.vsc-material-theme"
-vscode "equinusocio.vsc-material-theme-icons"
 vscode "esbenp.prettier-vscode"
 vscode "expixel.vscode-eval"
 vscode "flesler.url-encode"
@@ -891,6 +895,7 @@ vscode "stkb.rewrap"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "streetsidesoftware.code-spell-checker-german"
 vscode "surajbarkale.ninja"
+vscode "swiftlang.swift-vscode"
 vscode "tadayosi.vscode-makefile-outliner"
 vscode "tamasfe.even-better-toml"
 vscode "telesoho.vscode-markdown-paste-image"
@@ -899,6 +904,7 @@ vscode "twxs.cmake"
 vscode "vadimcn.vscode-lldb"
 vscode "visualstudioexptteam.intellicode-api-usage-examples"
 vscode "visualstudioexptteam.vscodeintellicode"
+vscode "vitest.explorer"
 vscode "vknabel.vscode-apple-swift-format"
 vscode "vscjava.vscode-gradle"
 vscode "vscjava.vscode-java-debug"
