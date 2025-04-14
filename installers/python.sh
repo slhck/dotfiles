@@ -1,6 +1,6 @@
 # Pyenv and Python pips
 
-pythonVersion="3.12.1"
+pythonVersion="3.13.2"
 
 if ! command -v pyenv >/dev/null; then
     echo "pyenv not installed!"
@@ -14,17 +14,18 @@ if [[ "$(pyenv version-name)" != "$pythonVersion" ]]; then
     exit 1
 fi
 
-pipx install \
-    commitizen \
-    csvkit \
-    docx2pdf \
-    gitchangelog \
-    gitup \
-    markitdown \
-    pystache \
-    ruff \
-    thefuck \
-    twine \
-    wheel \
-    visidata \
-    yt-dlp
+# no longer needed, uv(x) handles it
+# pipx install \
+#     commitizen \
+#     csvkit \
+#     docx2pdf \
+#     gitchangelog \
+#     gitup \
+#     markitdown \
+#     pystache \
+#     ruff \
+#     thefuck \
+#     twine \
+#     wheel \
+#     visidata \
+#     yt-dlp

@@ -35,9 +35,7 @@ sudo apt install --assume-yes \
     pv \
     pwgen \
     python3-dev \
-    python3-numpy \
     python3-pip \
-    python3-scipy \
     python3-setuptools \
     rar \
     tree \

@@ -334,6 +334,10 @@ brew "jq"
 brew "k3d"
 # Tool to move from `docker-compose` to Kubernetes
 brew "kompose"
+# Development kit for the Java programming language
+brew "openjdk@17"
+# Style and grammar checker
+brew "languagetool"
 # DNS library written in C
 brew "ldns"
 # Pager program similar to more
@@ -422,8 +426,6 @@ brew "vtk"
 brew "opencv"
 # Development kit for the Java programming language
 brew "openjdk@11"
-# Development kit for the Java programming language
-brew "openjdk@17"
 # C library to read whole-slide images (a.k.a. virtual slides)
 brew "openslide"
 # Library to simplify the interaction with PKCS#11
@@ -554,6 +556,8 @@ brew "udunits"
 brew "unison"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Syntax-aware linter for prose
+brew "vale"
 # Video processing framework with simplicity in mind
 brew "vapoursynth"
 # Command-line interface for Vercel
@@ -661,8 +665,6 @@ cask "grandperspective"
 cask "handbrake"
 # Hex editor focussing on speed
 cask "hex-fiend"
-# Vector graphics editor
-cask "inkscape"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Professional audio software for audio recording, mixing, broadcast and others
@@ -679,8 +681,6 @@ cask "keka"
 cask "kekaexternalhelper"
 # Open-source keystroke visualiser
 cask "keycastr"
-# Free cross-platform office suite, fresh version
-cask "libreoffice"
 # Scanner app for math and science
 cask "mathpix-snipping-tool"
 # Minimal installer for conda
@@ -767,19 +767,6 @@ cask "xquartz"
 cask "yemuzip"
 # Video communication and virtual meeting platform
 cask "zoom"
-mas "Developer", id: 640199958
-mas "Disk Speed Test", id: 425264550
-mas "GarageBand", id: 682658836
-mas "Gifski", id: 1351639930
-mas "iMovie", id: 408981434
-mas "Keynote", id: 409183694
-mas "LanScan", id: 472226235
-mas "Microsoft Remote Desktop", id: 1295203466
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Tailscale", id: 1475387142
-mas "WireGuard", id: 1451685025
-mas "Xcode", id: 497799835
 vscode "asabil.meson"
 vscode "bibhasdn.unique-lines"
 vscode "bierner.markdown-mermaid"

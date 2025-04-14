@@ -42,8 +42,12 @@ _error() {
   echo -e "$RED$ERROR_FLAG $1$RESET"
 }
 
+_check_uv() {
+  uv --version || { _error "uv is not installed. Install from https://docs.astral.sh/uv/getting-started/installation/"; exit 1; }
+}
+
 _check_packages() {
-  for package in pypandoc twine wheel gitchangelog pystache pdoc; do
+  for package in wheel; do
     python -c "import ${package}" || \
       { _error "${package} is not installed. Install via pip!"; exit 1; }
   done
@@ -126,6 +130,12 @@ cd "$projectDir" || exit 1
 
 packageName=$(basename "$(dirname "$(find . -name '__init__.py' -maxdepth 2 | head -n 1)")")
 
+if ! [[ -f setup.py ]]; then
+  _error "No setup.py found, using uv to build package"
+  exit 1
+fi
+
+_check_uv
 _check_packages
 _check_repo "$projectDir"
 [[ "$force" -eq 1 ]] || _check_repo_status
@@ -215,7 +225,7 @@ git commit -m "Bump version to ${newVersion}"
 git tag -a -m "Tag version ${newVersion}" "v$newVersion"
 
 # generate the changelog
-gitchangelog > CHANGELOG.md
+uvx --with pystache gitchangelog > CHANGELOG.md
 
 # add the changelog and amend it to the previous commit and tag
 git add CHANGELOG.md
@@ -227,7 +237,7 @@ if [[ -d docs ]]; then
   if [[ -f mkdocs.yml ]]; then
     echo "Skipping pdoc, you should use mkdocs to generate the docs"
   else
-    pdoc -d google -o docs "./$packageName"
+    uvx pdoc -d google -o docs "./$packageName"
     git add docs
   fi
   git commit --amend --no-edit
@@ -254,7 +264,7 @@ if [[ $noPublish -eq 1 ]]; then
 else
   # upload to PyPi
   _info "Pushing to PyPI ..."
-  python3 -m twine upload dist/*
+  uvx twine upload dist/*
 fi
 
 _info "Finished!"
