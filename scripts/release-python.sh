@@ -46,13 +46,6 @@ _check_uv() {
   uv --version || { _error "uv is not installed. Install from https://docs.astral.sh/uv/getting-started/installation/"; exit 1; }
 }
 
-_check_packages() {
-  for package in wheel; do
-    python -c "import ${package}" || \
-      { _error "${package} is not installed. Install via pip!"; exit 1; }
-  done
-}
-
 _check_repo() {
   [[ -d "$1/.git" ]] || \
     { _error "Project directory $projectDir is not a Git repo!"; exit 1; }
@@ -82,6 +75,11 @@ _incrementVersion() {
   echo "$(local IFS=. ; echo "${array[*]}")"
 }
 
+_read_pyproject_version() {
+  # Looks for 'version = "x.y.z"' in pyproject.toml
+  grep -m 1 -E '^\\s*version\\s*=\\s*"[^"]+"' "$1" | head -n 1 | sed -E 's/^\\s*version\\s*=\\s*"([^"]+)"\\s*$/\\1/'
+}
+
 # ==============================================================================
 # MAIN SCRIPT
 
@@ -91,29 +89,50 @@ force=0
 noPush=0
 noPublish=0
 releaseType=
+projectDir=
 
 usage() {
-  echo "$0 [-hvfn]"
+  echo "$0 [OPTIONS]"
   echo ""
   echo "Release Python scripts"
   echo ""
-  echo "-h	show help"
-  echo "-v	verbose"
-  echo "-n	do not push to remote"
-  echo "-p  do not publish to PyPI"
-  echo "-t	release type (patch, minor, major)"
+  echo "-h, --help              show this help"
+  echo "-v, --verbose	          verbose"
+  echo "-f, --force	            force"
+  echo "-n, --no-push	          do not push to remote"
+  echo "-p, --no-publish	      do not publish to PyPI"
+  echo "-t, --release-type	    release type (patch, minor, major)"
 }
 
-while getopts "h?vfnpt:" opt; do
-    case "$opt" in
-    h|\?)
-        usage
-        exit 0;;
-    v)  verbose=1;;
-    f)  force=1;;
-    n)  noPush=1;;
-    p)  noPublish=1;;
-    t)  releaseType="$OPTARG";;
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -v|--verbose)
+            verbose=1
+            shift
+            ;;
+        -f|--force)
+            force=1
+            shift
+            ;;
+        -n|--no-push)
+            noPush=1
+            shift
+            ;;
+        -p|--no-publish)
+            noPublish=1
+            shift
+            ;;
+        -t|--release-type)
+            releaseType="$2"
+            shift 2
+            ;;
+        *)
+            break
+            ;;
     esac
 done
 
@@ -129,38 +148,122 @@ fi
 cd "$projectDir" || exit 1
 
 packageName=$(basename "$(dirname "$(find . -name '__init__.py' -maxdepth 2 | head -n 1)")")
+# If packageName is empty or ".", try to infer it if a pyproject.toml exists and has a name
+if [[ -z "$packageName" || "$packageName" == "." ]] && [[ -f "$projectDir/pyproject.toml" ]]; then
+    # Try to get package name from pyproject.toml using a simple grep and sed
+    inferredName=$(grep -m 1 -E '^\\s*name\\s*=\\s*"[^"]+"' "$projectDir/pyproject.toml" | sed -E 's/^\\s*name\\s*=\\s*"([^"]+)"\\s*$/\\1/')
+    if [[ -n "$inferredName" ]]; then
+        packageName="$inferredName"
+        _info "Inferred package name '$packageName' from pyproject.toml"
+    fi
+fi
 
 if ! [[ -f setup.py ]]; then
-  _error "No setup.py found, using uv to build package"
-  exit 1
+  if [[ -f pyproject.toml ]]; then
+    _info "No setup.py found. Found pyproject.toml, proceeding with PEP 517 build."
+  else
+    _error "Neither setup.py nor pyproject.toml found. Cannot determine how to build the package."
+    exit 1
+  fi
+else
+  if [[ -f pyproject.toml ]]; then
+    _info "Found both setup.py and pyproject.toml. Build will likely use pyproject.toml."
+  else
+    _info "Found setup.py. Build will use it."
+  fi
 fi
 
 _check_uv
-_check_packages
 _check_repo "$projectDir"
 [[ "$force" -eq 1 ]] || _check_repo_status
 
-pythonVersionFile=$(grep -l --include \*.py -r '__version__ =' "$packageName" | head -n 1)
-pyprojectVersionFile=pyproject.toml
+pythonVersionFile=
+pyprojectVersionFile=
+currentVersion=
+versionSource=
 
-if [[ -z $pythonVersionFile ]]; then
-  _error "No version file found!"; exit 1
+# Try to find pyproject.toml first
+if [[ -f "$projectDir/pyproject.toml" ]]; then
+  pyprojectVersionFile="$projectDir/pyproject.toml"
+  currentVersion=$(_read_pyproject_version "$pyprojectVersionFile")
+  if [[ -n "$currentVersion" ]]; then
+    versionSource="pyproject.toml"
+  fi
 fi
 
-if [[ -f $pyprojectVersionFile ]]; then
-  _info "Found pyproject.toml file in addition to Python version file!"
+# Try to find Python version file (e.g., __init__.py or _version.py)
+# Search within the package directory or common locations like src/
+# Prioritize a direct match in packageName if it exists, then src/packageName, then broader search
+search_paths=()
+if [[ -n "$packageName" && -d "$projectDir/$packageName" ]]; then
+  search_paths+=("$projectDir/$packageName")
+fi
+if [[ -n "$packageName" && -d "$projectDir/src/$packageName" ]]; then
+  search_paths+=("$projectDir/src/$packageName")
+fi
+search_paths+=("$projectDir/src" "$projectDir") # Broader search as fallback
+
+foundPythonVersionFile=
+for search_path in "${search_paths[@]}"; do
+  if [[ -d "$search_path" ]]; then # Ensure search path exists
+    foundPythonVersionFile=$(find "$search_path" -maxdepth 2 -type f -name '*.py' -exec grep -H '__version__\s*=' {} \; | head -n 1 | cut -d: -f1)
+    if [[ -n "$foundPythonVersionFile" ]]; then
+      break
+    fi
+  fi
+done
+
+if [[ -n "$foundPythonVersionFile" ]]; then
+  pythonVersionFile="$foundPythonVersionFile"
+  pythonFileVersion=$(_read_version "$pythonVersionFile")
+
+  if [[ -z "$currentVersion" ]]; then # If pyproject.toml version was not found or pyproject.toml doesn't exist
+    currentVersion="$pythonFileVersion"
+    versionSource="Python file ($pythonVersionFile)"
+  elif [[ "$currentVersion" != "$pythonFileVersion" ]]; then
+    _warn "Version mismatch! pyproject.toml has $currentVersion, Python file ($pythonVersionFile) has $pythonFileVersion. Using pyproject.toml version."
+    # Keep currentVersion from pyproject.toml as primary
+  fi
+fi
+
+if [[ -z "$currentVersion" ]]; then
+  _error "No version definition found in pyproject.toml or any Python file! Cannot proceed."
+  exit 1
+fi
+
+if [[ -z "$pythonVersionFile" && -z "$pyprojectVersionFile" ]]; then
+   _error "No version file found! Neither pyproject.toml nor a Python file with __version__."; exit 1
+fi
+
+if [[ -f $pyprojectVersionFile && -n "$(_read_pyproject_version $pyprojectVersionFile)" ]]; then
+  _info "Found pyproject.toml with version information."
 else
+  # Unset pyprojectVersionFile if it doesn't contain a version or doesn't exist
+  # to prevent trying to update it later if it's not a valid version source.
   pyprojectVersionFile=
 fi
 
+if [[ -f $pythonVersionFile && -n "$(_read_version $pythonVersionFile)" ]]; then
+  _info "Found Python version file: $pythonVersionFile"
+else
+  # Unset pythonVersionFile if it doesn't actually contain a version, to prevent later errors.
+  pythonVersionFile=
+fi
+
 latestHash=$(git log --pretty=format:'%h' -n 1)
-currentVersion=$(_read_version "$pythonVersionFile")
 
 echo
 echo "Project directory: $(realpath "$projectDir")"
-echo "Package name:      $packageName"
-echo "Version file:      $pythonVersionFile"
-echo "Pyproject file:    $pyprojectVersionFile"
+if [[ -n "$packageName" && "$packageName" != "." ]]; then
+  echo "Package name:      $packageName"
+fi
+echo "Version read from: $versionSource"
+if [[ -n "$pythonVersionFile" ]]; then
+  echo "Python version file: $pythonVersionFile"
+fi
+if [[ -n "$pyprojectVersionFile" ]]; then
+  echo "Pyproject file:    $pyprojectVersionFile"
+fi
 echo "Repo hash:         $latestHash"
 echo "Current version:   $currentVersion"
 
@@ -203,49 +306,70 @@ _info "Setting new version to: $newVersion"
 _restore() {
   _warn "To restore, run something like:"
   echo "cd '$projectDir'"
-  echo "git reset --hard origin/master"
+  # Determine which files were changed to provide accurate restore commands
+  if [[ -n "$pythonVersionFile" ]]; then
+    echo "git checkout -- \"$pythonVersionFile\""
+  fi
+  if [[ -n "$pyprojectVersionFile" ]]; then
+    echo "git checkout -- \"$pyprojectVersionFile\""
+  fi
+  echo "git reset --hard HEAD~1" # Go back to before the bump commit
   echo "git tag -d v$newVersion"
 }
 
 # give the user some info in case of errors
 trap _restore ERR
 
-# replace the Python version
-perl -pi -e "s/\Q$currentVersion\E/$newVersion/" "$pythonVersionFile"
-git add "$pythonVersionFile"
+# replace the Python version if file exists and was identified
+if [[ -n "$pythonVersionFile" ]]; then
+  _info "Updating version in $pythonVersionFile ..."
+  perl -pi -e "s/^(__version__\s*=\s*['\"])\Q$currentVersion\E(['\"])/\${1}${newVersion}\${2}/" "$pythonVersionFile"
+  git add "$pythonVersionFile"
+fi
 
-# replace the pyproject version, if applicable
-if [[ -n $pyprojectVersionFile ]]; then
-  perl -pi -e "s/\Q$currentVersion\E/$newVersion/" "$pyprojectVersionFile"
+# replace the pyproject version, if file exists and was identified
+if [[ -n "$pyprojectVersionFile" ]]; then
+  _info "Updating version in $pyprojectVersionFile ..."
+  perl -pi -e "s/^(version\s*=\s*['\"])\Q$currentVersion\E(['\"])/\${1}${newVersion}\${2}/" "$pyprojectVersionFile"
   git add "$pyprojectVersionFile"
 fi
 
-# bump initially but to not push yet
-git commit -m "Bump version to ${newVersion}"
-git tag -a -m "Tag version ${newVersion}" "v$newVersion"
+# Ensure at least one file was updated before committing
+if ! git diff --cached --quiet; then
+  # bump initially but to not push yet
+  git commit -m "Bump version to ${newVersion}"
+  git tag -a -m "Tag version ${newVersion}" "v$newVersion"
 
-# generate the changelog
-uvx --with pystache gitchangelog > CHANGELOG.md
+  # generate the changelog
+  uvx --with pystache gitchangelog > CHANGELOG.md
 
-# add the changelog and amend it to the previous commit and tag
-git add CHANGELOG.md
-git commit --amend --no-edit
-
-# generate the docs, if available
-if [[ -d docs ]]; then
-  _info "Generating docs ..."
-  if [[ -f mkdocs.yml ]]; then
-    echo "Skipping pdoc, you should use mkdocs to generate the docs"
-  else
-    uvx pdoc -d google -o docs "./$packageName"
-    git add docs
-  fi
+  # add the changelog and amend it to the previous commit and tag
+  git add CHANGELOG.md
   git commit --amend --no-edit
-else
-  _info "No docs directory found, skipping ... (if you want to generate docs, create an empty docs directory first)"
-fi
 
-git tag -a -f -m "Tag version ${newVersion}" "v$newVersion"
+  # generate the docs, if available
+  if [[ -d docs ]]; then
+    _info "Generating docs ..."
+    if [[ -f mkdocs.yml ]]; then
+      echo "Skipping pdoc, you should use mkdocs to generate the docs"
+    else
+      doc_target_module="."
+      if [[ -n "$packageName" && "$packageName" != "." && -d "./$packageName" ]]; then
+        doc_target_module="./$packageName"
+      fi
+      _info "Using '$doc_target_module' as pdoc target module."
+      uvx pdoc -d google -o docs "$doc_target_module"
+      git add docs
+    fi
+    git commit --amend --no-edit
+  else
+    _info "No docs directory found, skipping ... (if you want to generate docs, create an empty docs directory first)"
+  fi
+
+  git tag -a -f -m "Tag version ${newVersion}" "v$newVersion"
+else
+  _warn "No version files were updated. Skipping commit and tag."
+fi
 
 rm -rf dist/* build
 _info "Building package ..."
