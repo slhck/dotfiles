@@ -249,7 +249,9 @@ git tag -a -f -m "Tag version ${newVersion}" "v$newVersion"
 
 rm -rf dist/* build
 _info "Building package ..."
-python3 setup.py sdist bdist_wheel
+rm -rf dist/* tar.gz
+rm -rf dist/* whl
+python3 -m build --wheel
 
 if [[ $noPush -eq 1 ]]; then
   _warn "Skipping push!"
