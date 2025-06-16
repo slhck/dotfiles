@@ -31,7 +31,7 @@ if [[ "$(uname)" == "Linux" ]]; then
     ~/.fzf/install --completion --key-bindings --update-rc
 
     # autojump
-    git clone git://github.com/joelthelion/autojump.git ~/autojump
+    git clone https://github.com/wting/autojump ~/autojump
     (cd ~/autojump && ./install.py)
     rm -rf ~/autojump
 
