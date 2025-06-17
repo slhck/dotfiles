@@ -358,7 +358,14 @@ if ! git diff --cached --quiet; then
         doc_target_module="./$packageName"
       fi
       _info "Using '$doc_target_module' as pdoc target module."
-      uvx pdoc -d google -o docs "$doc_target_module"
+      if [[ -f requirements.txt ]]; then
+        uvx --with-requirements requirements.txt pdoc -d google -o docs "$doc_target_module"
+      else
+        _warn "No requirements.txt found, using pdoc without requirements, this may fail!"
+        uvx pdoc -d google -o docs "$doc_target_module" || {
+          _error "pdoc failed, please check the requirements.txt file. Continuing anyway ..."
+        }
+      fi
       git add docs
     fi
     git commit --amend --no-edit
