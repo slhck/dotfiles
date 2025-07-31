@@ -43,9 +43,6 @@ if [[ "$(uname)" == "Linux" ]]; then
 
     # NVM
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-
-    # uv
-    curl -LsSf https://astral.sh/uv/install.sh | sh
 else
     echo "No installing FZF, Autojump, Rbenv, Pyenv and NVM since they come from Homebrew"
 fi

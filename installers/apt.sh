@@ -81,5 +81,8 @@ curl --silent "https://api.github.com/repos/sharkdp/hyperfine/releases/latest" |
 sudo dpkg -i hyperfine.deb
 rm -f hyperfine.deb
 
+# uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
 # Linuxbrew is optional
 # sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
