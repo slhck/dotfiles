@@ -7,8 +7,6 @@ tap "heroku/brew"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
 tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
@@ -90,6 +88,8 @@ brew "bat"
 brew "bazel"
 # GNU binary tools for native development
 brew "binutils"
+# Toolchain of the web
+brew "biome"
 # Interface bandwidth monitor
 brew "bmon"
 # Collection of portable C++ source libraries
@@ -418,8 +418,6 @@ brew "qscintilla2"
 brew "sundials"
 # High-level interpreted language for numerical computing
 brew "octave"
-# Create, run, and share large language models (LLMs)
-brew "ollama", restart_service: :changed
 # Toolkit for 3D computer graphics, image processing, and visualization
 brew "vtk"
 # Open source computer vision library
@@ -484,8 +482,12 @@ brew "ruby-build"
 brew "rbenv"
 # Reattach process (e.g., tmux) to background
 brew "reattach-to-user-namespace"
+# Docker and OCI Registry Client in Go and tooling using those libraries
+brew "regclient"
 # Perl-powered file rename script with many helpful built-ins
 brew "rename"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # Standard unix software packaging tool
 brew "rpm"
 # Utility that provides fast incremental file transfer
@@ -534,8 +536,6 @@ brew "subversion"
 brew "swift-format"
 # Command-line packet analyzer
 brew "tcpdump"
-# User interface to the TELNET protocol
-brew "telnet", link: false
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
 # Programmatically correct mistyped console commands
@@ -546,6 +546,8 @@ brew "timg"
 brew "tldr"
 # Terminal multiplexer
 brew "tmux"
+# Modern reverse proxy
+brew "traefik"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # MPEG Transport Stream Toolkit
@@ -580,6 +582,8 @@ brew "youplot"
 brew "yq"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
 # UNIX shell (command interpreter)
 brew "zsh"
 # OctoSQL is a query tool that allows you to join, analyse and transform data from multiple databases and file formats using SQL.
@@ -627,7 +631,7 @@ cask "deskpad"
 # Voice and text chat software
 cask "discord"
 # App to build and share containerised applications and microservices
-cask "docker"
+cask "docker-desktop"
 # Client for the Dropbox cloud storage service
 cask "dropbox"
 # Matrix collaboration client
@@ -649,20 +653,20 @@ cask "font-source-sans-pro"
 cask "font-source-serif-pro"
 # Horizontal and vertical rulers
 cask "free-ruler"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
 # Tool to measure the computer system's performance
 cask "geekbench"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Free and open-source image editor
 cask "gimp"
-# Set of tools to manage resources and applications hosted on Google Cloud
-cask "google-cloud-sdk"
 # Client for the Google Drive storage service
 cask "google-drive"
 # Graphically shows disk usage within a file system
 cask "grandperspective"
 # Open-source video transcoder
-cask "handbrake"
+cask "handbrake-app"
 # Hex editor focussing on speed
 cask "hex-fiend"
 # Terminal emulator as alternative to Apple's Terminal app
@@ -709,7 +713,7 @@ cask "qlvideo"
 # Quick Look plugin for JSON files
 cask "quicklook-json"
 # Environment for statistical computing and graphics
-cask "r"
+cask "r-app"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
 # Official desktop client for Rocket.Chat
@@ -748,8 +752,6 @@ cask "transmission"
 cask "tunnelblick"
 # AI image upscaler
 cask "upscayl"
-# Development environment
-cask "vagrant"
 # Gives Vagrant VMware plugin access to various VMware functionalities
 cask "vagrant-vmware-utility"
 # Open-source code editor
@@ -761,12 +763,24 @@ cask "webpquicklook"
 # Native desktop client for WhatsApp
 cask "whatsapp"
 # Network protocol analyzer
-cask "wireshark"
+cask "wireshark-app"
 # Open-source version of the X.Org X Window System
 cask "xquartz"
 cask "yemuzip"
 # Video communication and virtual meeting platform
 cask "zoom"
+mas "Blackmagic Disk Speed Test", id: 425264550
+mas "Developer", id: 640199958
+mas "GarageBand", id: 682658836
+mas "Gifski", id: 1351639930
+mas "iMovie", id: 408981434
+mas "Keynote", id: 409183694
+mas "LanScan", id: 472226235
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "WireGuard", id: 1451685025
+mas "Xcode", id: 497799835
 vscode "asabil.meson"
 vscode "bibhasdn.unique-lines"
 vscode "bierner.markdown-mermaid"
@@ -813,6 +827,7 @@ vscode "jkjustjoshing.vscode-text-pastry"
 vscode "jock.svg"
 vscode "koichisasada.vscode-rdbg"
 vscode "konstantin.wrapselection"
+vscode "llvm-vs-code-extensions.lldb-dap"
 vscode "loyieking.smalise"
 vscode "mads-hartmann.bash-ide-vscode"
 vscode "magicstack.magicpython"
@@ -826,6 +841,7 @@ vscode "miguel-savignano.ruby-symbols"
 vscode "mikestead.dotenv"
 vscode "misogi.ruby-rubocop"
 vscode "mrmlnc.vscode-json5"
+vscode "ms-azuretools.vscode-containers"
 vscode "ms-azuretools.vscode-docker"
 vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
 vscode "ms-playwright.playwright"
@@ -835,6 +851,7 @@ vscode "ms-python.isort"
 vscode "ms-python.mypy-type-checker"
 vscode "ms-python.python"
 vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
 vscode "ms-toolsai.jupyter"
 vscode "ms-toolsai.jupyter-keymap"
 vscode "ms-toolsai.jupyter-renderers"
@@ -845,6 +862,7 @@ vscode "ms-vscode-remote.remote-ssh"
 vscode "ms-vscode-remote.remote-ssh-edit"
 vscode "ms-vscode-remote.remote-wsl"
 vscode "ms-vscode-remote.vscode-remote-extensionpack"
+vscode "ms-vscode.azure-repos"
 vscode "ms-vscode.cmake-tools"
 vscode "ms-vscode.cpptools"
 vscode "ms-vscode.cpptools-extension-pack"
@@ -873,6 +891,7 @@ vscode "redhat.java"
 vscode "redhat.vscode-xml"
 vscode "redhat.vscode-yaml"
 vscode "reditorsupport.r"
+vscode "reditorsupport.r-syntax"
 vscode "shopify.ruby-extensions-pack"
 vscode "shopify.ruby-lsp"
 vscode "sleistner.vscode-fileutils"
