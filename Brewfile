@@ -96,6 +96,8 @@ brew "bmon"
 brew "boost"
 # Install RubyGems as Homebrew formulae
 brew "brew-gem"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
 # Freely available high-quality data compressor
 brew "bzip2"
 # Suite of Sparse Matrix Software
@@ -138,6 +140,8 @@ brew "zimg"
 brew "ffmpeg"
 # Package for scientific computing with Python
 brew "numpy"
+# JSON for modern C++
+brew "nlohmann-json"
 # Open Visual Inference And Optimization toolkit for AI inference
 brew "openvino"
 # Core component of the AcoustID project (Audio fingerprinting)
@@ -246,6 +250,8 @@ brew "git-gui"
 brew "git-lfs"
 # Update multiple git repositories at once
 brew "gitup"
+# Open-source GitLab command-line tool
+brew "glab"
 # Multi-platform library for OpenGL applications
 brew "glfw"
 # GNU implementation of the famous stream editor
@@ -275,7 +281,9 @@ brew "gpac"
 # Library access to GnuPG
 brew "gpgme"
 # Ping, but with a graph
-brew "gping", link: false
+brew "gping"
+# Open-source build automation tool based on the Groovy and Kotlin DSL
+brew "gradle"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Image processing tools collection
@@ -323,7 +331,7 @@ brew "imagemagick"
 # Image loading and rendering library
 brew "imlib2"
 # GNU utilities for networking
-brew "inetutils"
+brew "inetutils", link: false
 # Audio Connection Kit
 brew "jack"
 # Command-line pager for JSON data
@@ -404,8 +412,6 @@ brew "netcdf"
 brew "nethogs"
 # HTTP/2 C Library
 brew "nghttp2"
-# JSON for modern C++
-brew "nlohmann-json"
 # Port scanning utility for large networks
 brew "nmap"
 # Platform built on V8 to build network applications
@@ -534,6 +540,8 @@ brew "streamlink"
 brew "subversion"
 # Formatting technology for Swift source code
 brew "swift-format"
+# Generate scripting interfaces to C/C++ code
+brew "swig"
 # Command-line packet analyzer
 brew "tcpdump"
 # Send macOS User Notifications from the command-line
@@ -550,6 +558,8 @@ brew "tmux"
 brew "traefik"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Vulnerability scanner for container images, file systems, and Git repos
+brew "trivy"
 # MPEG Transport Stream Toolkit
 brew "tsduck"
 # Unidata unit conversion library
@@ -640,6 +650,8 @@ cask "element"
 cask "fig"
 # Web browser
 cask "firefox"
+# Virtual workspace manager
+cask "flashspace"
 cask "font-glegoo"
 cask "font-jetbrains-mono"
 cask "font-lato"
