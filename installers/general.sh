@@ -14,7 +14,7 @@ else
 fi
 
 # SSH
-cat /dev/zero | ssh-keygen -t rsa -q -N ""
+cat /dev/zero | ssh-keygen -q -N ""
 
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
