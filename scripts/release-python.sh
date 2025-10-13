@@ -219,7 +219,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
   # Commit changes
   git add pyproject.toml uv.lock
-  git commit -m "bump version to $newVersion"
+  git commit -m "chore: bump version to $newVersion"
   git tag -a "v$newVersion" -m "v$newVersion"
 
   # Generate changelog
