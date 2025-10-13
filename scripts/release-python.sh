@@ -3,7 +3,10 @@
 # Semi-automatic release script for Python projects
 #
 # Requirements:
-# - `pip3 install wheel twine gitchangelog`
+# - `uv`
+# - Optional:
+# - `gh` CLI for GitHub releases (https://cli.github.com/)
+# - `git-cliff` for better changelog generation (https://git-cliff.org/), will fall back to gitchangelog
 #
 # Author: Werner Robitza
 
@@ -46,6 +49,14 @@ _check_uv() {
   uv --version || { _error "uv is not installed. Install from https://docs.astral.sh/uv/getting-started/installation/"; exit 1; }
 }
 
+_check_gh_and_git_cliff() {
+  if command -v gh git-cliff &> /dev/null; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 _check_repo() {
   [[ -d "$1/.git" ]] || \
     { _error "Project directory $projectDir is not a Git repo!"; exit 1; }
@@ -61,7 +72,6 @@ _check_repo_status() {
   [[ "$(git rev-parse HEAD)" == "$(git rev-parse @{u})" ]] || \
     { _error "Git repo not up to date! Pull/merge first."; exit 1; }
 }
-
 
 # ==============================================================================
 # MAIN SCRIPT
@@ -203,22 +213,27 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   # Bump version using uv
   uv version --bump "$releaseType"
-  
+
   # Get the new version
   newVersion=$(uv version --short)
-  
+
   # Commit changes
   git add pyproject.toml uv.lock
   git commit -m "bump version to $newVersion"
   git tag -a "v$newVersion" -m "v$newVersion"
-  
+
   # Generate changelog
-  uvx --with pystache gitchangelog > CHANGELOG.md
-  
+  if command -v git-cliff &> /dev/null; then
+    git-cliff > CHANGELOG.md 2> /dev/null
+  else
+    _warn "git-cliff not found. Falling back to slower gitchangelog!"
+    uvx --with pystache gitchangelog > CHANGELOG.md
+  fi
+
   git add CHANGELOG.md
   git commit --no-verify --amend --no-edit
   git tag -a -f -m "v$newVersion" "v$newVersion"
-  
+
   # Generate the docs, if available
   if [[ -d docs ]]; then
     _info "Generating docs ..."
@@ -236,19 +251,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       elif [[ -d "$packageName" ]]; then
         doc_target_module="$packageName"
       fi
-      
+
       # If we couldn't find a specific module directory, skip pdoc
       if [[ -z "$doc_target_module" ]]; then
         _warn "Could not find module directory for package '$packageName' (tried src/$moduleName, src/$packageName, $moduleName, $packageName)"
         _warn "Skipping pdoc documentation generation"
       else
         _info "Using '$doc_target_module' as pdoc target module."
-        
+
         # Use uv to run pdoc with the project dependencies
         uv run pdoc -d google -o docs "$doc_target_module" || {
           _error "pdoc failed. Continuing anyway ..."
         }
-        
+
         git add docs
         git commit --no-verify --amend --no-edit
         git tag -a -f -m "v$newVersion" "v$newVersion"
@@ -272,11 +287,50 @@ if [[ $noPush -eq 1 ]]; then
 else
   # Get the current branch name
   currentBranch=$(git branch --show-current)
-  
+
   # Push to Git
   _info "Pushing to remote ..."
   git push origin "$currentBranch"
   git push origin "v$newVersion"
+
+  # Create GitHub release if gh is available.
+  # We needw git-cliff too because gitchangelog's filtering is not intuitive.
+  if _check_gh_and_git_cliff; then
+    _info "Creating GitHub release ..."
+
+    # Generate release notes
+    # First, get the previous tag
+    prevTag=$(git describe --tags --abbrev=0 "v$newVersion^" 2>/dev/null || echo "")
+
+    # Try git-cliff first for more control
+    if [[ -n "$prevTag" ]]; then
+      releaseNotes=$(git-cliff --strip all "$prevTag..v$newVersion" 2>/dev/null)
+    else
+      releaseNotes=$(git-cliff --strip all --latest 2>/dev/null)
+    fi
+
+    # Create the release with assets
+    if [[ -n "$(ls -A dist 2>/dev/null)" ]]; then
+      echo "$releaseNotes" | gh release create "v$newVersion" \
+        --title "v$newVersion" \
+        --notes-file - \
+        dist/*
+    else
+      echo "$releaseNotes" | gh release create "v$newVersion" \
+        --title "v$newVersion" \
+        --notes-file -
+    fi
+
+    if [[ $? -eq 0 ]]; then
+      _info "GitHub release created successfully!"
+    else
+      _warn "Failed to create GitHub release. Continuing anyway..."
+    fi
+  else
+    _warn "gh CLI or git-cliff not found. Skipping GitHub release creation."
+    _info "Install gh from: https://cli.github.com/"
+    _info "Install git-cliff from: https://git-cliff.org/"
+  fi
 fi
 
 if [[ $noPublish -eq 1 ]]; then
