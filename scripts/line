@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Print a specific line number from stdin
+set -e
+set -u
+
+head -n "$1" | tail -n 1

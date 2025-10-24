@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Convert smart quotes to straight quotes
+set -e
+set -u
+set -o pipefail
+
+# shellcheck disable=SC1112
+sed 's/[“”]/"/g; s/[‘’]/'"'"'/g'

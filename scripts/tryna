@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Run a command repeatedly until it succeeds
+set -u
+
+"$@"
+while [[ ! "$?" -eq 0 ]]; do
+  sleep 0.5
+  "$@"
+done

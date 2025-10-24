@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Print current date in ISO format (e.g., 2020-04-20)
+set -e
+set -u
+set -o pipefail
+
+echo -n "$(date '+%Y-%m-%d')"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Simple stopwatch (press Ctrl+D to stop)
+set -e
+set -u
+
+date "+%l:%M:%S%p: stopwatch started (^D to stop)"
+time cat
+date "+%l:%M:%S%p: stopwatch stopped"

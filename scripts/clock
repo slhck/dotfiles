@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Display a continuously updating clock in the terminal
+set -e
+set -u
+set -o pipefail
+
+exec watch -tn 1 date '+%l:%M:%S%p'

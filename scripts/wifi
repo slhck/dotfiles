@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# Control system wifi (on/off/toggle/status)
+set -e
+set -u
+
+OSX_AIRPORT='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
+RFKILL='sudo /usr/sbin/rfkill'
+
+is_wifi_enabled() {
+  local result
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    result="$("$OSX_AIRPORT" -I)"
+    if [[ "$result" == 'AirPort: Off' ]]; then
+      echo 'false'
+    else
+      echo 'true'
+    fi
+  else
+    echo 'not supported yet'
+    exit 1
+  fi
+}
+
+make_sure_wifi_is_enabled() {
+  if [[ "$(is_wifi_enabled)" == 'false' ]]; then
+    echo 'wifi is disabled; cannot perform this operation'
+    exit 1
+  fi
+}
+
+wifi_list() {
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    "$OSX_AIRPORT" -s
+  else
+    echo 'not supported yet'
+    exit 1
+  fi
+}
+
+wifi_join() {
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    networksetup -setairportnetwork en0 "$1" "$2"
+  else
+    echo 'not supported yet'
+    exit 1
+  fi
+}
+
+wifi_off() {
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    networksetup -setairportpower en0 off
+  else
+    $RFKILL block wifi
+  fi
+}
+
+wifi_on() {
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    networksetup -setairportpower en0 on
+  else
+    $RFKILL unblock wifi
+  fi
+}
+
+wifi_toggle() {
+  if [[ "$(uname)" == 'Darwin' ]]; then
+    wifi_off
+    sleep 1
+    wifi_on
+  else
+    sudo systemctl restart wpa_supplicant
+  fi
+}
+
+help() {
+  echo 'wifi status                       print wifi status'
+  echo 'wifi list                         list networks'
+  echo 'wifi join [username] [password]   join a network'
+  echo 'wifi off                          turn off wifi'
+  echo 'wifi on                           turn on wifi'
+  echo 'wifi toggle                       turn off wifi, then on'
+  echo 'wifi help                         show this message'
+}
+
+if [[ $# == 0 ]]; then
+  help
+  exit 0
+elif [[ "$1" == 'help' ]]; then
+  help
+  exit 0
+elif [[ "$1" == 'status' ]]; then
+  if [[ "$(is_wifi_enabled)" == 'true' ]]; then
+    echo 'wifi is enabled'
+    echo 'not sure how to parse the rest yet'
+  else
+    echo 'wifi is disabled'
+  fi
+elif [[ "$1" == 'list' ]]; then
+  make_sure_wifi_is_enabled
+  wifi_list
+elif [[ "$1" == 'join' ]]; then
+  make_sure_wifi_is_enabled
+  wifi_join "$2" "$3"
+elif [[ "$1" == 'off' ]]; then
+  wifi_off
+elif [[ "$1" == 'on' ]]; then
+  wifi_on
+elif [[ "$1" == 'toggle' ]]; then
+  wifi_toggle
+else
+  echo "I don't know about that command"
+  exit 1
+fi

@@ -34,9 +34,6 @@ sudo apt install --assume-yes \
     pngquant \
     pv \
     pwgen \
-    python3-dev \
-    python3-pip \
-    python3-setuptools \
     rar \
     tree \
     ufw \

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Start a timer that plays a sound and sends a notification when complete
+set -e
+set -u
+set -o pipefail
+
+sleep "$1"
+sfx ringaling
+notify 'timer complete' "$1"

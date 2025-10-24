@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Convert text from stdin to lowercase
+set -e
+set -u
+set -o pipefail
+
+tr '[:upper:]' '[:lower:]'

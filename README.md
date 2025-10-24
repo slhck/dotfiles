@@ -28,6 +28,7 @@ Then:
 1. Run the `installers/node.sh` script
 1. Run the `installers/python.sh` script
 1. Run the `installers/gui.sh` script for GUI-relevant stuff
+1. Run `scripts/install-scripts.sh` to install all custom scripts to `~/.bin`
 
 # Syncing Software
 
@@ -41,3 +42,9 @@ Then:
 ```
 brew bundle dump --force --describe
 ```
+
+# License
+
+This repository is licensed under the MIT License.
+
+Further scripts by Evan Hahn from https://codeberg.org/EvanHahn/dotfiles/ under public domain.

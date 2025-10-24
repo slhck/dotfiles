@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+# Add '>' before every line for Markdown block quotes
+import sys
+
+for line in sys.stdin:
+    trimmed = line.strip()
+    if trimmed == "":
+        print(">")
+    elif trimmed.startswith(">"):
+        print(trimmed)
+    else:
+        print("> " + trimmed)
