@@ -3,7 +3,42 @@
 set -e
 set -u
 
-for i in {0..255}; do
-  echo -ne "[38;5;${i}m$i "
+echo "256 Color Palette:"
+echo "=================="
+# Print colors in a 16x16 matrix
+for row in {0..15}; do
+  for col in {0..15}; do
+    i=$((row * 16 + col))
+    printf "\u001b[38;5;${i}m%3d " "$i"
+  done
+  echo -e "\u001b[0m"
 done
-echo
+
+echo ""
+echo "Base ANSI Colors (Escape Codes):"
+echo "================================="
+
+# Standard colors (30-37)
+colors=("Black" "Red" "Green" "Yellow" "Blue" "Magenta" "Cyan" "White")
+for i in {0..7}; do
+  code=$((30 + i))
+  printf "\u001b[${code}m%-10s\u001b[0m : \\\\e[${code}m  or  \\\\033[${code}m  or  \\\\u001b[38;5;${i}m\n" "${colors[$i]}"
+done
+
+echo ""
+# Bright colors (90-97)
+bright_colors=("Bright Black" "Bright Red" "Bright Green" "Bright Yellow" "Bright Blue" "Bright Magenta" "Bright Cyan" "Bright White")
+for i in {0..7}; do
+  code=$((90 + i))
+  color_code=$((8 + i))
+  printf "\u001b[${code}m%-13s\u001b[0m : \\\\e[${code}m  or  \\\\033[${code}m  or  \\\\u001b[38;5;${color_code}m\n" "${bright_colors[$i]}"
+done
+
+echo ""
+echo "Reset Codes:"
+echo "============"
+echo "Reset all    : \\e[0m  or  \\033[0m  or  \\u001b[0m"
+echo "Reset fg     : \\e[39m  or  \\033[39m  or  \\u001b[39m"
+echo "Reset bg     : \\e[49m  or  \\033[49m  or  \\u001b[49m"
+
+echo -e "\u001b[0m"
