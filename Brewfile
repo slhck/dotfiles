@@ -11,11 +11,13 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
 tap "octave-app/octave-app"
+tap "oven-sh/bun"
 tap "pamburus/tap"
 tap "randy3k/r"
 tap "saulpw/vd"
 tap "segment-integrations/formulae"
 tap "slhck/moreutils"
+tap "snowflakedb/snowflake-cli"
 tap "supabase/tap"
 tap "svt/avtools"
 tap "teamookla/speedtest"
@@ -46,6 +48,8 @@ brew "openssl@3"
 brew "cryptography"
 # C library SSHv1/SSHv2 client and server protocols
 brew "libssh"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
 # Color management engine supporting ICC profiles
@@ -76,6 +80,8 @@ brew "autojump"
 brew "automake"
 # Official Amazon AWS command-line interface
 brew "awscli"
+# Terminal bandwidth utilization tool
+brew "bandwhich"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # C library implementing the SSH2 protocol
@@ -88,8 +94,6 @@ brew "bat"
 brew "bazel"
 # GNU binary tools for native development
 brew "binutils"
-# Toolchain of the web
-brew "biome"
 # Interface bandwidth monitor
 brew "bmon"
 # Collection of portable C++ source libraries
@@ -138,12 +142,6 @@ brew "tesseract"
 brew "zimg"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
-# Package for scientific computing with Python
-brew "numpy"
-# JSON for modern C++
-brew "nlohmann-json"
-# Open Visual Inference And Optimization toolkit for AI inference
-brew "openvino"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -198,8 +196,6 @@ brew "fb303"
 brew "edencommon"
 # Convert text to Postscript, HTML, or RTF, with syntax highlighting
 brew "enscript"
-# Interpreter for PostScript and PDF
-brew "ghostscript"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
 # EXIF and IPTC metadata manipulation library and tools
@@ -214,8 +210,6 @@ brew "ffmpeg@4"
 brew "ffmpeg@6"
 # C routines to compute the Discrete Fourier Transform
 brew "fftw"
-# Image manipulation
-brew "netpbm"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # Real-time software synthesizer based on the SoundFont 2 specs
@@ -232,8 +226,14 @@ brew "freetds"
 brew "gawk"
 # Graphics library to dynamically manipulate images
 brew "gd"
+# Multi-platform support library with a focus on asynchronous I/O
+brew "libuv"
+# Interact with Google Gemini AI models from the command-line
+brew "gemini-cli"
 # GitHub command-line tool
 brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Distributed revision control system
 brew "git"
 # Highly customizable changelog generator
@@ -288,6 +288,8 @@ brew "gradle"
 brew "libheif"
 # Image processing tools collection
 brew "graphicsmagick"
+# Image manipulation
+brew "netpbm"
 # GNU triangulated surface library
 brew "gts"
 # Graph visualization software from AT&T and Bell Labs
@@ -310,6 +312,8 @@ brew "guile"
 brew "hcloud"
 # Kubernetes package manager
 brew "helm"
+# Fast and powerful log viewer and processor
+brew "hl"
 # Interactive parallel SSH client
 brew "hss"
 # Improved top (interactive process viewer)
@@ -354,14 +358,14 @@ brew "less"
 brew "lesspipe"
 # Sophisticated file transfer program
 brew "lftp"
+# Portable Foreign Function Interface library
+brew "libffi"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
 # Portable library for network traffic capture
 brew "libpcap"
 # Library that provides automatic proxy configuration management
 brew "libproxy"
-# Multi-platform support library with a focus on asynchronous I/O
-brew "libuv"
 # Access large language models from the command-line
 brew "llm"
 # Next-gen compiler infrastructure
@@ -412,18 +416,16 @@ brew "netcdf"
 brew "nethogs"
 # HTTP/2 C Library
 brew "nghttp2"
+# JSON for modern C++
+brew "nlohmann-json"
 # Port scanning utility for large networks
 brew "nmap"
-# Platform built on V8 to build network applications
-brew "node"
-# Python bindings for v6 of Qt
-brew "pyqt"
-# Port to Qt of the Scintilla editing component
-brew "qscintilla2"
-# Nonlinear and differential/algebraic equations solver
-brew "sundials"
-# High-level interpreted language for numerical computing
-brew "octave"
+# Package for scientific computing with Python
+brew "numpy"
+# Open Advanced Professional Video Codec
+brew "openapv"
+# Open Visual Inference And Optimization toolkit for AI inference
+brew "openvino"
 # Toolkit for 3D computer graphics, image processing, and visualization
 brew "vtk"
 # Open source computer vision library
@@ -472,6 +474,8 @@ brew "pybind11"
 brew "pyenv"
 # GNOME Python bindings (based on GObject Introspection)
 brew "pygobject3"
+# Python bindings for v6 of Qt
+brew "pyqt"
 # Python bindings for v5 of Qt
 brew "pyqt@5"
 # Interpreted, interactive, object-oriented programming language
@@ -482,6 +486,8 @@ brew "python@3.8"
 brew "python@3.9"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
+# Port to Qt of the Scintilla editing component
+brew "qscintilla2"
 # Install various Ruby versions and implementations
 brew "ruby-build"
 # Ruby version manager
@@ -500,8 +506,6 @@ brew "rpm"
 brew "rsync"
 # Safe, concurrent, practical language
 brew "rust"
-# Software for mathematics, science, and engineering
-brew "scipy"
 # Substitute for classic 'make' tool with autoconf/automake functionality
 brew "scons"
 # Display and control your Android device
@@ -522,8 +526,8 @@ brew "sip"
 brew "skopeo"
 # Yet another network load monitor
 brew "slurm"
-# Scans and monitors projects for security vulnerabilities
-brew "snyk-cli"
+# SOcket CAT: netcat on steroids
+brew "socat"
 # SIP User-Agent library
 brew "sofia-sip"
 # Ruby language server
@@ -538,6 +542,8 @@ brew "ssh-copy-id", link: true
 brew "streamlink"
 # Version control system designed to be a better CVS
 brew "subversion"
+# Nonlinear and differential/algebraic equations solver
+brew "sundials"
 # Formatting technology for Swift source code
 brew "swift-format"
 # Generate scripting interfaces to C/C++ code
@@ -554,14 +560,12 @@ brew "timg"
 brew "tldr"
 # Terminal multiplexer
 brew "tmux"
-# Modern reverse proxy
-brew "traefik"
-# Display directories as trees (with optional color/HTML output)
-brew "tree"
 # Vulnerability scanner for container images, file systems, and Git repos
 brew "trivy"
 # MPEG Transport Stream Toolkit
 brew "tsduck"
+# Markup-based typesetting system
+brew "typst"
 # Unidata unit conversion library
 brew "udunits"
 # File synchronization tool
@@ -572,12 +576,14 @@ brew "uv"
 brew "vale"
 # Video processing framework with simplicity in mind
 brew "vapoursynth"
-# Command-line interface for Vercel
-brew "vercel-cli"
+# Terminal spreadsheet multitool for discovering and arranging data
+brew "visidata"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
 # Watch files and take action when they change
 brew "watchman"
+# Convert HTML to PDF
+brew "weasyprint"
 # Internet file retriever
 brew "wget"
 # Successor of GNU Wget, a file and recursive website downloader
@@ -594,6 +600,8 @@ brew "yq"
 brew "yt-dlp"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
 # OctoSQL is a query tool that allows you to join, analyse and transform data from multiple databases and file formats using SQL.
@@ -604,24 +612,16 @@ brew "discoteq/discoteq/flock"
 brew "grusell/vivictpp/vivictpp"
 # Packer
 brew "hashicorp/tap/packer"
-# Everything you need to get started with Heroku
-brew "heroku/brew/heroku"
-# Log viewer for JSON and logfmt logs
-brew "pamburus/tap/hl"
-# Terminal utility for exploring and arranging tabular data
-brew "saulpw/vd/visidata"
+# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
+brew "oven-sh/bun/bun"
 # Creates an XCFramework out of a Swift Package using xcodebuild
 brew "segment-integrations/formulae/swift-create-xcframework"
-# Supabase CLI
-brew "supabase/tap/supabase"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
-# GPU-accelerated terminal emulator
-cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
 # Tools for building Android applications
@@ -632,6 +632,10 @@ cask "audacity"
 cask "bibdesk"
 # Virtual Audio Driver
 cask "blackhole-2ch"
+# Terminal-based AI coding assistant
+cask "claude-code"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
 # Command-line display management utility
 cask "cscreen"
 # Server and cloud storage browser
@@ -661,6 +665,7 @@ cask "font-oswald"
 cask "font-quicksand"
 cask "font-roboto"
 cask "font-source-code-pro"
+cask "font-source-sans-3"
 cask "font-source-sans-pro"
 cask "font-source-serif-pro"
 # Horizontal and vertical rulers
@@ -671,8 +676,6 @@ cask "gcloud-cli"
 cask "geekbench"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# Free and open-source image editor
-cask "gimp"
 # Client for the Google Drive storage service
 cask "google-drive"
 # Graphically shows disk usage within a file system
@@ -714,8 +717,6 @@ cask "octave-app"
 cask "paintbrush"
 # Collaboration platform for API development
 cask "postman"
-# Command-line shell and scripting language
-cask "powershell"
 # Audiovisual analytics and filtering for video files
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
@@ -732,6 +733,8 @@ cask "rectangle"
 cask "rocket-chat"
 # Data science software focusing on R and Python
 cask "rstudio"
+# Open source virtual/remote desktop application
+cask "rustdesk"
 # Tool to reverse the direction of scrolling
 cask "scroll-reverser"
 # Screenshot measurement and annotation tool
@@ -744,10 +747,10 @@ cask "skim"
 cask "skype"
 # Team communication and collaboration software
 cask "slack"
+# A CLI for Snowflake development
+cask "snowflake-cli"
 # Music streaming service
 cask "spotify"
-# Media player based on MPlayer and mplayer2
-cask "stolendata-mpv"
 # Replacement for RCDefaultApps, written in Swift
 cask "swiftdefaultappsprefpane"
 # Remote access and connectivity software focused on security
@@ -791,9 +794,13 @@ mas "LanScan", id: 472226235
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Pasteboard Viewer", id: 1499215709
+mas "Tailscale", id: 1475387142
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
+vscode "anthropic.claude-code"
 vscode "asabil.meson"
+vscode "astro-build.astro-vscode"
 vscode "bibhasdn.unique-lines"
 vscode "bierner.markdown-mermaid"
 vscode "biomejs.biome"
@@ -908,7 +915,6 @@ vscode "shopify.ruby-extensions-pack"
 vscode "shopify.ruby-lsp"
 vscode "sleistner.vscode-fileutils"
 vscode "sorbet.sorbet-vscode-extension"
-vscode "sswg.swift-lang"
 vscode "stkb.rewrap"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "streetsidesoftware.code-spell-checker-german"
@@ -919,21 +925,28 @@ vscode "tamasfe.even-better-toml"
 vscode "telesoho.vscode-markdown-paste-image"
 vscode "timonwong.shellcheck"
 vscode "twxs.cmake"
+vscode "usernamehw.vscode-join-lines"
 vscode "vadimcn.vscode-lldb"
-vscode "visualstudioexptteam.intellicode-api-usage-examples"
-vscode "visualstudioexptteam.vscodeintellicode"
 vscode "vitest.explorer"
 vscode "vknabel.vscode-apple-swift-format"
+vscode "vscjava.migrate-java-to-azure"
 vscode "vscjava.vscode-gradle"
 vscode "vscjava.vscode-java-debug"
 vscode "vscjava.vscode-java-dependency"
 vscode "vscjava.vscode-java-pack"
 vscode "vscjava.vscode-java-test"
+vscode "vscjava.vscode-java-upgrade"
 vscode "vscjava.vscode-maven"
 vscode "wholroyd.jinja"
-vscode "withfig.fig"
 vscode "wmaurer.change-case"
 vscode "yo1dog.cursor-align"
 vscode "yoavbls.pretty-ts-errors"
 vscode "yzhang.markdown-all-in-one"
 vscode "zhuangtongfa.material-theme"
+go "github.com/codesenberg/bombardier"
+go "github.com/unknwon/bra"
+go "github.com/go-delve/delve/cmd/dlv"
+go "golang.org/x/tools/gopls"
+go "github.com/hsiafan/httpdump"
+go "github.com/evilmartians/lefthook"
+go "honnef.co/go/tools/cmd/staticcheck"
