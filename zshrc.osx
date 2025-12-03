@@ -90,26 +90,18 @@ fi
 # -----------------------------------------------
 # JAVA
 # -----------------------------------------------
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-
-# -----------------------------------------------
-# XCode path
-# -----------------------------------------------
-export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 
 # -----------------------------------------------
 # Android
 # -----------------------------------------------
-
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
-
 
 # -----------------------------------------------
 # pnpm
 # -----------------------------------------------
-
-export PNPM_HOME="/Users/werner/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -118,16 +110,12 @@ esac
 # -----------------------------------------------
 # Extra Paths
 # -----------------------------------------------
-
 # XCode tools
 export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
-
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
-
 # Go
 export PATH="$HOME/go/bin:$PATH"
-
 # Whisper
 export GGML_METAL_PATH_RESOURCES="$(brew --prefix whisper-cpp)/share/whisper-cpp"
 

@@ -1,50 +1,135 @@
 # Dotfiles
 
-This is a repository of my dotfiles and OS X / Linux-specific installers.
+My dotfiles and macOS / Linux setup scripts.
 
-**CAVEAT:** None of this is fully automated. Take whatever you need.
+## Quick Start
 
-# Download the Repo
+```bash
+# Clone the repo
+git clone https://github.com/slhck/dotfiles ~/dotfiles
+cd ~/dotfiles
 
-Prerequisites under Linux:
+# Preview what will be installed
+./bootstrap.sh -n
+
+# Install everything
+./bootstrap.sh
+
+# Set zsh as default shell
+chsh -s $(which zsh)
+```
+
+## Usage
+
+```bash
+./bootstrap.sh [OPTIONS] [COMPONENTS...]
+```
+
+### Options
+
+| Option          | Description                                    |
+| --------------- | ---------------------------------------------- |
+| `-n, --dry-run` | Preview changes without applying               |
+| `-v, --verbose` | Show commands being executed                   |
+| `-a, --all`     | Install all components including optional ones |
+| `-l, --list`    | List available components                      |
+| `-h, --help`    | Show help                                      |
+
+### Components
+
+**Default** (installed with `./bootstrap.sh`):
+
+| Component  | Description                             |
+| ---------- | --------------------------------------- |
+| `packages` | System packages (Homebrew/apt)          |
+| `dotfiles` | Config files (.zshrc, .gitconfig, etc.) |
+| `shell`    | Oh-My-Zsh + Spaceship theme + plugins   |
+| `vim`      | Vim + ctrlp plugin                      |
+| `tmux`     | Tmux + TPM                              |
+| `python`   | Pyenv + Python                          |
+| `node`     | NVM + Node.js + yarn                    |
+| `ruby`     | Rbenv + Ruby                            |
+| `scripts`  | Custom scripts to ~/.bin                |
+| `ssh`      | SSH key generation                      |
+
+**Optional** (use `-a` or specify by name):
+
+| Component | Description                      |
+| --------- | -------------------------------- |
+| `docker`  | Docker daemon setup (Linux only) |
+
+### Examples
+
+```bash
+# Full setup
+./bootstrap.sh
+
+# Dry-run first
+./bootstrap.sh -n
+
+# Install only specific components
+./bootstrap.sh dotfiles shell
+
+# Install with optional components
+./bootstrap.sh -a
+
+# Custom Python version
+PYTHON_VERSION=3.12.0 ./bootstrap.sh python
+
+# Custom Ruby version
+RUBY_VERSION=3.3.0 ./bootstrap.sh ruby
+```
+
+## Environment Variables
+
+| Variable         | Default  | Description                         |
+| ---------------- | -------- | ----------------------------------- |
+| `PYTHON_VERSION` | `latest` | Python version to install via pyenv |
+| `NODE_VERSION`   | `lts/*`  | Node.js version to install via nvm  |
+| `RUBY_VERSION`   | `latest` | Ruby version to install via rbenv   |
+
+## Structure
 
 ```
-sudo apt update && sudo apt install -y git
-cd ~&& git clone https://github.com/slhck/dotfiles
+dotfiles/
+├── bootstrap.sh          # Main entry point
+├── Brewfile              # Homebrew packages (macOS)
+├── zshrc                 # Main zsh config
+├── zshrc.osx             # macOS-specific zsh config
+├── zshrc.linux           # Linux-specific zsh config
+├── gitconfig, vimrc, ... # Other config files
+├── installers/           # Modular installer scripts
+│   ├── packages.sh       # Homebrew/apt
+│   ├── dotfiles.sh       # Config deployment
+│   ├── shell.sh          # Oh-my-zsh + plugins
+│   ├── editors.sh        # Vim, tmux
+│   ├── languages.sh      # Python, Node, Ruby
+│   └── extras.sh         # SSH, scripts, docker
+└── scripts/              # Custom utility scripts
 ```
 
-Under macOS, download the repo manually.
+## Features
 
-# Install
+- **Idempotent**: Safe to re-run anytime
+- **Backups**: Existing configs saved to `~/.dotfiles-backup/`
+- **Dry-run**: Preview all changes before applying
+- **Selective**: Install only what you need
+- **Cross-platform**: Works on macOS and Linux
 
-Then:
+## Syncing Software
 
-1. Run the `installers/general.sh` script for general tool installation
-1. If on macOS, install the Brew formulae from the Brewfile via `brew bundle`
-1. Switch to ZSH
-    - Through `chsh -s /usr/bin/zsh`
-    - If under Linux GUI, change the default shell for GNOME Terminal
-1. Run the `installers/zsh.sh` script for zsh-specific stuff
-1. Run the `installers/node.sh` script
-1. Run the `installers/python.sh` script
-1. Run the `installers/gui.sh` script for GUI-relevant stuff
-1. Run `scripts/install-scripts.sh` to install all custom scripts to `~/.bin`
+- **iTerm 2**: Export/Import settings, Colors: `OceanicNext`
 
-# Syncing Software
+## Brewfile
 
-* Sublime Text 3: Copy the `Packages/User` folder
-* iTerm 2:
-  * Export/Import settings
-  * Colors: `OceanicNext`
+To update the Brewfile from currently installed packages:
 
-# Brewfile creation
-
-```
+```bash
 brew bundle dump --force --describe
 ```
 
-# License
+## License
 
-This repository is licensed under the MIT License.
+MIT License.
 
-Further scripts by Evan Hahn from https://codeberg.org/EvanHahn/dotfiles/ under public domain.
+Scripts by Evan Hahn from https://codeberg.org/EvanHahn/dotfiles/ under public domain.

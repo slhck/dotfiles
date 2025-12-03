@@ -5,7 +5,9 @@
 EDITOR=vim
 PAGER=less
 COLORTERM=yes
-
+if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+    TERM=xterm-256color
+fi
 PATH=/opt/homebrew/bin:$HOME/bin:$HOME/.bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/texbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH
 # de-dupe path, https://unix.stackexchange.com/a/149054/5893
 PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
@@ -28,15 +30,15 @@ export LANG=en_US.UTF-8
 ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
-# Use blinks with: http://ethanschoonover.com/solarized
-ZSH_THEME="blinks"
+# Use spaceship with: http://ethanschoonover.com/solarized
+ZSH_THEME="spaceship"
 SPACESHIP_BATTERY_SHOW=false
 SPACESHIP_DIR_TRUNC=0
-
+SPACESHIP_DOCKER_CONTEXT_SHOW=false
+SPACESHIP_DOCKER_COMPOSE_SHOW=false
 COMPLETION_WAITING_DOTS="true"
-
 # Plugins to load
-plugins=(git git-extras github ruby macos gem svn docker docker-compose vagrant virtualenv python web-search zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git git-extras macos docker docker-compose zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -47,7 +49,8 @@ source $ZSH/oh-my-zsh.sh
 
 bindkey '^[[1;9C' forward-word
 bindkey '^[[1;9D' backward-word
-
+bindkey '^[[1;3C' forward-word
+bindkey '^[[1;3D' backward-word
 bindkey '^W' vi-backward-kill-word
 bindkey '^f' vi-forward-word
 bindkey '^b' vi-backward-word
@@ -59,10 +62,11 @@ bindkey '^b' vi-backward-word
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
-
+# llm completions (if installed)
+[[ -f ~/.zsh/llm-zsh-plugin/llm.plugin.zsh ]] && source ~/.zsh/llm-zsh-plugin/llm.plugin.zsh
+[[ -d ~/.zsh/llm-zsh-plugin/completions ]] && FPATH=~/.zsh/llm-zsh-plugin/completions:$FPATH
 # compinit initializes various advanced completions for zsh
-autoload -Uz compinit && compinit
-
+# autoload -Uz compinit && compinit
 # zmv is a batch file rename tool; e.g. zmv '(*).text' '$1.txt'
 autoload zmv
 
@@ -181,33 +185,26 @@ alias gcane='git add -A && git commit --amend --no-edit'
 alias gpa='git push --all && git push --tags'
 alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
 alias grsh='git reset --soft "HEAD^"'
-
+## Claude
+alias cl='claude --dangerously-skip-permissions'
 # -----------------------------------------------
 #  User-defined Functions
 # -----------------------------------------------
 
 # check the weather
-weather() { curl v2.wttr.in }
-
-# upload a file to transfer.sh
-transfer(){ if [ $# -eq 0 ];then echo "No arguments specified.\nUsage:\n transfer <file|directory>\n ... | transfer <file_name>">&2;return 1;fi;if tty -s;then file="$1";file_name=$(basename "$file");if [ ! -e "$file" ];then echo "$file: No such file or directory">&2;return 1;fi;if [ -d "$file" ];then file_name="$file_name.zip" ,;(cd "$file"&&zip -r -q - .)|curl --progress-bar --upload-file "-" "http://transfer.sh/$file_name"|tee /dev/null,;else cat "$file"|curl --progress-bar --upload-file "-" "http://transfer.sh/$file_name"|tee /dev/null;fi;else file_name=$1;curl --progress-bar --upload-file "-" "http://transfer.sh/$file_name"|tee /dev/null;fi;}
-
-# cd and list
-cl() {
-  cd "$@"
-  ls -la
+weather() {
+  curl v2.wttr.in
 }
-
 # mkdir and cd there
 mc() {
-  mkdir -p "$*" && cd "$*"
+  mkdir -p "$*" && cd "$*" || return
 }
 
 # Usage: smartextract <file>
 # Description: extracts archived files / mounts disk images
 # Note: .dmg/hdiutil is Mac OS X-specific.
 smartextract () {
-    if [ -f $1 ]; then
+    if [ -f "$1" ]; then
         case $1 in
             *.tar.bz2)  tar -jxvf "$1"        ;;
             *.tar.gz)   tar -zxvf "$1"        ;;
@@ -338,11 +335,6 @@ fm() {
 
 # shortcut to bump a file containing just a version number
 semver-bump() {
-  if ! command -v semver >/dev/null 2>&1; then
-    echo "Installing semver ..."
-    wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
-    chmod +x /usr/local/bin/semver
-  fi
   local file="$1"
   local version=$(cat "$file" | tr -d '[:space:]')
   local bumpType="${2:-patch}"
