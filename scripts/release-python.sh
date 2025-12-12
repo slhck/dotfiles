@@ -81,6 +81,7 @@ verbose=0
 force=0
 noPush=0
 noPublish=0
+noGithubRelease=0
 releaseType=
 projectDir=
 FORCE=false
@@ -95,6 +96,7 @@ usage() {
   echo "-f, --force	            force"
   echo "-n, --no-push	          do not push to remote"
   echo "-p, --no-publish	      do not publish to PyPI"
+  echo "-g, --no-github-release  do not create a GitHub release"
   echo "-t, --release-type	    release type (patch, minor, major)"
 }
 
@@ -119,6 +121,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -p|--no-publish)
             noPublish=1
+            shift
+            ;;
+        -g|--no-github-release)
+            noGithubRelease=1
             shift
             ;;
         -t|--release-type)
@@ -295,7 +301,9 @@ else
 
   # Create GitHub release if gh is available.
   # We needw git-cliff too because gitchangelog's filtering is not intuitive.
-  if _check_gh_and_git_cliff; then
+  if [[ $noGithubRelease -eq 1 ]]; then
+    _warn "Skipping GitHub release!"
+  elif _check_gh_and_git_cliff; then
     _info "Creating GitHub release ..."
 
     # Generate release notes
