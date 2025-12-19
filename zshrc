@@ -319,18 +319,29 @@ fco() {
 # Use fd and fzf to get the args to a command.
 # Works only with zsh
 # Examples:
-# f mv # To move files. You can write the destination after selecting the files.
-# f 'echo Selected:'
-# f 'echo Selected music:' --extension mp3
-# fm rm # To rm files in current directory
+# f mv          # select files, then add destination
+# f wc -l       # command with flags
+# f vim -- .ts  # args after -- go to fd (e.g., extension filter)
+# fm rm         # non-recursive (current dir only)
 f() {
-    sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf -m)}" )
-    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
+    local cmd_args=()
+    while [[ $# -gt 0 && "$1" != "--" ]]; do
+        cmd_args+=("$1")
+        shift
+    done
+    [[ "$1" == "--" ]] && shift
+    sels=( "${(@f)$(fd "${fd_default[@]}" "$@" | fzf -m)}" )
+    test -n "$sels" && print -z -- "${cmd_args[*]} ${sels[@]:q:q}"
 }
 
 # Like f, but not recursive.
 fm() {
-  f "$@" --max-depth 1
+    local cmd_args=()
+    while [[ $# -gt 0 && "$1" != "--" ]]; do
+        cmd_args+=("$1")
+        shift
+    done
+    f "${cmd_args[@]}" -- --max-depth 1 "$@"
 }
 
 # shortcut to bump a file containing just a version number
