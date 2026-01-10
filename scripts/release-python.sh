@@ -82,6 +82,7 @@ force=0
 noPush=0
 noPublish=0
 noGithubRelease=0
+initial=0
 releaseType=
 projectDir=
 FORCE=false
@@ -91,13 +92,14 @@ usage() {
   echo ""
   echo "Release Python scripts"
   echo ""
-  echo "-h, --help              show this help"
-  echo "-v, --verbose	          verbose"
-  echo "-f, --force	            force"
-  echo "-n, --no-push	          do not push to remote"
-  echo "-p, --no-publish	      do not publish to PyPI"
+  echo "-h, --help               show this help"
+  echo "-v, --verbose            verbose"
+  echo "-f, --force              force"
+  echo "-i, --initial            initial release (use current version, no bump)"
+  echo "-n, --no-push            do not push to remote"
+  echo "-p, --no-publish         do not publish to PyPI"
   echo "-g, --no-github-release  do not create a GitHub release"
-  echo "-t, --release-type	    release type (patch, minor, major)"
+  echo "-t, --release-type       release type (patch, minor, major)"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -125,6 +127,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -g|--no-github-release)
             noGithubRelease=1
+            shift
+            ;;
+        -i|--initial)
+            initial=1
             shift
             ;;
         -t|--release-type)
@@ -189,19 +195,29 @@ echo "Current version:   $currentVersion"
 # ==============================================================================
 # RELEASE VERSION
 
-if [[ -z $releaseType ]]; then
-  echo
-  _question "Which type of release?"
-  PS3="Release type: "
-  select releaseType in major minor patch; do break; done
+if [[ $initial -eq 1 ]]; then
+  # Check if tags already exist
+  if git describe --tags --abbrev=0 2>/dev/null; then
+    _error "Tags already exist. Use --initial only for the first release."
+    exit 1
+  fi
+  _info "Initial release: using current version $currentVersion"
+  newVersion="$currentVersion"
 else
-  _info "Release type chosen: $releaseType"
-fi
+  if [[ -z $releaseType ]]; then
+    echo
+    _question "Which type of release?"
+    PS3="Release type: "
+    select releaseType in major minor patch; do break; done
+  else
+    _info "Release type chosen: $releaseType"
+  fi
 
-# Show what the new version would be
-echo
-_info "Would bump version:"
-uv version --bump "$releaseType" --dry-run
+  # Show what the new version would be
+  echo
+  _info "Would bump version:"
+  uv version --bump "$releaseType" --dry-run
+fi
 
 # ==============================================================================
 # THE RELEASE ITSELF
@@ -217,28 +233,45 @@ fi
 echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  # Bump version using uv
-  uv version --bump "$releaseType"
+  if [[ $initial -eq 1 ]]; then
+    # Initial release: create tag first, then changelog
+    git tag -a "v$newVersion" -m "v$newVersion"
 
-  # Get the new version
-  newVersion=$(uv version --short)
+    # Generate changelog
+    if command -v git-cliff &> /dev/null; then
+      git-cliff > CHANGELOG.md 2> /dev/null
+    else
+      _warn "git-cliff not found. Falling back to slower gitchangelog!"
+      uvx --with pystache gitchangelog > CHANGELOG.md
+    fi
 
-  # Commit changes
-  git add pyproject.toml uv.lock
-  git commit -m "chore: bump version to $newVersion"
-  git tag -a "v$newVersion" -m "v$newVersion"
-
-  # Generate changelog
-  if command -v git-cliff &> /dev/null; then
-    git-cliff > CHANGELOG.md 2> /dev/null
+    git add CHANGELOG.md
+    git commit -m "chore: add CHANGELOG.md for v$newVersion"
+    git tag -a -f -m "v$newVersion" "v$newVersion"
   else
-    _warn "git-cliff not found. Falling back to slower gitchangelog!"
-    uvx --with pystache gitchangelog > CHANGELOG.md
-  fi
+    # Bump version using uv
+    uv version --bump "$releaseType"
 
-  git add CHANGELOG.md
-  git commit --no-verify --amend --no-edit
-  git tag -a -f -m "v$newVersion" "v$newVersion"
+    # Get the new version
+    newVersion=$(uv version --short)
+
+    # Commit changes
+    git add pyproject.toml uv.lock
+    git commit -m "chore: bump version to $newVersion"
+    git tag -a "v$newVersion" -m "v$newVersion"
+
+    # Generate changelog
+    if command -v git-cliff &> /dev/null; then
+      git-cliff > CHANGELOG.md 2> /dev/null
+    else
+      _warn "git-cliff not found. Falling back to slower gitchangelog!"
+      uvx --with pystache gitchangelog > CHANGELOG.md
+    fi
+
+    git add CHANGELOG.md
+    git commit --no-verify --amend --no-edit
+    git tag -a -f -m "v$newVersion" "v$newVersion"
+  fi
 
   # Generate the docs, if available
   if [[ -d docs ]]; then
