@@ -43,6 +43,31 @@ plugins=(git git-extras macos docker docker-compose zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
 # -----------------------------------------------
+# iTerm2 shell integration - full hooks for Spaceship compatibility
+# https://github.com/spaceship-prompt/spaceship-prompt/discussions/1055
+# -----------------------------------------------
+if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+  _iterm2_precmd() {
+    local ret=$?
+    # Mark end of command output with return status
+    printf "\e]133;D;%s\a" "$ret"
+    # Report user@hostname and current directory
+    printf "\e]1337;RemoteHost=%s@%s\a" "$USER" "${iterm2_hostname:-$(hostname -f 2>/dev/null || hostname)}"
+    printf "\e]1337;CurrentDir=%s\a" "$PWD"
+    # Mark start of prompt
+    printf "\e]133;A\a"
+  }
+
+  _iterm2_preexec() {
+    # Mark end of prompt, start of command output
+    printf "\e]133;B\a\e]133;C\a"
+  }
+
+  precmd_functions+=(_iterm2_precmd)
+  preexec_functions+=(_iterm2_preexec)
+fi
+
+# -----------------------------------------------
 #  Keybindings for iTerm2 in OS X, set it to xterm
 #  defaults though.
 # -----------------------------------------------
