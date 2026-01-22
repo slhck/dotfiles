@@ -72,7 +72,7 @@ export PATH=/Library/TeX/texbin:$PATH
 # -----------------------------------------------
 # autojump
 # -----------------------------------------------
-[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+[[ -s $HOMEBREW_PREFIX/etc/profile.d/autojump.sh ]] && . $HOMEBREW_PREFIX/etc/profile.d/autojump.sh
 
 # -----------------------------------------------
 # Perl
@@ -117,7 +117,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # Go
 export PATH="$HOME/go/bin:$PATH"
 # Whisper
-export GGML_METAL_PATH_RESOURCES="$(brew --prefix whisper-cpp)/share/whisper-cpp"
+export GGML_METAL_PATH_RESOURCES="$HOMEBREW_PREFIX/opt/whisper-cpp/share/whisper-cpp"
 
 # -----------------------------------------------
 # Forgit

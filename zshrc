@@ -84,8 +84,10 @@ bindkey '^b' vi-backward-word
 # Load zsh modules
 # -----------------------------------------------
 
+# Cache brew prefix to avoid repeated slow calls
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
+  FPATH=$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH
 fi
 # llm completions (if installed)
 [[ -f ~/.zsh/llm-zsh-plugin/llm.plugin.zsh ]] && source ~/.zsh/llm-zsh-plugin/llm.plugin.zsh
@@ -399,10 +401,6 @@ if [ -d "$HOME/.rbenv" ]; then
   if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 fi
 
-# -----------------------------------------------
-# TheFuck
-# -----------------------------------------------
-if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 
 # -----------------------------------------------
 # fzf
@@ -410,11 +408,33 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # -----------------------------------------------
-# NVM
+# NVM (lazy loaded for faster shell startup)
 # -----------------------------------------------
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  # Lazy load nvm - only initialize when nvm/node/npm/npx is first called
+  nvm() {
+    unset -f nvm node npm npx
+    \. "$NVM_DIR/nvm.sh"
+    nvm "$@"
+  }
+  node() {
+    unset -f nvm node npm npx
+    \. "$NVM_DIR/nvm.sh"
+    node "$@"
+  }
+  npm() {
+    unset -f nvm node npm npx
+    \. "$NVM_DIR/nvm.sh"
+    npm "$@"
+  }
+  npx() {
+    unset -f nvm node npm npx
+    \. "$NVM_DIR/nvm.sh"
+    npx "$@"
+  }
+fi
 
 # -----------------------------------------------
 # Homebrew
