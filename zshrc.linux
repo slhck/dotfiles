@@ -25,11 +25,10 @@ if [[ -d /home/linuxbrew/.linuxbrew/bin ]]; then
 fi
 
 # -----------------------------------------------
-# Autojump
+# zoxide (replaces autojump, use "j" command)
 # -----------------------------------------------
-
-if [[ -f /usr/share/autojump/autojump.sh ]]; then
-    . /usr/share/autojump/autojump.sh
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh --cmd j)"
 fi
 
 # END: OS-specific configuration file

@@ -10,7 +10,7 @@ install_shell() {
 
     if [[ "$OS" == "linux" ]]; then
         _install_fzf
-        _install_autojump
+        _install_zoxide
     fi
 }
 
@@ -98,20 +98,16 @@ _install_fzf() {
     fi
 }
 
-_install_autojump() {
-    if is_installed autojump; then
-        log_success "Autojump already installed"
+_install_zoxide() {
+    if is_installed zoxide; then
+        log_success "zoxide already installed"
         return
     fi
 
     if [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would install autojump"
+        log_dry "Would install zoxide"
     else
-        local tmp_dir
-        tmp_dir=$(mktemp -d)
-        git clone https://github.com/wting/autojump "$tmp_dir"
-        (cd "$tmp_dir" && SHELL=/bin/zsh python3 install.py)
-        rm -rf "$tmp_dir"
-        log_success "Autojump installed"
+        curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+        log_success "zoxide installed"
     fi
 }

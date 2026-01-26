@@ -30,7 +30,7 @@ RUBY_VERSION="${RUBY_VERSION:-latest}"  # "latest" = auto-detect
 DEFAULT_COMPONENTS=(
     packages    # Homebrew/apt packages
     dotfiles    # Config files (.zshrc, .gitconfig, etc.)
-    shell       # Oh-my-zsh + theme + plugins + fzf + autojump
+    shell       # Oh-my-zsh + theme + plugins + fzf + zoxide
     vim         # Vim + ctrlp
     tmux        # Tmux + TPM
     python      # Pyenv + Python

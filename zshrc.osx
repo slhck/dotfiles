@@ -70,9 +70,9 @@ EOF
 export PATH=/Library/TeX/texbin:$PATH
 
 # -----------------------------------------------
-# autojump
+# zoxide (replaces autojump, use "j" command)
 # -----------------------------------------------
-[[ -s $HOMEBREW_PREFIX/etc/profile.d/autojump.sh ]] && . $HOMEBREW_PREFIX/etc/profile.d/autojump.sh
+eval "$(zoxide init zsh --cmd j)"
 
 # -----------------------------------------------
 # Perl
