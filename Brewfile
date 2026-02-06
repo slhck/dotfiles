@@ -1,3 +1,4 @@
+tap "anomalyco/tap"
 tap "cube2222/octosql"
 tap "discoteq/discoteq"
 tap "github/gh"
@@ -10,6 +11,8 @@ tap "homebrew/cask"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
+tap "lance0/tap"
+tap "minio/stable"
 tap "octave-app/octave-app"
 tap "oven-sh/bun"
 tap "pamburus/tap"
@@ -18,6 +21,7 @@ tap "saulpw/vd"
 tap "segment-integrations/formulae"
 tap "slhck/moreutils"
 tap "snowflakedb/snowflake-cli"
+tap "steipete/tap"
 tap "supabase/tap"
 tap "svt/avtools"
 tap "teamookla/speedtest"
@@ -74,6 +78,8 @@ brew "augeas"
 brew "openssl@1.1"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.10"
+# Shell extension to jump to frequently used directories
+brew "autojump"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
 # Official Amazon AWS command-line interface
@@ -116,6 +122,12 @@ brew "pkgconf"
 brew "hdf5"
 # Human-friendly and fast alternative to cut and (sometimes) awk
 brew "choose-rust"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# Low-level access to audio, keyboard, mouse, joystick, and graphics
+brew "sdl2"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg", args: ["with-libvmaf"]
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Library to load and enumerate PKCS#11 modules
@@ -124,22 +136,16 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
 # Blu-Ray disc playback library for media players like VLC
 brew "libbluray"
 # C library for files containing sampled sound
 brew "libsndfile"
-# Low-level access to audio, keyboard, mouse, joystick, and graphics
-brew "sdl2"
 # Secure Reliable Transport
 brew "srt"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Scaling, colorspace conversion, and dithering library
 brew "zimg"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -260,12 +266,8 @@ brew "gnu-tar"
 brew "gnu-time"
 # Library for USB device access
 brew "libusb"
-# GNU Pretty Good Privacy (PGP) package
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
-# Spell checker and morphological analyzer
-brew "hunspell"
-# Cross-platform application and UI framework
-brew "qt"
 # Command-driven, interactive function plotting
 brew "gnuplot"
 # Open source programming language to build simple/reliable/efficient software
@@ -279,7 +281,7 @@ brew "gpac"
 # Library access to GnuPG
 brew "gpgme"
 # Ping, but with a graph
-brew "gping"
+brew "gping", link: false
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -318,6 +320,8 @@ brew "hss"
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# Spell checker and morphological analyzer
+brew "hunspell"
 # Run and Test HTTP Requests with plain text and curl
 brew "hurl"
 # Command-line benchmarking tool
@@ -326,16 +330,16 @@ brew "hyperfine"
 brew "id3lib"
 # ID3 editing tool
 brew "id3tool"
-# Library for reading RAW files from digital photo cameras
-brew "libraw"
-# Tools and libraries to manipulate images in many formats
+# Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Image loading and rendering library
 brew "imlib2"
 # GNU utilities for networking
-brew "inetutils", link: false
+brew "inetutils"
 # Audio Connection Kit
 brew "jack"
+# Dex to Java decompiler
+brew "jadx"
 # Command-line pager for JSON data
 brew "jless"
 # Lightweight and flexible command-line JSON processor
@@ -364,6 +368,8 @@ brew "libfido2"
 brew "libpcap"
 # Library that provides automatic proxy configuration management
 brew "libproxy"
+# Library for reading RAW files from digital photo cameras
+brew "libraw"
 # Access large language models from the command-line
 brew "llm"
 # Next-gen compiler infrastructure
@@ -376,6 +382,8 @@ brew "lynx"
 brew "lzip"
 # Convert nroff man pages to HTML
 brew "man2html"
+# CLI for Node.js style checker and lint tool for Markdown files
+brew "markdownlint-cli"
 # Mac App Store command-line interface
 brew "mas"
 # Java-based project management
@@ -486,6 +494,8 @@ brew "python@3.9"
 brew "qpdf"
 # Port to Qt of the Scintilla editing component
 brew "qscintilla2"
+# Cross-platform application and UI framework
+brew "qt"
 # Install various Ruby versions and implementations
 brew "ruby-build"
 # Ruby version manager
@@ -588,6 +598,8 @@ brew "wget"
 brew "wget2"
 # Port of OpenAI's Whisper model in C/C++
 brew "whisper-cpp"
+# LAN discovery tool with a modern TUI written in Go
+brew "whosthere"
 # Tools for the WireGuard secure network tunnel
 brew "wireguard-tools"
 # Command-line tool that draw plots on the terminal
@@ -602,6 +614,8 @@ brew "zellij"
 brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
+# The AI coding agent built for the terminal.
+brew "anomalyco/tap/opencode"
 # OctoSQL is a query tool that allows you to join, analyse and transform data from multiple databases and file formats using SQL.
 brew "cube2222/octosql/octosql"
 # Lock file during command
@@ -610,10 +624,18 @@ brew "discoteq/discoteq/flock"
 brew "grusell/vivictpp/vivictpp"
 # Packer
 brew "hashicorp/tap/packer"
+# Play, record, convert, and stream audio and video
+brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ["with-libvmaf"]
+# Modern traceroute/mtr-style TUI with hop stats and ASN/geo enrichment
+brew "lance0/tap/ttl"
+# MinIO Client for object storage and filesystems
+brew "minio/stable/mc"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
 # Creates an XCFramework out of a Swift Package using xcodebuild
 brew "segment-integrations/formulae/swift-create-xcframework"
+# Google CLI for Gmail, Calendar, Drive, and Contacts
+brew "steipete/tap/gogcli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
 # Password manager that keeps all passwords secure behind one password
@@ -638,6 +660,8 @@ cask "codex"
 cask "cscreen"
 # Server and cloud storage browser
 cask "cyberduck"
+# Photography workflow application and raw developer
+cask "darktable"
 # Virtual monitor for screen sharing
 cask "deskpad"
 # Voice and text chat software
@@ -746,7 +770,7 @@ cask "skype"
 # Team communication and collaboration software
 cask "slack"
 # A CLI for Snowflake development
-cask "snowflake-cli"
+cask "snowflakedb/snowflake-cli/snowflake-cli"
 # Music streaming service
 cask "spotify"
 # Replacement for RCDefaultApps, written in Swift
@@ -767,6 +791,8 @@ cask "tunnelblick"
 cask "upscayl"
 # Gives Vagrant VMware plugin access to various VMware functionalities
 cask "vagrant-vmware-utility"
+# Turn any browser into your terminal
+cask "vibetunnel"
 # Open-source code editor
 cask "visual-studio-code"
 # Multimedia player
@@ -844,6 +870,7 @@ vscode "jkjustjoshing.vscode-text-pastry"
 vscode "jock.svg"
 vscode "koichisasada.vscode-rdbg"
 vscode "konstantin.wrapselection"
+vscode "lextudio.restructuredtext"
 vscode "llvm-vs-code-extensions.lldb-dap"
 vscode "loyieking.smalise"
 vscode "mads-hartmann.bash-ide-vscode"
@@ -896,6 +923,7 @@ vscode "mtxr.sqltools"
 vscode "mtxr.sqltools-driver-mysql"
 vscode "mtxr.sqltools-driver-pg"
 vscode "mtxr.sqltools-driver-sqlite"
+vscode "mxsdev.typescript-explorer"
 vscode "naumovs.color-highlight"
 vscode "njpwerner.autodocstring"
 vscode "pkief.material-icon-theme"
@@ -913,6 +941,7 @@ vscode "shopify.ruby-extensions-pack"
 vscode "shopify.ruby-lsp"
 vscode "sleistner.vscode-fileutils"
 vscode "sorbet.sorbet-vscode-extension"
+vscode "sst-dev.opencode"
 vscode "stkb.rewrap"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "streetsidesoftware.code-spell-checker-german"
@@ -948,3 +977,7 @@ go "golang.org/x/tools/gopls"
 go "github.com/hsiafan/httpdump"
 go "github.com/evilmartians/lefthook"
 go "honnef.co/go/tools/cmd/staticcheck"
+cargo "create-tauri-app"
+cargo "dash-mpd-cli"
+cargo "tauri-driver"
+cargo "vsd"
