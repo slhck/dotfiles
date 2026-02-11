@@ -38,6 +38,7 @@ DEFAULT_COMPONENTS=(
     ruby        # Rbenv + Ruby
     scripts     # Custom scripts to ~/.bin
     ssh         # SSH key generation
+    safe-chain  # Supply chain security (Aikido)
 )
 
 # All available components (use -a or specify by name)
@@ -159,6 +160,7 @@ ${BOLD}Components (default):${NC}
   ruby        Rbenv + Ruby
   scripts     Custom scripts to ~/.bin
   ssh         SSH key generation
+  safe-chain  Supply chain security (Aikido)
 
 ${BOLD}Components (optional):${NC}
   docker      Docker daemon setup (Linux only)
@@ -224,6 +226,7 @@ main() {
     is_selected ruby      && install_ruby
     is_selected scripts   && install_scripts
     is_selected ssh       && install_ssh
+    is_selected safe-chain && install_safe_chain
     is_selected docker    && install_docker
 
     # Footer

@@ -58,6 +58,22 @@ install_scripts() {
     fi
 }
 
+install_safe_chain() {
+    log "Installing safe-chain..."
+
+    if [[ -f "$HOME/.safe-chain/bin/safe-chain" ]]; then
+        log_success "safe-chain already installed"
+        return
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install safe-chain via install script"
+    else
+        curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh
+        log_success "safe-chain installed"
+    fi
+}
+
 install_docker() {
     log "Setting up Docker..."
 

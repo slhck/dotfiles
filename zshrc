@@ -452,6 +452,12 @@ _uv_run_mod() {
 compdef _uv_run_mod uv
 
 # -----------------------------------------------
+# safe-chain (supply chain security)
+# -----------------------------------------------
+
+[[ -f ~/.safe-chain/scripts/init-posix.sh ]] && source ~/.safe-chain/scripts/init-posix.sh
+
+# -----------------------------------------------
 # Zsh plugins
 # -----------------------------------------------
 

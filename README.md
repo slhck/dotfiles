@@ -51,6 +51,7 @@ chsh -s $(which zsh)
 | `ruby`     | Rbenv + Ruby                            |
 | `scripts`  | Custom scripts to ~/.bin                |
 | `ssh`      | SSH key generation                      |
+| `safe-chain` | Supply chain security (Aikido)        |
 
 **Optional** (use `-a` or specify by name):
 
