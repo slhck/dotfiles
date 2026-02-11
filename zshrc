@@ -22,50 +22,7 @@ export TERM EDITOR PAGER DISPLAY LS_COLORS COLORTERM PATH HISTFILE HISTSIZE SAVE
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# -----------------------------------------------
-# oh-my-zsh
-# -----------------------------------------------
-
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
-
-# Set name of the theme to load.
-# Use spaceship with: http://ethanschoonover.com/solarized
-ZSH_THEME="spaceship"
-SPACESHIP_BATTERY_SHOW=false
-SPACESHIP_DIR_TRUNC=0
-SPACESHIP_DOCKER_CONTEXT_SHOW=false
-SPACESHIP_DOCKER_COMPOSE_SHOW=false
-COMPLETION_WAITING_DOTS="true"
-# Plugins to load
-plugins=(git git-extras macos docker docker-compose zsh-autosuggestions)
-
-source $ZSH/oh-my-zsh.sh
-
-# -----------------------------------------------
-# iTerm2 shell integration - full hooks for Spaceship compatibility
-# https://github.com/spaceship-prompt/spaceship-prompt/discussions/1055
-# -----------------------------------------------
-if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
-  _iterm2_precmd() {
-    local ret=$?
-    # Mark end of command output with return status
-    printf "\e]133;D;%s\a" "$ret"
-    # Report user@hostname and current directory
-    printf "\e]1337;RemoteHost=%s@%s\a" "$USER" "${iterm2_hostname:-$(hostname -f 2>/dev/null || hostname)}"
-    printf "\e]1337;CurrentDir=%s\a" "$PWD"
-    # Mark start of prompt
-    printf "\e]133;A\a"
-  }
-
-  _iterm2_preexec() {
-    # Mark end of prompt, start of command output
-    printf "\e]133;B\a\e]133;C\a"
-  }
-
-  precmd_functions+=(_iterm2_precmd)
-  preexec_functions+=(_iterm2_preexec)
-fi
+# (plugins and aliases are loaded after compinit — see below)
 
 # -----------------------------------------------
 #  Keybindings for iTerm2 in OS X, set it to xterm
@@ -92,10 +49,29 @@ fi
 # llm completions (if installed)
 [[ -f ~/.zsh/llm-zsh-plugin/llm.plugin.zsh ]] && source ~/.zsh/llm-zsh-plugin/llm.plugin.zsh
 [[ -d ~/.zsh/llm-zsh-plugin/completions ]] && FPATH=~/.zsh/llm-zsh-plugin/completions:$FPATH
-# compinit initializes various advanced completions for zsh
-# autoload -Uz compinit && compinit
 # zmv is a batch file rename tool; e.g. zmv '(*).text' '$1.txt'
 autoload zmv
+
+# -----------------------------------------------
+# Completions (must come after all FPATH modifications)
+# -----------------------------------------------
+
+autoload -Uz compinit
+# Only regenerate .zcompdump once a day for speed
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# -----------------------------------------------
+# Aliases from oh-my-zsh plugins (standalone)
+# -----------------------------------------------
+
+[[ -f ~/.zsh/aliases/git.zsh ]] && source ~/.zsh/aliases/git.zsh
+[[ -f ~/.zsh/aliases/docker.zsh ]] && source ~/.zsh/aliases/docker.zsh
+[[ -f ~/.zsh/aliases/docker-compose.zsh ]] && source ~/.zsh/aliases/docker-compose.zsh
 
 # -----------------------------------------------
 # Set up zsh autocompletions
@@ -150,6 +126,11 @@ setopt \
   auto_pushd \
   complete_in_word \
   extended_glob \
+  extended_history \
+  hist_expire_dups_first \
+  hist_ignore_dups \
+  hist_ignore_space \
+  share_history \
   zle
 
 unsetopt \
@@ -470,5 +451,20 @@ _uv_run_mod() {
 }
 compdef _uv_run_mod uv
 
+# -----------------------------------------------
+# Zsh plugins
+# -----------------------------------------------
+
+[[ -f ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+  source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# syntax-highlighting must be sourced last
+[[ -f ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+  source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# -----------------------------------------------
+# Starship prompt
+# -----------------------------------------------
+
+eval "$(starship init zsh)"
 
 # END: Global configuration file

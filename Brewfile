@@ -544,6 +544,8 @@ brew "solargraph"
 brew "sox"
 # Soak up standard input and write to a file
 brew "sponge"
+# Cross-shell prompt
+brew "starship"
 # Add a public key to a remote machine's authorized_keys file
 brew "ssh-copy-id", link: true
 # CLI for extracting streams from various websites to a video player

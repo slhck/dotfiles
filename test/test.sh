@@ -4,6 +4,12 @@
 #
 set -euo pipefail
 
+if [[ $# -ne 0 ]]; then
+    echo "Usage: $0"
+    echo "(This has no args!)"
+    exit 1 
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 IMAGE_NAME="dotfiles-test"

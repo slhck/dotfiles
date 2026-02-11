@@ -38,7 +38,12 @@ install_scripts() {
 
     if [[ "$DRY_RUN" == "true" ]]; then
         local count
-        count=$(find "$scripts_dir" -maxdepth 1 -type f -perm +111 2>/dev/null | wc -l | tr -d ' ')
+        # -perm /111 is GNU find (Linux), -perm +111 is BSD find (macOS)
+        if [[ "$OS" == "macos" ]]; then
+            count=$(find "$scripts_dir" -maxdepth 1 -type f -perm +111 | wc -l | tr -d ' ')
+        else
+            count=$(find "$scripts_dir" -maxdepth 1 -type f -perm /111 | wc -l | tr -d ' ')
+        fi
         log_dry "Would install $count scripts to $bin_dir"
     else
         mkdir -p "$bin_dir"

@@ -30,7 +30,7 @@ RUBY_VERSION="${RUBY_VERSION:-latest}"  # "latest" = auto-detect
 DEFAULT_COMPONENTS=(
     packages    # Homebrew/apt packages
     dotfiles    # Config files (.zshrc, .gitconfig, etc.)
-    shell       # Oh-my-zsh + theme + plugins + fzf + zoxide
+    shell       # Starship + zsh plugins + fzf + zoxide
     vim         # Vim + ctrlp
     tmux        # Tmux + TPM
     python      # Pyenv + Python
@@ -151,7 +151,7 @@ ${BOLD}Options:${NC}
 ${BOLD}Components (default):${NC}
   packages    System packages (Homebrew/apt)
   dotfiles    Config files (.zshrc, .gitconfig, etc.)
-  shell       Oh-My-Zsh + Spaceship theme + plugins
+  shell       Starship prompt + zsh plugins
   vim         Vim + ctrlp plugin
   tmux        Tmux + TPM
   python      Pyenv + Python

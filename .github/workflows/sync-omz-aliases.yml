@@ -1,0 +1,41 @@
+name: Sync oh-my-zsh aliases
+
+on:
+  schedule:
+    - cron: "0 8 * * 1" # Every Monday at 08:00 UTC
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run sync script
+        run: ./scripts/sync-omz-aliases.sh
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet zsh/plugins/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/sync-omz-aliases
+          commit-message: "chore(zsh): sync oh-my-zsh aliases"
+          title: "chore(zsh): sync oh-my-zsh aliases"
+          body: |
+            Automated update of oh-my-zsh plugin aliases.
+
+            Run by the weekly sync workflow. Review the diff to see what changed upstream.
+          delete-branch: true

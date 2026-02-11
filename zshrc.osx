@@ -2,6 +2,12 @@
 # Zsh config for macOS
 
 # -----------------------------------------------
+# macOS utilities (from oh-my-zsh macos plugin)
+# -----------------------------------------------
+
+[[ -f ~/.zsh/aliases/macos.zsh ]] && source ~/.zsh/aliases/macos.zsh
+
+# -----------------------------------------------
 # Shell Aliases
 # -----------------------------------------------
 

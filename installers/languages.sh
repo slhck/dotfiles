@@ -54,6 +54,11 @@ _load_pyenv() {
 
 _install_python_version() {
     if ! is_installed pyenv; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install Python $PYTHON_VERSION"
+            log_dry "Would set Python $PYTHON_VERSION as global"
+            return
+        fi
         log_warning "pyenv not available - skipping Python"
         return
     fi
@@ -123,6 +128,10 @@ _install_node_version() {
     declare -f nvm &>/dev/null && nvm_available=true
 
     if [[ "$nvm_available" != "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install Node.js $NODE_VERSION and yarn"
+            return 0
+        fi
         log_warning "NVM not available - skipping Node.js"
         log_warning "Install NVM and re-run, or use: brew install nvm"
         return 0
@@ -164,11 +173,19 @@ _ensure_rbenv() {
 
 _load_rbenv() {
     [[ -d "$HOME/.rbenv/bin" ]] && export PATH="$HOME/.rbenv/bin:$PATH"
+    # rbenv init runs 'rbenv rehash' which can fail with set -e
+    set +e
     is_installed rbenv && eval "$(rbenv init -)" 2>/dev/null
+    set -e
 }
 
 _install_ruby_version() {
     if ! is_installed rbenv; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install Ruby $RUBY_VERSION"
+            log_dry "Would set Ruby $RUBY_VERSION as global"
+            return
+        fi
         log_warning "rbenv not available - skipping Ruby"
         return
     fi

@@ -43,7 +43,7 @@ chsh -s $(which zsh)
 | ---------- | --------------------------------------- |
 | `packages` | System packages (Homebrew/apt)          |
 | `dotfiles` | Config files (.zshrc, .gitconfig, etc.) |
-| `shell`    | Oh-My-Zsh + Spaceship theme + plugins   |
+| `shell`    | Starship prompt + zsh plugins           |
 | `vim`      | Vim + ctrlp plugin                      |
 | `tmux`     | Tmux + TPM                              |
 | `python`   | Pyenv + Python                          |
@@ -100,12 +100,18 @@ dotfiles/
 ├── gitconfig, vimrc, ... # Other config files
 ├── installers/           # Modular installer scripts
 │   ├── packages.sh       # Homebrew/apt
-│   ├── dotfiles.sh       # Config deployment
-│   ├── shell.sh          # Oh-my-zsh + plugins
+│   ├── dotfiles.sh       # Config deployment + zsh alias files
+│   ├── shell.sh          # Starship + zsh plugins
 │   ├── editors.sh        # Vim, tmux
 │   ├── languages.sh      # Python, Node, Ruby
 │   └── extras.sh         # SSH, scripts, docker
-└── scripts/              # Custom utility scripts
+├── scripts/              # Custom utility scripts
+│   └── sync-omz-aliases.sh  # Update aliases from oh-my-zsh upstream
+└── zsh/plugins/          # Standalone zsh alias files (generated)
+    ├── git.zsh           # Git aliases + helper functions
+    ├── docker.zsh        # Docker aliases
+    ├── docker-compose.zsh # Docker Compose aliases
+    └── macos.zsh         # macOS Finder/terminal utilities
 ```
 
 ## Features
@@ -115,6 +121,24 @@ dotfiles/
 - **Dry-run**: Preview all changes before applying
 - **Selective**: Install only what you need
 - **Cross-platform**: Works on macOS and Linux
+
+## Shell Setup
+
+The shell runs without oh-my-zsh. Git, Docker, Docker Compose, and macOS aliases are extracted from oh-my-zsh upstream into standalone `.zsh` files in `zsh/plugins/`. These are committed to the repo and copied to `~/.zsh/aliases/` during install.
+
+To update the alias files from the latest oh-my-zsh:
+
+```bash
+./scripts/sync-omz-aliases.sh
+```
+
+This shallow-clones oh-my-zsh, extracts the plugin content, and writes the updated files. Review and commit the changes.
+
+Plugins installed at runtime (not in the repo):
+
+- [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) — cloned to `~/.zsh/plugins/`
+- [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) — cloned to `~/.zsh/plugins/`
+- [Starship](https://starship.rs) — installed via Homebrew (macOS) or curl (Linux)
 
 ## Syncing Software
 

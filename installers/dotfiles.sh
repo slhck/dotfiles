@@ -21,6 +21,7 @@ install_dotfiles() {
     done
 
     _install_zshrc
+    _install_zsh_aliases
 }
 
 _copy_dotfile() {
@@ -66,4 +67,29 @@ _install_zshrc() {
     fi
 
     log_success "Installed: .zshrc"
+}
+
+_install_zsh_aliases() {
+    local src_dir="$SCRIPT_DIR/zsh/plugins"
+    local dst_dir="$HOME/.zsh/aliases"
+
+    if [[ ! -d "$src_dir" ]]; then
+        log_warning "zsh alias files not found in repo"
+        return
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would copy zsh alias files to $dst_dir"
+        return
+    fi
+
+    mkdir -p "$dst_dir"
+    local count=0
+    for file in "$src_dir"/*.zsh; do
+        [[ -f "$file" ]] || continue
+        backup_file "$dst_dir/$(basename "$file")"
+        cp "$file" "$dst_dir/"
+        ((count++))
+    done
+    log_success "Installed $count zsh alias files to $dst_dir"
 }
