@@ -175,29 +175,15 @@ def load_sessions():
 def open_terminal_with_session(project_path: str, session_id: str) -> dict:
     """Open Ghostty (or iTerm2 fallback) in project_path and resume the session."""
     cmd = f"claude --dangerously-skip-permissions --resume {session_id}"
+    shell_cmd = f"unset CLAUDECODE; cd '{project_path}' && {cmd}"
 
     # Try Ghostty first
     ghostty = Path("/Applications/Ghostty.app")
     if ghostty.exists():
-        apple_script = f'''
-        tell application "Ghostty"
-            activate
-        end tell
-        delay 0.5
-        tell application "System Events"
-            tell process "Ghostty"
-                keystroke "n" using command down
-            end tell
-        end tell
-        delay 0.3
-        tell application "System Events"
-            tell process "Ghostty"
-                keystroke "cd {project_path} && {cmd}"
-                key code 36
-            end tell
-        end tell
-        '''
-        subprocess.Popen(["osascript", "-e", apple_script])
+        subprocess.Popen([
+            "open", "-na", "Ghostty.app",
+            "--args", "-e", "/opt/homebrew/bin/zsh", "-lc", shell_cmd,
+        ])
         return {"ok": True, "terminal": "Ghostty"}
 
     # iTerm2 fallback
@@ -208,7 +194,7 @@ def open_terminal_with_session(project_path: str, session_id: str) -> dict:
             activate
             set newWindow to (create window with default profile)
             tell current session of newWindow
-                write text "cd {project_path} && {cmd}"
+                write text "{shell_cmd}"
             end tell
         end tell
         '''
@@ -708,8 +694,8 @@ td {
 /* ── Toast ── */
 .toast {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  top: 1.5rem;
+  right: 1.5rem;
   background: var(--bg-elevated);
   border: 1px solid var(--accent-dim);
   border-radius: 8px;
@@ -718,11 +704,17 @@ td {
   font-size: 0.8rem;
   color: var(--accent);
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  transform: translateY(120%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(-150%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   z-index: 100;
 }
-.toast.show { transform: translateY(0); }
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
 /* ── Loading ── */
 .loading {
   text-align: center;
