@@ -48,19 +48,27 @@ def decode_project_dir(dirname: str) -> str:
 
 
 def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | None:
-    """Extract minimal session metadata from a JSONL file by reading its entries."""
+    """Extract minimal session metadata from a JSONL file.
+
+    Only reads first 80 lines to quickly grab metadata, then estimates
+    total message count from file size.
+    """
     try:
         stat = jsonl_path.stat()
+        if stat.st_size == 0:
+            return None
         session_id = jsonl_path.stem
         first_prompt = ""
         summary = ""
-        msg_count = 0
+        lines_read = 0
         created = ""
         git_branch = ""
         cwd = ""
+        got_metadata = False
 
         with open(jsonl_path, "r") as f:
             for line in f:
+                lines_read += 1
                 line = line.strip()
                 if not line:
                     continue
@@ -68,7 +76,6 @@ def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | N
                     obj = json.loads(line)
                 except json.JSONDecodeError:
                     continue
-                msg_count += 1
                 ts = obj.get("timestamp", "")
                 if not created and ts:
                     created = ts
@@ -81,6 +88,15 @@ def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | N
                         if isinstance(content, str) and content.strip():
                             first_prompt = content.strip()[:200]
                     git_branch = obj.get("gitBranch", git_branch)
+                    got_metadata = True
+                # Stop early once we have what we need, or after 80 lines
+                if got_metadata and (cwd and first_prompt):
+                    break
+                if lines_read >= 80:
+                    break
+
+        # Estimate message count from file size (avg ~1KB per line)
+        est_messages = max(lines_read, stat.st_size // 1024)
 
         modified_iso = datetime.fromtimestamp(
             stat.st_mtime, tz=timezone.utc
@@ -92,7 +108,7 @@ def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | N
             "fileMtime": int(stat.st_mtime * 1000),
             "firstPrompt": first_prompt,
             "summary": summary,
-            "messageCount": msg_count,
+            "messageCount": est_messages,
             "created": created or modified_iso,
             "modified": modified_iso,
             "gitBranch": git_branch,
@@ -202,6 +218,27 @@ def open_terminal_with_session(project_path: str, session_id: str) -> dict:
     return {"ok": False, "error": "No supported terminal found"}
 
 
+# ── Session cache ──
+_cache: dict = {"sessions": [], "ready": False}
+_cache_lock = threading.Lock()
+
+
+def preload_sessions():
+    """Load sessions in background thread at startup."""
+    sessions = load_sessions()
+    # Pre-sort by fileMtime descending (most recent first)
+    sessions.sort(key=lambda s: s.get("fileMtime", 0), reverse=True)
+    with _cache_lock:
+        _cache["sessions"] = sessions
+        _cache["ready"] = True
+    print(f"  loaded {len(sessions)} sessions")
+
+
+def get_cached_sessions() -> list:
+    with _cache_lock:
+        return _cache["sessions"]
+
+
 @app.route("/")
 def index():
     return Response(HTML, content_type="text/html")
@@ -209,7 +246,82 @@ def index():
 
 @app.route("/api/sessions")
 def api_sessions():
-    return jsonify(load_sessions())
+    """Paginated sessions API. Params: offset, limit, q, dir, sort."""
+    sessions = get_cached_sessions()
+    total = len(sessions)
+
+    # Filter
+    q = request.args.get("q", "").lower().strip()
+    dir_filter = request.args.get("dir", "").strip()
+    if q or dir_filter:
+        home = str(Path.home())
+        filtered = []
+        for s in sessions:
+            if dir_filter:
+                pp = s.get("projectPath", "")
+                short = "~/" + pp[len(home) + 1:] if pp.startswith(home + "/") else (
+                    "~" if pp == home else pp
+                )
+                if short != dir_filter:
+                    continue
+            if q:
+                hay = (
+                    (s.get("summary") or "") + " " +
+                    (s.get("firstPrompt") or "") + " " +
+                    (s.get("projectPath") or "")
+                ).lower()
+                if q not in hay:
+                    continue
+            filtered.append(s)
+        sessions = filtered
+
+    # Sort
+    sort_key = request.args.get("sort", "modified-desc")
+    key, direction = sort_key.rsplit("-", 1) if "-" in sort_key else (sort_key, "desc")
+    reverse = direction == "desc"
+    if key == "modified":
+        sessions = sorted(sessions, key=lambda s: s.get("fileMtime", 0), reverse=reverse)
+    elif key == "dir":
+        sessions = sorted(sessions, key=lambda s: s.get("projectPath", ""), reverse=reverse)
+    elif key == "messages":
+        sessions = sorted(sessions, key=lambda s: s.get("messageCount", 0), reverse=reverse)
+
+    filtered_total = len(sessions)
+
+    # Paginate
+    offset = int(request.args.get("offset", 0))
+    limit = int(request.args.get("limit", 100))
+    page = sessions[offset:offset + limit]
+
+    return jsonify({
+        "total": total,
+        "filtered": filtered_total,
+        "offset": offset,
+        "limit": limit,
+        "sessions": page,
+    })
+
+
+@app.route("/api/directories")
+def api_directories():
+    """Return directory counts for the fuzzy finder."""
+    sessions = get_cached_sessions()
+    home = str(Path.home())
+    counts: dict[str, int] = {}
+    for s in sessions:
+        pp = s.get("projectPath", "")
+        short = "~/" + pp[len(home) + 1:] if pp.startswith(home + "/") else (
+            "~" if pp == home else pp
+        )
+        counts[short] = counts.get(short, 0) + 1
+    dirs = [{"path": p, "count": c} for p, c in sorted(counts.items())]
+    return jsonify(dirs)
+
+
+@app.route("/api/ready")
+def api_ready():
+    with _cache_lock:
+        return jsonify({"ready": _cache["ready"]})
 
 
 @app.route("/api/open", methods=["POST"])
@@ -574,6 +686,25 @@ td {
   color: var(--text-tertiary);
   font-size: 0.9rem;
 }
+.load-more {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+}
+.load-more::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 0.5rem;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
 /* ── Toast ── */
 .toast {
   position: fixed;
@@ -678,10 +809,16 @@ td {
 <div class="toast" id="toast"></div>
 
 <script>
-let ALL = [];
-let filtered = [];
+const PAGE_SIZE = 60;
 let activeDir = null;
 let currentSort = 'modified-desc';
+let currentOffset = 0;
+let totalSessions = 0;
+let filteredTotal = 0;
+let loading = false;
+let allLoaded = false;
+let allDirs = [];
+let dirHighlight = -1;
 
 const $  = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
@@ -692,7 +829,6 @@ function relTime(iso) {
   if (!iso) return '—';
   return dayjs(iso).fromNow();
 }
-
 function fmtDate(iso) {
   if (!iso) return '';
   return new Date(iso).toLocaleString('en-GB', {
@@ -700,7 +836,6 @@ function fmtDate(iso) {
     hour: '2-digit', minute: '2-digit'
   });
 }
-
 function shortDir(p) {
   if (!p) return '~';
   const h = '/Users/werner';
@@ -708,7 +843,6 @@ function shortDir(p) {
   if (p.startsWith(h + '/')) return '~/' + p.slice(h.length + 1);
   return p;
 }
-
 function tailDir(p) {
   const s = shortDir(p);
   if (s === '~') return '~';
@@ -716,34 +850,130 @@ function tailDir(p) {
   if (parts.length <= 2) return s;
   return parts.slice(-2).join('/');
 }
-
-function dirCounts() {
-  const m = {};
-  ALL.forEach(s => {
-    const d = shortDir(s.projectPath);
-    m[d] = (m[d] || 0) + 1;
-  });
-  return Object.entries(m).sort((a,b) => b[1] - a[1]);
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
 }
 
-// ── Fuzzy directory finder ──
-let allDirs = []; // [{path, count}]
-let dirHighlight = -1;
+// ── Server-side data fetching ──
+function buildUrl(offset) {
+  const params = new URLSearchParams();
+  params.set('offset', offset);
+  params.set('limit', PAGE_SIZE);
+  params.set('sort', currentSort);
+  const q = $('#search').value.trim();
+  if (q) params.set('q', q);
+  if (activeDir) params.set('dir', activeDir);
+  return '/api/sessions?' + params.toString();
+}
 
+async function fetchPage(offset, append) {
+  if (loading) return;
+  loading = true;
+  try {
+    const r = await fetch(buildUrl(offset));
+    const data = await r.json();
+    totalSessions = data.total;
+    filteredTotal = data.filtered;
+    currentOffset = offset + data.sessions.length;
+    allLoaded = currentOffset >= filteredTotal;
+    if (append) {
+      appendRows(data.sessions);
+    } else {
+      renderRows(data.sessions);
+    }
+    renderStats();
+    // Remove load-more indicator
+    const lm = document.getElementById('loadMore');
+    if (lm) lm.remove();
+    // Add load-more sentinel if more pages exist
+    if (!allLoaded) {
+      const sentinel = document.createElement('tr');
+      sentinel.id = 'loadMore';
+      sentinel.innerHTML = '<td colspan="6" class="load-more">loading more</td>';
+      $('#tbody').appendChild(sentinel);
+    }
+  } catch(e) {
+    console.error('fetch failed', e);
+  }
+  loading = false;
+}
+
+function renderRows(sessions) {
+  const tbody = $('#tbody');
+  if (sessions.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">no sessions match</td></tr>';
+    return;
+  }
+  tbody.innerHTML = '';
+  appendRows(sessions);
+}
+
+function appendRows(sessions) {
+  const tbody = $('#tbody');
+  const frag = document.createDocumentFragment();
+  for (const s of sessions) {
+    const tr = document.createElement('tr');
+    tr.dataset.sid = s.sessionId;
+    tr.dataset.path = s.projectPath || '';
+    const title = s.summary || s.firstPrompt || '(untitled)';
+    const prompt = s.summary && s.firstPrompt ? s.firstPrompt : '';
+    tr.innerHTML =
+      '<td class="td-dir" title="' + esc(shortDir(s.projectPath)) + '">' + esc(tailDir(s.projectPath)) + '</td>' +
+      '<td><div class="td-title" title="' + esc(title) + '">' + esc(title) + '</div>' +
+        (prompt ? '<div class="td-prompt">' + esc(prompt) + '</div>' : '') +
+      '</td>' +
+      '<td class="td-branch hide-sm">' + esc(s.gitBranch || '—') + '</td>' +
+      '<td class="td-count">' + (s.messageCount || 0) + '</td>' +
+      '<td class="td-meta" title="' + fmtDate(s.modified) + '">' + relTime(s.modified) + '</td>' +
+      '<td class="td-meta hide-sm" title="' + fmtDate(s.created) + '">' + relTime(s.created) + '</td>';
+    tr.onclick = () => openSession(s.sessionId, s.projectPath || '');
+    frag.appendChild(tr);
+  }
+  tbody.appendChild(frag);
+}
+
+function renderStats() {
+  let html = '<strong>' + totalSessions + '</strong> sessions';
+  if (filteredTotal !== totalSessions) {
+    html += '<br>showing <strong>' + filteredTotal + '</strong>';
+  }
+  $('#stats').innerHTML = html;
+}
+
+function resetAndFetch() {
+  currentOffset = 0;
+  allLoaded = false;
+  fetchPage(0, false);
+}
+
+// ── Infinite scroll ──
+const observer = new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    if (entry.isIntersecting && !loading && !allLoaded) {
+      fetchPage(currentOffset, true);
+    }
+  }
+}, { rootMargin: '200px' });
+
+// Observe load-more sentinel whenever it appears
+new MutationObserver(() => {
+  const lm = document.getElementById('loadMore');
+  if (lm) observer.observe(lm);
+}).observe(document.documentElement, { childList: true, subtree: true });
+
+// ── Fuzzy directory finder ──
 function fuzzyMatch(haystack, needle) {
-  // Returns {matched, score, highlighted} or null
   const lower = haystack.toLowerCase();
   const nlower = needle.toLowerCase();
-  let hi = 0, score = 0, last = -1, highlighted = '';
-  let pos = 0;
+  let hi = 0, score = 0, last = -1, highlighted = '', pos = 0;
   for (let i = 0; i < nlower.length; i++) {
     const idx = lower.indexOf(nlower[i], hi);
     if (idx === -1) return null;
-    // Bonus for consecutive matches and start-of-segment matches
     if (idx === last + 1) score += 3;
     if (idx === 0 || haystack[idx-1] === '/') score += 5;
     score += 1;
-    // Build highlighted string
     highlighted += esc(haystack.slice(pos, idx)) + '<mark>' + esc(haystack[idx]) + '</mark>';
     pos = idx + 1;
     hi = idx + 1;
@@ -753,36 +983,12 @@ function fuzzyMatch(haystack, needle) {
   return { score, highlighted };
 }
 
-function buildDirTree(dirs) {
-  // Group dirs by common prefixes for a tree-like display
-  // Sort alphabetically for the tree
-  return dirs.slice().sort((a,b) => a.path.localeCompare(b.path));
-}
-
-function computeTreePrefix(dirs, i) {
-  if (dirs.length <= 1) return '';
-  const cur = dirs[i].path.split('/');
-  const prev = i > 0 ? dirs[i-1].path.split('/') : [];
-  // Find common prefix depth with previous
-  let common = 0;
-  for (let j = 0; j < Math.min(cur.length, prev.length); j++) {
-    if (cur[j] === prev[j]) common++;
-    else break;
-  }
-  const depth = cur.length - 1;
-  if (depth === 0) return '';
-  return '<span class="dir-item-tree">' + '\u2502 '.repeat(Math.min(common, depth - 1)) + '\u251c ' + '</span>';
-}
-
 function renderDirDropdown(query) {
-  const counts = dirCounts();
-  allDirs = counts.map(([path, count]) => ({ path, count }));
   const dropdown = $('#dirDropdown');
   const list = $('#dirList');
-
   let items;
   if (!query) {
-    items = buildDirTree(allDirs).map(d => ({
+    items = allDirs.slice().sort((a,b) => a.path.localeCompare(b.path)).map(d => ({
       ...d, highlighted: esc(d.path), score: 0
     }));
   } else {
@@ -793,7 +999,6 @@ function renderDirDropdown(query) {
     }
     items.sort((a,b) => b.score - a.score);
   }
-
   if (items.length === 0) {
     list.innerHTML = '<div class="dir-item"><span class="dir-item-path" style="color:var(--text-tertiary)">no matching directories</span></div>';
     dirHighlight = -1;
@@ -801,8 +1006,7 @@ function renderDirDropdown(query) {
     list.innerHTML = items.map((d, i) =>
       '<div class="dir-item' + (i === dirHighlight ? ' highlighted' : '') + '" data-dir="' + esc(d.path) + '" data-idx="' + i + '">' +
       '<span class="dir-item-path">' + d.highlighted + '</span>' +
-      '<span class="dir-item-count">' + d.count + '</span>' +
-      '</div>'
+      '<span class="dir-item-count">' + d.count + '</span></div>'
     ).join('');
     list.querySelectorAll('.dir-item').forEach(el => {
       el.addEventListener('mouseenter', () => {
@@ -814,43 +1018,34 @@ function renderDirDropdown(query) {
     });
   }
   dropdown.classList.add('open');
-  return items;
 }
 
 function selectDir(dir) {
-  const input = $('#dirInput');
-  const finder = $('#dirFinder');
   activeDir = dir || null;
   if (dir) {
-    input.value = dir;
-    finder.classList.add('has-selection');
+    $('#dirInput').value = dir;
+    $('#dirFinder').classList.add('has-selection');
   } else {
-    input.value = '';
-    finder.classList.remove('has-selection');
+    $('#dirInput').value = '';
+    $('#dirFinder').classList.remove('has-selection');
   }
   $('#dirDropdown').classList.remove('open');
   dirHighlight = -1;
-  applyFilters();
+  resetAndFetch();
 }
 
-// Wire up directory finder events
 document.addEventListener('DOMContentLoaded', () => {
   const input = $('#dirInput');
   const dropdown = $('#dirDropdown');
-
-  let currentItems = [];
-  input.addEventListener('focus', () => {
-    dirHighlight = -1;
-    currentItems = renderDirDropdown(input.value);
-  });
+  input.addEventListener('focus', () => { dirHighlight = -1; renderDirDropdown(input.value); });
   input.addEventListener('input', () => {
     if ($('#dirFinder').classList.contains('has-selection')) {
       activeDir = null;
       $('#dirFinder').classList.remove('has-selection');
-      applyFilters();
+      resetAndFetch();
     }
     dirHighlight = -1;
-    currentItems = renderDirDropdown(input.value);
+    renderDirDropdown(input.value);
   });
   input.addEventListener('keydown', e => {
     if (!dropdown.classList.contains('open')) return;
@@ -867,9 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
       items[dirHighlight]?.scrollIntoView({ block: 'nearest' });
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if (dirHighlight >= 0 && items[dirHighlight]) {
-        selectDir(items[dirHighlight].dataset.dir);
-      }
+      if (dirHighlight >= 0 && items[dirHighlight]) selectDir(items[dirHighlight].dataset.dir);
       input.blur();
     } else if (e.key === 'Escape') {
       e.preventDefault();
@@ -877,87 +1070,13 @@ document.addEventListener('DOMContentLoaded', () => {
       input.blur();
     }
   });
-
-  // Close dropdown when clicking outside
   document.addEventListener('mousedown', e => {
-    if (!$('#dirFinder').contains(e.target)) {
-      dropdown.classList.remove('open');
-    }
+    if (!$('#dirFinder').contains(e.target)) dropdown.classList.remove('open');
   });
-
-  $('#dirClear').onclick = (e) => {
-    e.stopPropagation();
-    selectDir(null);
-    input.focus();
-  };
+  $('#dirClear').onclick = (e) => { e.stopPropagation(); selectDir(null); input.focus(); };
 });
 
-function applyFilters() {
-  const q = $('#search').value.toLowerCase().trim();
-  filtered = ALL.filter(s => {
-    if (activeDir && shortDir(s.projectPath) !== activeDir) return false;
-    if (q) {
-      const hay = ((s.summary || '') + ' ' + (s.firstPrompt || '') + ' ' + (s.projectPath || '')).toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  });
-  sortFiltered();
-  renderTable();
-  renderStats();
-}
-
-function sortFiltered() {
-  const [key, dir] = currentSort.split('-');
-  const asc = dir === 'asc' ? 1 : -1;
-  filtered.sort((a, b) => {
-    if (key === 'modified') return asc * ((a.fileMtime || new Date(a.modified || 0).getTime()) - (b.fileMtime || new Date(b.modified || 0).getTime()));
-    if (key === 'dir') return asc * (shortDir(a.projectPath) || '').localeCompare(shortDir(b.projectPath) || '');
-    if (key === 'messages') return asc * ((a.messageCount || 0) - (b.messageCount || 0));
-    return 0;
-  });
-}
-
-function renderStats() {
-  const dirs = new Set(ALL.map(s => s.projectPath));
-  const shown = filtered.length;
-  $('#stats').innerHTML =
-    '<strong>' + ALL.length + '</strong> sessions across <strong>' + dirs.size + '</strong> projects' +
-    (shown !== ALL.length ? '<br>showing <strong>' + shown + '</strong>' : '');
-}
-
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
-function renderTable() {
-  const tbody = $('#tbody');
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">no sessions match</td></tr>';
-    return;
-  }
-  tbody.innerHTML = filtered.map(s => {
-    const title = s.summary || s.firstPrompt || '(untitled)';
-    const prompt = s.summary && s.firstPrompt ? s.firstPrompt : '';
-    return '<tr data-sid="' + s.sessionId + '" data-path="' + esc(s.projectPath || '') + '">' +
-      '<td class="td-dir" title="' + esc(shortDir(s.projectPath)) + '">' + esc(tailDir(s.projectPath)) + '</td>' +
-      '<td><div class="td-title">' + esc(title) + '</div>' +
-        (prompt ? '<div class="td-prompt">' + esc(prompt) + '</div>' : '') +
-      '</td>' +
-      '<td class="td-branch hide-sm">' + esc(s.gitBranch || '—') + '</td>' +
-      '<td class="td-count">' + (s.messageCount || 0) + '</td>' +
-      '<td class="td-meta" title="' + fmtDate(s.modified) + '">' + relTime(s.modified) + '</td>' +
-      '<td class="td-meta hide-sm" title="' + fmtDate(s.created) + '">' + relTime(s.created) + '</td>' +
-    '</tr>';
-  }).join('');
-
-  tbody.querySelectorAll('tr[data-sid]').forEach(tr => {
-    tr.onclick = () => openSession(tr.dataset.sid, tr.dataset.path);
-  });
-}
-
+// ── Open session ──
 async function openSession(sid, path) {
   const toast = $('#toast');
   toast.textContent = 'opening session…';
@@ -969,68 +1088,68 @@ async function openSession(sid, path) {
       body: JSON.stringify({sessionId: sid, projectPath: path})
     });
     const d = await r.json();
-    if (d.ok) {
-      toast.textContent = 'opened in ' + d.terminal;
-    } else {
-      toast.textContent = 'error: ' + (d.error || 'unknown');
-    }
-  } catch(e) {
-    toast.textContent = 'request failed';
-  }
+    toast.textContent = d.ok ? 'opened in ' + d.terminal : 'error: ' + (d.error || 'unknown');
+  } catch(e) { toast.textContent = 'request failed'; }
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-// Column header sorting
+// ── Column header sorting ──
 $$('thead th[data-col]').forEach(th => {
   th.onclick = () => {
     const col = th.dataset.col;
     const map = {dir:'dir',modified:'modified',created:'modified',messages:'messages',title:'modified',branch:'dir'};
     const sortKey = map[col] || 'modified';
-    if (currentSort.startsWith(sortKey)) {
-      currentSort = sortKey + (currentSort.endsWith('desc') ? '-asc' : '-desc');
-    } else {
-      currentSort = sortKey + '-desc';
-    }
+    currentSort = currentSort.startsWith(sortKey)
+      ? sortKey + (currentSort.endsWith('desc') ? '-asc' : '-desc')
+      : sortKey + '-desc';
     $('#sortBy').value = currentSort;
-    applyFilters();
+    resetAndFetch();
   };
 });
 
-$('#search').addEventListener('input', applyFilters);
+// ── Search debounce ──
+let searchTimer;
+$('#search').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(resetAndFetch, 250);
+});
 $('#sortBy').addEventListener('change', e => {
   currentSort = e.target.value;
-  applyFilters();
+  resetAndFetch();
 });
 
-// Load
-// Global keyboard shortcuts
+// ── Keyboard shortcuts ──
 document.addEventListener('keydown', e => {
-  // Ignore if already in an input
   const tag = document.activeElement.tagName;
   const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
-
-  if (e.key === '/' && !inInput) {
-    e.preventDefault();
-    $('#search').focus();
-  } else if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-    e.preventDefault();
-    $('#dirInput').focus();
-  } else if (e.key === 'Escape' && inInput) {
-    document.activeElement.blur();
-  }
+  if (e.key === '/' && !inInput) { e.preventDefault(); $('#search').focus(); }
+  else if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $('#dirInput').focus(); }
+  else if (e.key === 'Escape' && inInput) { document.activeElement.blur(); }
 });
 
-fetch('/api/sessions')
-  .then(r => r.json())
-  .then(data => {
-    ALL = data;
-    currentSort = 'modified-desc';
-    applyFilters();
-    $('#loading').style.display = 'none';
-    $('#table').style.display = 'table';
-    // Autofocus search box
-    $('#search').focus();
-  });
+// ── Init: poll for readiness then load ──
+async function init() {
+  // Poll until backend has finished loading sessions
+  while (true) {
+    try {
+      const r = await fetch('/api/ready');
+      const d = await r.json();
+      if (d.ready) break;
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 300));
+  }
+  // Fetch directory list for fuzzy finder
+  try {
+    const r = await fetch('/api/directories');
+    allDirs = await r.json();
+  } catch(e) {}
+  // Fetch first page
+  await fetchPage(0, false);
+  $('#loading').style.display = 'none';
+  $('#table').style.display = 'table';
+  $('#search').focus();
+}
+init();
 </script>
 </body>
 </html>
@@ -1060,6 +1179,9 @@ if __name__ == "__main__":
     url = f"http://localhost:{port}"
     print(f"\n  claude // sessions → {url}")
     print(f"  auto-shutdown after {IDLE_TIMEOUT // 60}m idle\n")
+
+    # Pre-load sessions in background
+    threading.Thread(target=preload_sessions, daemon=True).start()
 
     # Start idle watchdog
     watchdog = threading.Thread(target=idle_watchdog, args=(port,), daemon=True)
