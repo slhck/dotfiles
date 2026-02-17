@@ -1,0 +1,1071 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "flask>=3.0",
+# ]
+# ///
+"""Claude Code Session Browser — a local web GUI for browsing and resuming sessions."""
+
+import json
+import os
+import subprocess
+import sys
+import threading
+import time
+import webbrowser
+from datetime import datetime, timezone
+from pathlib import Path
+
+from flask import Flask, Response, jsonify, request
+
+app = Flask(__name__)
+
+CLAUDE_DIR = Path.home() / ".claude"
+PROJECTS_DIR = CLAUDE_DIR / "projects"
+
+
+def decode_project_dir(dirname: str) -> str:
+    """Best-effort decode of a project directory name back to its original path.
+
+    The encoding replaces both '/' and '.' with '-', making it ambiguous.
+    We try the naive decode and check if it exists, then try dot-variants.
+    """
+    if not dirname.startswith("-"):
+        return dirname
+    # Naive: replace all - with /
+    naive = "/" + dirname[1:].replace("-", "/")
+    if Path(naive).is_dir():
+        return naive
+    # Try replacing // with /. (hidden dirs like .claude)
+    candidate = naive
+    while "//" in candidate:
+        candidate = candidate.replace("//", "/.", 1)
+    if Path(candidate).is_dir():
+        return candidate
+    # Return the naive version as fallback
+    return naive
+
+
+def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | None:
+    """Extract minimal session metadata from a JSONL file by reading its entries."""
+    try:
+        stat = jsonl_path.stat()
+        session_id = jsonl_path.stem
+        first_prompt = ""
+        summary = ""
+        msg_count = 0
+        created = ""
+        git_branch = ""
+        cwd = ""
+
+        with open(jsonl_path, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                msg_count += 1
+                ts = obj.get("timestamp", "")
+                if not created and ts:
+                    created = ts
+                if obj.get("type") == "user":
+                    if not cwd and obj.get("cwd"):
+                        cwd = obj["cwd"]
+                    if not first_prompt:
+                        msg = obj.get("message", {})
+                        content = msg.get("content", "")
+                        if isinstance(content, str) and content.strip():
+                            first_prompt = content.strip()[:200]
+                    git_branch = obj.get("gitBranch", git_branch)
+
+        modified_iso = datetime.fromtimestamp(
+            stat.st_mtime, tz=timezone.utc
+        ).isoformat().replace("+00:00", "Z")
+
+        return {
+            "sessionId": session_id,
+            "fullPath": str(jsonl_path),
+            "fileMtime": int(stat.st_mtime * 1000),
+            "firstPrompt": first_prompt,
+            "summary": summary,
+            "messageCount": msg_count,
+            "created": created or modified_iso,
+            "modified": modified_iso,
+            "gitBranch": git_branch,
+            "projectPath": cwd or fallback_path,
+            "isSidechain": False,
+        }
+    except OSError:
+        return None
+
+
+def load_sessions():
+    """Load all sessions: from index files and orphan JSONL files without an index."""
+    sessions = []
+    if not PROJECTS_DIR.is_dir():
+        return sessions
+
+    for proj_dir in sorted(PROJECTS_DIR.iterdir()):
+        if not proj_dir.is_dir():
+            continue
+
+        project_path = ""
+        indexed_ids = set()
+
+        index_file = proj_dir / "sessions-index.json"
+        if index_file.is_file():
+            try:
+                data = json.loads(index_file.read_text())
+                project_path = data.get("originalPath", "")
+                for entry in data.get("entries", []):
+                    if entry.get("isSidechain"):
+                        continue
+                    indexed_ids.add(entry["sessionId"])
+                    # Use filesystem mtime for the modified field if JSONL exists
+                    jsonl = proj_dir / f"{entry['sessionId']}.jsonl"
+                    if jsonl.is_file():
+                        try:
+                            real_mtime = jsonl.stat().st_mtime
+                            real_iso = datetime.fromtimestamp(
+                                real_mtime, tz=timezone.utc
+                            ).isoformat().replace("+00:00", "Z")
+                            entry["modified"] = real_iso
+                            entry["fileMtime"] = int(real_mtime * 1000)
+                        except OSError:
+                            pass
+                    sessions.append(entry)
+            except (json.JSONDecodeError, OSError):
+                pass
+
+        if not project_path:
+            project_path = decode_project_dir(proj_dir.name)
+
+        # Discover orphan JSONL files not in the index
+        for jsonl in proj_dir.glob("*.jsonl"):
+            sid = jsonl.stem
+            if sid in indexed_ids:
+                continue
+            entry = extract_session_from_jsonl(jsonl, project_path)
+            if entry:
+                sessions.append(entry)
+
+    return sessions
+
+
+def open_terminal_with_session(project_path: str, session_id: str) -> dict:
+    """Open Ghostty (or iTerm2 fallback) in project_path and resume the session."""
+    cmd = f"claude --dangerously-skip-permissions --resume {session_id}"
+
+    # Try Ghostty first
+    ghostty = Path("/Applications/Ghostty.app")
+    if ghostty.exists():
+        apple_script = f'''
+        tell application "Ghostty"
+            activate
+        end tell
+        delay 0.5
+        tell application "System Events"
+            tell process "Ghostty"
+                keystroke "n" using command down
+            end tell
+        end tell
+        delay 0.3
+        tell application "System Events"
+            tell process "Ghostty"
+                keystroke "cd {project_path} && {cmd}"
+                key code 36
+            end tell
+        end tell
+        '''
+        subprocess.Popen(["osascript", "-e", apple_script])
+        return {"ok": True, "terminal": "Ghostty"}
+
+    # iTerm2 fallback
+    iterm = Path("/Applications/iTerm.app")
+    if iterm.exists():
+        apple_script = f'''
+        tell application "iTerm"
+            activate
+            set newWindow to (create window with default profile)
+            tell current session of newWindow
+                write text "cd {project_path} && {cmd}"
+            end tell
+        end tell
+        '''
+        subprocess.Popen(["osascript", "-e", apple_script])
+        return {"ok": True, "terminal": "iTerm2"}
+
+    return {"ok": False, "error": "No supported terminal found"}
+
+
+@app.route("/")
+def index():
+    return Response(HTML, content_type="text/html")
+
+
+@app.route("/api/sessions")
+def api_sessions():
+    return jsonify(load_sessions())
+
+
+@app.route("/api/open", methods=["POST"])
+def api_open():
+    data = request.json or {}
+    session_id = data.get("sessionId", "")
+    project_path = data.get("projectPath", "")
+    if not session_id or not project_path:
+        return jsonify({"ok": False, "error": "Missing sessionId or projectPath"}), 400
+    result = open_terminal_with_session(project_path, session_id)
+    return jsonify(result)
+
+
+HTML = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Sessions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root {
+  --bg-deep: #0a0a0c;
+  --bg-base: #101014;
+  --bg-surface: #16161c;
+  --bg-elevated: #1e1e26;
+  --bg-hover: #24242e;
+  --border: #2a2a36;
+  --border-subtle: #1e1e28;
+  --text-primary: #e8e4de;
+  --text-secondary: #8a8690;
+  --text-tertiary: #5c5868;
+  --accent: #e0a550;
+  --accent-dim: #b8863f;
+  --accent-glow: rgba(224, 165, 80, 0.12);
+  --cyan: #5cc4c4;
+  --cyan-dim: #3a9494;
+  --green: #6ec87a;
+  --red: #d45c5c;
+  --purple: #a07cc8;
+}
+html { font-size: 14px; }
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+/* subtle noise */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+.shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+}
+/* ── Header ── */
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+h1 span { color: var(--text-tertiary); font-weight: 300; }
+.stats {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  text-align: right;
+  line-height: 1.6;
+}
+.stats strong { color: var(--text-secondary); font-weight: 500; }
+/* ── Controls bar ── */
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.search-box {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+}
+.search-box svg {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  width: 15px;
+  height: 15px;
+}
+.search-box input {
+  width: 100%;
+  padding: 0.6rem 0.85rem 0.6rem 2.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box input::placeholder { color: var(--text-tertiary); }
+.search-box input:focus {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+select, .btn {
+  padding: 0.6rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+select:hover, .btn:hover {
+  border-color: var(--accent-dim);
+  color: var(--text-primary);
+}
+select option { background: var(--bg-elevated); }
+/* ── Directory finder ── */
+.dir-finder {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+.dir-finder-input {
+  width: 100%;
+  padding: 0.55rem 0.85rem 0.55rem 2.2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dir-finder-input::placeholder { color: var(--text-tertiary); }
+.dir-finder-input:focus {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+.dir-finder-icon {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+.dir-finder.has-selection .dir-finder-input {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+.dir-finder-clear {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.2rem;
+  line-height: 1;
+  display: none;
+}
+.dir-finder.has-selection .dir-finder-clear { display: block; }
+.dir-finder-clear:hover { color: var(--text-primary); }
+.dir-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 340px;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  z-index: 50;
+  padding: 0.3rem 0;
+}
+.dir-dropdown.open { display: block; }
+.dir-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.1s;
+  gap: 0.75rem;
+}
+.dir-item:hover, .dir-item.highlighted {
+  background: var(--bg-hover);
+}
+.dir-item-path {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.dir-item-path mark {
+  background: none;
+  color: var(--accent);
+  font-weight: 600;
+}
+.dir-item-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+.dir-item-tree {
+  color: var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-right: 0.3rem;
+}
+.dir-dropdown::-webkit-scrollbar { width: 5px; }
+.dir-dropdown::-webkit-scrollbar-track { background: transparent; }
+.dir-dropdown::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.dir-dropdown-hint {
+  padding: 0.35rem 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 0.2rem;
+}
+/* ── Table ── */
+.table-wrap {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+col.col-dir { width: 240px; }
+col.col-session { }
+col.col-branch { width: 90px; }
+col.col-msgs { width: 55px; }
+col.col-active { width: 110px; }
+col.col-started { width: 110px; }
+thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text-secondary); }
+thead th.sorted { color: var(--accent); }
+thead th .arrow { margin-left: 0.3rem; font-size: 0.65rem; }
+tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg-hover); }
+tbody tr:active { background: var(--bg-elevated); }
+td {
+  padding: 0.7rem 1rem;
+  vertical-align: top;
+}
+.td-dir {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--cyan);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.td-title {
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.td-prompt {
+  color: var(--text-tertiary);
+  font-size: 0.76rem;
+  margin-top: 0.2rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.td-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.td-branch {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--purple);
+  white-space: nowrap;
+}
+.td-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-align: right;
+}
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(120%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+.toast.show { transform: translateY(0); }
+/* ── Loading ── */
+.loading {
+  text-align: center;
+  padding: 6rem 2rem;
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}
+.loading::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 1.5rem auto 0;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .shell { padding: 1.5rem 1rem; }
+  header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .stats { text-align: left; }
+  .hide-sm { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <h1>claude <span>//</span> sessions</h1>
+    <div class="stats" id="stats">loading…</div>
+  </header>
+  <div class="controls">
+    <div class="search-box">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"/></svg>
+      <input type="text" id="search" placeholder="search sessions… ( / )" autocomplete="off" spellcheck="false">
+    </div>
+    <select id="sortBy">
+      <option value="modified-desc">most recent</option>
+      <option value="modified-asc">oldest first</option>
+      <option value="dir-asc">directory a→z</option>
+      <option value="dir-desc">directory z→a</option>
+      <option value="messages-desc">most messages</option>
+    </select>
+  </div>
+  <div class="dir-finder" id="dirFinder">
+    <span class="dir-finder-icon">&#x25B8;</span>
+    <input type="text" class="dir-finder-input" id="dirInput" placeholder="filter by directory… ( ⌘K )" autocomplete="off" spellcheck="false">
+    <button class="dir-finder-clear" id="dirClear">&times;</button>
+    <div class="dir-dropdown" id="dirDropdown">
+      <div class="dir-dropdown-hint">&#8593;&#8595; navigate &middot; enter select &middot; esc clear</div>
+      <div id="dirList"></div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <div class="loading" id="loading">loading sessions</div>
+    <table id="table" style="display:none">
+      <colgroup>
+        <col class="col-dir">
+        <col class="col-session">
+        <col class="col-branch">
+        <col class="col-msgs">
+        <col class="col-active">
+        <col class="col-started">
+      </colgroup>
+      <thead>
+        <tr>
+          <th data-col="dir">directory <span class="arrow"></span></th>
+          <th data-col="title">session <span class="arrow"></span></th>
+          <th data-col="branch" class="hide-sm">branch <span class="arrow"></span></th>
+          <th data-col="messages">msgs <span class="arrow"></span></th>
+          <th data-col="modified">last active <span class="arrow"></span></th>
+          <th data-col="created" class="hide-sm">started <span class="arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let ALL = [];
+let filtered = [];
+let activeDir = null;
+let currentSort = 'modified-desc';
+
+const $  = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+dayjs.extend(dayjs_plugin_relativeTime);
+
+function relTime(iso) {
+  if (!iso) return '—';
+  return dayjs(iso).fromNow();
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString('en-GB', {
+    year: 'numeric', month: 'short', day: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
+function shortDir(p) {
+  if (!p) return '~';
+  const h = '/Users/werner';
+  if (p === h) return '~';
+  if (p.startsWith(h + '/')) return '~/' + p.slice(h.length + 1);
+  return p;
+}
+
+function tailDir(p) {
+  const s = shortDir(p);
+  if (s === '~') return '~';
+  const parts = s.replace(/^~\//, '').split('/');
+  if (parts.length <= 2) return s;
+  return parts.slice(-2).join('/');
+}
+
+function dirCounts() {
+  const m = {};
+  ALL.forEach(s => {
+    const d = shortDir(s.projectPath);
+    m[d] = (m[d] || 0) + 1;
+  });
+  return Object.entries(m).sort((a,b) => b[1] - a[1]);
+}
+
+// ── Fuzzy directory finder ──
+let allDirs = []; // [{path, count}]
+let dirHighlight = -1;
+
+function fuzzyMatch(haystack, needle) {
+  // Returns {matched, score, highlighted} or null
+  const lower = haystack.toLowerCase();
+  const nlower = needle.toLowerCase();
+  let hi = 0, score = 0, last = -1, highlighted = '';
+  let pos = 0;
+  for (let i = 0; i < nlower.length; i++) {
+    const idx = lower.indexOf(nlower[i], hi);
+    if (idx === -1) return null;
+    // Bonus for consecutive matches and start-of-segment matches
+    if (idx === last + 1) score += 3;
+    if (idx === 0 || haystack[idx-1] === '/') score += 5;
+    score += 1;
+    // Build highlighted string
+    highlighted += esc(haystack.slice(pos, idx)) + '<mark>' + esc(haystack[idx]) + '</mark>';
+    pos = idx + 1;
+    hi = idx + 1;
+    last = idx;
+  }
+  highlighted += esc(haystack.slice(pos));
+  return { score, highlighted };
+}
+
+function buildDirTree(dirs) {
+  // Group dirs by common prefixes for a tree-like display
+  // Sort alphabetically for the tree
+  return dirs.slice().sort((a,b) => a.path.localeCompare(b.path));
+}
+
+function computeTreePrefix(dirs, i) {
+  if (dirs.length <= 1) return '';
+  const cur = dirs[i].path.split('/');
+  const prev = i > 0 ? dirs[i-1].path.split('/') : [];
+  // Find common prefix depth with previous
+  let common = 0;
+  for (let j = 0; j < Math.min(cur.length, prev.length); j++) {
+    if (cur[j] === prev[j]) common++;
+    else break;
+  }
+  const depth = cur.length - 1;
+  if (depth === 0) return '';
+  return '<span class="dir-item-tree">' + '\u2502 '.repeat(Math.min(common, depth - 1)) + '\u251c ' + '</span>';
+}
+
+function renderDirDropdown(query) {
+  const counts = dirCounts();
+  allDirs = counts.map(([path, count]) => ({ path, count }));
+  const dropdown = $('#dirDropdown');
+  const list = $('#dirList');
+
+  let items;
+  if (!query) {
+    items = buildDirTree(allDirs).map(d => ({
+      ...d, highlighted: esc(d.path), score: 0
+    }));
+  } else {
+    items = [];
+    for (const d of allDirs) {
+      const m = fuzzyMatch(d.path, query);
+      if (m) items.push({ ...d, highlighted: m.highlighted, score: m.score });
+    }
+    items.sort((a,b) => b.score - a.score);
+  }
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="dir-item"><span class="dir-item-path" style="color:var(--text-tertiary)">no matching directories</span></div>';
+    dirHighlight = -1;
+  } else {
+    list.innerHTML = items.map((d, i) =>
+      '<div class="dir-item' + (i === dirHighlight ? ' highlighted' : '') + '" data-dir="' + esc(d.path) + '" data-idx="' + i + '">' +
+      '<span class="dir-item-path">' + d.highlighted + '</span>' +
+      '<span class="dir-item-count">' + d.count + '</span>' +
+      '</div>'
+    ).join('');
+    list.querySelectorAll('.dir-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        dirHighlight = parseInt(el.dataset.idx);
+        list.querySelectorAll('.dir-item').forEach(e => e.classList.remove('highlighted'));
+        el.classList.add('highlighted');
+      });
+      el.onclick = () => selectDir(el.dataset.dir);
+    });
+  }
+  dropdown.classList.add('open');
+  return items;
+}
+
+function selectDir(dir) {
+  const input = $('#dirInput');
+  const finder = $('#dirFinder');
+  activeDir = dir || null;
+  if (dir) {
+    input.value = dir;
+    finder.classList.add('has-selection');
+  } else {
+    input.value = '';
+    finder.classList.remove('has-selection');
+  }
+  $('#dirDropdown').classList.remove('open');
+  dirHighlight = -1;
+  applyFilters();
+}
+
+// Wire up directory finder events
+document.addEventListener('DOMContentLoaded', () => {
+  const input = $('#dirInput');
+  const dropdown = $('#dirDropdown');
+
+  let currentItems = [];
+  input.addEventListener('focus', () => {
+    dirHighlight = -1;
+    currentItems = renderDirDropdown(input.value);
+  });
+  input.addEventListener('input', () => {
+    if ($('#dirFinder').classList.contains('has-selection')) {
+      activeDir = null;
+      $('#dirFinder').classList.remove('has-selection');
+      applyFilters();
+    }
+    dirHighlight = -1;
+    currentItems = renderDirDropdown(input.value);
+  });
+  input.addEventListener('keydown', e => {
+    if (!dropdown.classList.contains('open')) return;
+    const items = $('#dirList').querySelectorAll('.dir-item[data-dir]');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      dirHighlight = Math.min(dirHighlight + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle('highlighted', i === dirHighlight));
+      items[dirHighlight]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      dirHighlight = Math.max(dirHighlight - 1, 0);
+      items.forEach((el, i) => el.classList.toggle('highlighted', i === dirHighlight));
+      items[dirHighlight]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (dirHighlight >= 0 && items[dirHighlight]) {
+        selectDir(items[dirHighlight].dataset.dir);
+      }
+      input.blur();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      selectDir(null);
+      input.blur();
+    }
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('mousedown', e => {
+    if (!$('#dirFinder').contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  $('#dirClear').onclick = (e) => {
+    e.stopPropagation();
+    selectDir(null);
+    input.focus();
+  };
+});
+
+function applyFilters() {
+  const q = $('#search').value.toLowerCase().trim();
+  filtered = ALL.filter(s => {
+    if (activeDir && shortDir(s.projectPath) !== activeDir) return false;
+    if (q) {
+      const hay = ((s.summary || '') + ' ' + (s.firstPrompt || '') + ' ' + (s.projectPath || '')).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  sortFiltered();
+  renderTable();
+  renderStats();
+}
+
+function sortFiltered() {
+  const [key, dir] = currentSort.split('-');
+  const asc = dir === 'asc' ? 1 : -1;
+  filtered.sort((a, b) => {
+    if (key === 'modified') return asc * ((a.fileMtime || new Date(a.modified || 0).getTime()) - (b.fileMtime || new Date(b.modified || 0).getTime()));
+    if (key === 'dir') return asc * (shortDir(a.projectPath) || '').localeCompare(shortDir(b.projectPath) || '');
+    if (key === 'messages') return asc * ((a.messageCount || 0) - (b.messageCount || 0));
+    return 0;
+  });
+}
+
+function renderStats() {
+  const dirs = new Set(ALL.map(s => s.projectPath));
+  const shown = filtered.length;
+  $('#stats').innerHTML =
+    '<strong>' + ALL.length + '</strong> sessions across <strong>' + dirs.size + '</strong> projects' +
+    (shown !== ALL.length ? '<br>showing <strong>' + shown + '</strong>' : '');
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderTable() {
+  const tbody = $('#tbody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">no sessions match</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(s => {
+    const title = s.summary || s.firstPrompt || '(untitled)';
+    const prompt = s.summary && s.firstPrompt ? s.firstPrompt : '';
+    return '<tr data-sid="' + s.sessionId + '" data-path="' + esc(s.projectPath || '') + '">' +
+      '<td class="td-dir" title="' + esc(shortDir(s.projectPath)) + '">' + esc(tailDir(s.projectPath)) + '</td>' +
+      '<td><div class="td-title">' + esc(title) + '</div>' +
+        (prompt ? '<div class="td-prompt">' + esc(prompt) + '</div>' : '') +
+      '</td>' +
+      '<td class="td-branch hide-sm">' + esc(s.gitBranch || '—') + '</td>' +
+      '<td class="td-count">' + (s.messageCount || 0) + '</td>' +
+      '<td class="td-meta" title="' + fmtDate(s.modified) + '">' + relTime(s.modified) + '</td>' +
+      '<td class="td-meta hide-sm" title="' + fmtDate(s.created) + '">' + relTime(s.created) + '</td>' +
+    '</tr>';
+  }).join('');
+
+  tbody.querySelectorAll('tr[data-sid]').forEach(tr => {
+    tr.onclick = () => openSession(tr.dataset.sid, tr.dataset.path);
+  });
+}
+
+async function openSession(sid, path) {
+  const toast = $('#toast');
+  toast.textContent = 'opening session…';
+  toast.classList.add('show');
+  try {
+    const r = await fetch('/api/open', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({sessionId: sid, projectPath: path})
+    });
+    const d = await r.json();
+    if (d.ok) {
+      toast.textContent = 'opened in ' + d.terminal;
+    } else {
+      toast.textContent = 'error: ' + (d.error || 'unknown');
+    }
+  } catch(e) {
+    toast.textContent = 'request failed';
+  }
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// Column header sorting
+$$('thead th[data-col]').forEach(th => {
+  th.onclick = () => {
+    const col = th.dataset.col;
+    const map = {dir:'dir',modified:'modified',created:'modified',messages:'messages',title:'modified',branch:'dir'};
+    const sortKey = map[col] || 'modified';
+    if (currentSort.startsWith(sortKey)) {
+      currentSort = sortKey + (currentSort.endsWith('desc') ? '-asc' : '-desc');
+    } else {
+      currentSort = sortKey + '-desc';
+    }
+    $('#sortBy').value = currentSort;
+    applyFilters();
+  };
+});
+
+$('#search').addEventListener('input', applyFilters);
+$('#sortBy').addEventListener('change', e => {
+  currentSort = e.target.value;
+  applyFilters();
+});
+
+// Load
+// Global keyboard shortcuts
+document.addEventListener('keydown', e => {
+  // Ignore if already in an input
+  const tag = document.activeElement.tagName;
+  const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+  if (e.key === '/' && !inInput) {
+    e.preventDefault();
+    $('#search').focus();
+  } else if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault();
+    $('#dirInput').focus();
+  } else if (e.key === 'Escape' && inInput) {
+    document.activeElement.blur();
+  }
+});
+
+fetch('/api/sessions')
+  .then(r => r.json())
+  .then(data => {
+    ALL = data;
+    currentSort = 'modified-desc';
+    applyFilters();
+    $('#loading').style.display = 'none';
+    $('#table').style.display = 'table';
+    // Autofocus search box
+    $('#search').focus();
+  });
+</script>
+</body>
+</html>
+"""
+
+IDLE_TIMEOUT = 300  # seconds (5 minutes)
+last_activity = time.time()
+
+
+@app.before_request
+def track_activity():
+    global last_activity
+    last_activity = time.time()
+
+
+def idle_watchdog(port: int):
+    """Shut down the server after IDLE_TIMEOUT seconds of no requests."""
+    while True:
+        time.sleep(30)
+        if time.time() - last_activity > IDLE_TIMEOUT:
+            print(f"\n  idle for {IDLE_TIMEOUT}s — shutting down")
+            os._exit(0)
+
+
+if __name__ == "__main__":
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 5111
+    url = f"http://localhost:{port}"
+    print(f"\n  claude // sessions → {url}")
+    print(f"  auto-shutdown after {IDLE_TIMEOUT // 60}m idle\n")
+
+    # Start idle watchdog
+    watchdog = threading.Thread(target=idle_watchdog, args=(port,), daemon=True)
+    watchdog.start()
+
+    # Open browser after a short delay
+    threading.Timer(1.0, lambda: webbrowser.open(url)).start()
+
+    app.run(host="127.0.0.1", port=port, debug=False)
