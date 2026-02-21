@@ -180,20 +180,25 @@ def open_terminal_with_session(project_path: str, session_id: str) -> dict:
     # Try Ghostty first
     ghostty = Path("/Applications/Ghostty.app")
     if ghostty.exists():
-        # Strip virtualenv paths from PATH before launching
-        clean_env = os.environ.copy()
-        clean_env.pop("VIRTUAL_ENV", None)
-        clean_env.pop("CLAUDECODE", None)
-        clean_env.pop("CONDA_DEFAULT_ENV", None)
-        clean_env.pop("CONDA_PREFIX", None)
-        # Remove any .venv or uv cache paths from PATH
-        path_parts = clean_env.get("PATH", "").split(":")
-        path_parts = [p for p in path_parts if "/.venv/" not in p and "/uv/" not in p]
-        clean_env["PATH"] = ":".join(path_parts)
-        subprocess.Popen([
-            "open", "-na", "Ghostty.app",
-            "--args", "-e", "/opt/homebrew/bin/zsh", "-lc", shell_cmd,
-        ], env=clean_env)
+        # Use AppleScript to open a new tab in existing Ghostty window,
+        # then type the command via System Events keystroke
+        apple_script = f'''
+        tell application "Ghostty" to activate
+        delay 0.3
+        tell application "System Events"
+            tell process "Ghostty"
+                keystroke "t" using command down
+            end tell
+        end tell
+        delay 0.3
+        tell application "System Events"
+            tell process "Ghostty"
+                keystroke "unset CLAUDECODE VIRTUAL_ENV; cd '{project_path}' && exec {cmd}"
+                key code 36
+            end tell
+        end tell
+        '''
+        subprocess.Popen(["osascript", "-e", apple_script])
         return {"ok": True, "terminal": "Ghostty"}
 
     # iTerm2 fallback
