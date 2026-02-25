@@ -89,7 +89,7 @@ _install_zsh_aliases() {
         [[ -f "$file" ]] || continue
         backup_file "$dst_dir/$(basename "$file")"
         cp "$file" "$dst_dir/"
-        ((count++))
+        count=$((count + 1))
     done
     log_success "Installed $count zsh alias files to $dst_dir"
 }

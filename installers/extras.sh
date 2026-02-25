@@ -51,7 +51,7 @@ install_scripts() {
         for script in "$scripts_dir"/*; do
             if [[ -f "$script" && -x "$script" ]]; then
                 cp "$script" "$bin_dir/"
-                ((count++))
+                count=$((count + 1))
             fi
         done
         log_success "Installed $count scripts to $bin_dir"
