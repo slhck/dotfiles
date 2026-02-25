@@ -471,6 +471,6 @@ compdef _uv_run_mod uv
 # Starship prompt
 # -----------------------------------------------
 
-eval "$(starship init zsh)"
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # END: Global configuration file

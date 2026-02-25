@@ -26,12 +26,13 @@ _install_starship() {
         return
     fi
 
-    # Linux: install via official installer
+    # Linux: install via official installer to ~/.local/bin
     if [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would install Starship"
+        log_dry "Would install Starship to ~/.local/bin"
     else
-        curl -sS https://starship.rs/install.sh | sh -s -- --yes
-        log_success "Starship installed"
+        mkdir -p "$HOME/.local/bin"
+        curl -sS https://starship.rs/install.sh | sh -s -- --yes --bin-dir "$HOME/.local/bin"
+        log_success "Starship installed to ~/.local/bin"
     fi
 }
 
