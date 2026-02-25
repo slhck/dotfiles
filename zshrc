@@ -25,9 +25,11 @@ export LANG=en_US.UTF-8
 # (plugins and aliases are loaded after compinit — see below)
 
 # -----------------------------------------------
-#  Keybindings for iTerm2 in OS X, set it to xterm
-#  defaults though.
+#  Keybindings
 # -----------------------------------------------
+
+# Force emacs keymap (zsh defaults to vi when EDITOR contains 'vi')
+bindkey -e
 
 bindkey '^[[1;9C' forward-word
 bindkey '^[[1;9D' backward-word
