@@ -39,19 +39,20 @@ chsh -s $(which zsh)
 
 **Default** (installed with `./bootstrap.sh`):
 
-| Component  | Description                             |
-| ---------- | --------------------------------------- |
-| `packages` | System packages (Homebrew/apt)          |
-| `dotfiles` | Config files (.zshrc, .gitconfig, etc.) |
-| `shell`    | Starship prompt + zsh plugins           |
-| `vim`      | Vim + ctrlp plugin                      |
-| `tmux`     | Tmux + TPM                              |
-| `python`   | Pyenv + Python                          |
-| `node`     | NVM + Node.js + yarn                    |
-| `ruby`     | Rbenv + Ruby                            |
-| `scripts`  | Custom scripts to ~/.bin                |
-| `ssh`      | SSH key generation                      |
-| `safe-chain` | Supply chain security (Aikido)        |
+| Component    | Description                                      |
+| ------------ | ------------------------------------------------ |
+| `packages`   | System packages (Homebrew/apt)                   |
+| `dotfiles`   | Config files (.zshrc, .gitconfig, etc.)          |
+| `shell`      | Starship prompt + zsh plugins                    |
+| `vim`        | Vim + ctrlp plugin                               |
+| `tmux`       | Tmux + TPM                                       |
+| `python`     | Pyenv + Python                                   |
+| `node`       | NVM + Node.js + yarn                             |
+| `ruby`       | Rbenv + Ruby                                     |
+| `scripts`    | Custom scripts to ~/.bin                         |
+| `ssh`        | SSH key generation                               |
+| `safe-chain` | Supply chain security (Aikido)                   |
+| `agents`     | AI coding agents + shared skills                 |
 
 **Optional** (use `-a` or specify by name):
 
@@ -105,7 +106,8 @@ dotfiles/
 │   ├── shell.sh          # Starship + zsh plugins
 │   ├── editors.sh        # Vim, tmux
 │   ├── languages.sh      # Python, Node, Ruby
-│   └── extras.sh         # SSH, scripts, docker
+│   ├── extras.sh         # SSH, scripts, docker
+│   └── agents.sh         # AI coding agents + skills
 ├── scripts/              # Custom utility scripts
 │   └── sync-omz-aliases.sh  # Update aliases from oh-my-zsh upstream
 └── zsh/plugins/          # Standalone zsh alias files (generated)
@@ -140,6 +142,47 @@ Plugins installed at runtime (not in the repo):
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) — cloned to `~/.zsh/plugins/`
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) — cloned to `~/.zsh/plugins/`
 - [Starship](https://starship.rs) — installed via Homebrew (macOS) or curl (Linux)
+
+### Zsh config layering
+
+The zsh configuration loads in three layers:
+
+- `zshrc` — shared base config: environment, keybindings, completions, options, aliases, functions. Sets `EDITOR=vim` as the universal CLI default.
+- `zshrc.osx` / `zshrc.linux` — OS-specific tools and paths, appended automatically during install.
+- `~/.zshrc.local` — machine-local overrides, never tracked by the repo. Use this for per-machine settings like a GUI editor override (`EDITOR="code --wait"`), tool paths, or anything else that shouldn't be shared across machines.
+
+The base `zshrc` sources `~/.zshrc.local` at the very end, so local settings take precedence over everything else.
+
+Example `~/.zshrc.local`:
+
+```bash
+# GUI editor override (only on machines with VS Code)
+EDITOR="code --wait"
+export EDITOR
+
+# iTerm2 shell integration hooks
+if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+  # ...
+fi
+
+# Machine-specific PATH additions
+export PATH=/some/local/tool:$PATH
+```
+
+## AI Coding Agents
+
+The `agents` component sets up AI coding tools:
+
+- **Claude Code**, **Codex**, **Gemini CLI** — installed via Homebrew (in the Brewfile, handled by the `packages` component)
+- **pi-coding-agent** — installed globally via npm
+- **Agent skills** — clones [slhck/agent-skills](https://github.com/slhck/agent-skills) to `~/.agents/skills` and symlinks `~/.claude/skills` to it
+
+Shell aliases (defined in `zshrc`):
+
+- `cl` — `claude --dangerously-skip-permissions`
+- `cx` — `codex --full-auto`
+
+On machines with a GUI editor, set `EDITOR="code --wait"` in `~/.zshrc.local` and tools like Claude Code will pick it up automatically.
 
 ## Syncing Software
 
