@@ -39,6 +39,7 @@ DEFAULT_COMPONENTS=(
     scripts     # Custom scripts to ~/.bin
     ssh         # SSH key generation
     safe-chain  # Supply chain security (Aikido)
+    agents      # AI coding agents + shared skills
 )
 
 # All available components (use -a or specify by name)
@@ -131,6 +132,7 @@ source "$SCRIPT_DIR/installers/shell.sh"
 source "$SCRIPT_DIR/installers/editors.sh"
 source "$SCRIPT_DIR/installers/languages.sh"
 source "$SCRIPT_DIR/installers/extras.sh"
+source "$SCRIPT_DIR/installers/agents.sh"
 
 #------------------------------------------------------------------------------
 # CLI
@@ -161,6 +163,7 @@ ${BOLD}Components (default):${NC}
   scripts     Custom scripts to ~/.bin
   ssh         SSH key generation
   safe-chain  Supply chain security (Aikido)
+  agents      AI coding agents + shared skills
 
 ${BOLD}Components (optional):${NC}
   docker      Docker daemon setup (Linux only)
@@ -227,6 +230,7 @@ main() {
     is_selected scripts   && install_scripts
     is_selected ssh       && install_ssh
     is_selected safe-chain && install_safe_chain
+    is_selected agents    && install_agents
     is_selected docker    && install_docker
 
     # Footer

@@ -195,8 +195,9 @@ alias gcane='git add -A && git commit --amend --no-edit'
 alias gpa='git push --all && git push --tags'
 alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
 alias grsh='git reset --soft "HEAD^"'
-## Claude
+## AI Agents
 alias cl='claude --dangerously-skip-permissions'
+alias cx='codex --full-auto'
 # -----------------------------------------------
 #  User-defined Functions
 # -----------------------------------------------
@@ -474,5 +475,11 @@ compdef _uv_run_mod uv
 # -----------------------------------------------
 
 command -v starship &>/dev/null && eval "$(starship init zsh)"
+
+# -----------------------------------------------
+# Local overrides (not tracked by dotfiles repo)
+# -----------------------------------------------
+
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # END: Global configuration file
