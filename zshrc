@@ -32,6 +32,10 @@ export LANG=en_US.UTF-8
 # Force emacs keymap (zsh defaults to vi when EDITOR contains 'vi')
 bindkey -e
 
+# Treat /, ., and - as word separators so Option-Left/Right stops at
+# each component of URLs and file paths
+WORDCHARS=${WORDCHARS//[\/.-]}
+
 bindkey '^[[1;9C' forward-word
 bindkey '^[[1;9D' backward-word
 bindkey '^[[1;3C' forward-word
