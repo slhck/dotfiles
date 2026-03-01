@@ -12,6 +12,7 @@ install_dotfiles() {
         "tmux.conf:.tmux.conf"
         "vimrc:.vimrc"
         "Rprofile:.Rprofile"
+        "ripgreprc:.ripgreprc"
     )
 
     for mapping in "${files[@]}"; do
