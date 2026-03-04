@@ -84,6 +84,9 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # Set up zsh autocompletions
 # -----------------------------------------------
 
+# Case-insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
 # General completion technique
 zstyle ':completion:*' completer _complete _correct _approximate _prefix
 zstyle ':completion::prefix-1:*' completer _complete
@@ -151,6 +154,10 @@ unsetopt \
 # -----------------------------------------------
 # Shell Aliases
 # -----------------------------------------------
+
+## Directory Navigation
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
 ## Command Aliases
 alias x=exit
