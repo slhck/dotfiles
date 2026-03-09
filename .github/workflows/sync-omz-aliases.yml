@@ -21,10 +21,12 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
-          if git diff --quiet zsh/plugins/; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
+          # Ignore header-only changes (commit hash/date updates)
+          if git diff zsh/plugins/ | grep '^[+-]' | grep -v '^[+-][+-][+-]' | grep -qv '^[+-]# Commit:'; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            git checkout -- zsh/plugins/
           fi
 
       - name: Create pull request
