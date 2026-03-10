@@ -28,29 +28,15 @@ _install_pi_agent() {
 }
 
 _install_agent_skills() {
-    local skills_dir="$HOME/.agents/skills"
-    local claude_dir="$HOME/.claude"
-    local symlink="$claude_dir/skills"
-
-    # Clone agent-skills repo
-    if [[ -d "$skills_dir" ]]; then
-        log_success "agent-skills already cloned"
-    elif [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would clone agent-skills to $skills_dir"
-    else
-        mkdir -p "$HOME/.agents"
-        git clone https://github.com/slhck/agent-skills.git "$skills_dir"
-        log_success "agent-skills cloned to $skills_dir"
+    if ! is_installed npx; then
+        log_warning "npx not available — install Node.js first (run 'node' component), then re-run 'agents'"
+        return
     fi
 
-    # Create Claude skills symlink
-    if [[ -L "$symlink" ]]; then
-        log_success "Claude skills symlink already exists"
-    elif [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would symlink $symlink -> $skills_dir"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install agent-skills via npx"
     else
-        mkdir -p "$claude_dir"
-        ln -s "$skills_dir" "$symlink"
-        log_success "Symlinked $symlink -> $skills_dir"
+        npx skills add https://github.com/slhck/agent-skills --global --skill '*' --agent 'claude-code' --agent 'gemini-cli' --agent 'codex' --agent 'pi' --agent 'opencode' -y
+        log_success "agent-skills installed"
     fi
 }

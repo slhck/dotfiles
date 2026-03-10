@@ -175,7 +175,7 @@ The `agents` component sets up AI coding tools:
 
 - **Claude Code**, **Codex**, **Gemini CLI** — installed via Homebrew (in the Brewfile, handled by the `packages` component)
 - **pi-coding-agent** — installed globally via npm
-- **Agent skills** — clones [slhck/agent-skills](https://github.com/slhck/agent-skills) to `~/.agents/skills` and symlinks `~/.claude/skills` to it
+- **Agent skills** — installs [slhck/agent-skills](https://github.com/slhck/agent-skills) globally via `npx skills` for claude-code, gemini-cli, codex, pi, and opencode
 
 Shell aliases (defined in `zshrc`):
 
