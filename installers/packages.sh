@@ -150,6 +150,23 @@ _install_linux_extras() {
         log_success "bat already installed"
     fi
 
+    # ripgrep
+    if ! is_installed rg; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install ripgrep"
+        else
+            local url
+            url=$(curl -s "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | \
+                jq -r '.assets[] | .browser_download_url' | grep "${arch}" | grep '\.deb$' | head -1)
+            wget -qO /tmp/ripgrep.deb "$url"
+            sudo dpkg -i /tmp/ripgrep.deb
+            rm -f /tmp/ripgrep.deb
+            log_success "ripgrep installed"
+        fi
+    else
+        log_success "ripgrep already installed"
+    fi
+
     # hyperfine
     if ! is_installed hyperfine; then
         if [[ "$DRY_RUN" == "true" ]]; then
