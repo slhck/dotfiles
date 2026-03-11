@@ -13,6 +13,8 @@ macos-non-native-fullscreen = true
 keybind = super+alt+arrow_down=goto_split:next
 keybind = super+alt+arrow_up=goto_split:previous
 
-# Linux split keybinds (Tilix-style, harmless on macOS)
+# Linux keybinds (harmless on macOS)
 keybind = ctrl+shift+d=new_split:right
 keybind = ctrl+shift+e=new_split:down
+keybind = ctrl+shift+arrow_down=goto_split:next
+keybind = ctrl+shift+arrow_up=goto_split:previous
