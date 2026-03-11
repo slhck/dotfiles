@@ -23,6 +23,7 @@ install_dotfiles() {
 
     _install_zshrc
     _install_zsh_aliases
+    _install_ghostty_config
 }
 
 _copy_dotfile() {
@@ -68,6 +69,28 @@ _install_zshrc() {
     fi
 
     log_success "Installed: .zshrc"
+}
+
+_install_ghostty_config() {
+    local src_path="$SCRIPT_DIR/ghostty/config"
+
+    local dst_dir
+    if [[ "$OS" == "macos" ]]; then
+        dst_dir="$HOME/Library/Application Support/com.mitchellh.ghostty"
+    else
+        dst_dir="$HOME/.config/ghostty"
+    fi
+    local dst_path="$dst_dir/config"
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would copy: ghostty/config -> $dst_path"
+        return
+    fi
+
+    mkdir -p "$dst_dir"
+    backup_file "$dst_path"
+    cp "$src_path" "$dst_path"
+    log_success "Installed: ghostty config"
 }
 
 _install_zsh_aliases() {

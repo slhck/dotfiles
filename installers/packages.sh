@@ -70,8 +70,36 @@ _install_apt_packages() {
         sudo apt install --assume-yes "${packages[@]}"
     fi
 
+    # Ghostty terminal emulator
+    _install_ghostty_linux
+
     # Extra tools not in apt
     _install_linux_extras
+}
+
+_install_ghostty_linux() {
+    # Skip on headless/server systems (no display server)
+    if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" && -z "${XDG_SESSION_TYPE:-}" ]]; then
+        log_warning "No display detected, skipping Ghostty"
+        return
+    fi
+
+    if is_installed ghostty; then
+        log_success "Ghostty already installed"
+        return
+    fi
+
+    if ! is_installed snap; then
+        log_warning "snap not installed, skipping Ghostty"
+        return
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install Ghostty via snap"
+    else
+        sudo snap install ghostty --classic
+        log_success "Ghostty installed"
+    fi
 }
 
 _install_linux_extras() {
