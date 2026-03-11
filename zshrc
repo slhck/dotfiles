@@ -40,6 +40,8 @@ bindkey '^[[1;9C' forward-word
 bindkey '^[[1;9D' backward-word
 bindkey '^[[1;3C' forward-word
 bindkey '^[[1;3D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 bindkey '^W' vi-backward-kill-word
 bindkey '^f' vi-forward-word
 bindkey '^b' vi-backward-word
