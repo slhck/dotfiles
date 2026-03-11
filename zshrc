@@ -406,38 +406,11 @@ fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # -----------------------------------------------
-# NVM (lazy loaded for faster shell startup)
+# NVM
 # -----------------------------------------------
 
 export NVM_DIR="$HOME/.nvm"
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-  # Lazy load nvm - only initialize when nvm/node/npm/npx/yarn is first called
-  nvm() {
-    unset -f nvm node npm npx yarn
-    \. "$NVM_DIR/nvm.sh"
-    nvm "$@"
-  }
-  node() {
-    unset -f nvm node npm npx yarn
-    \. "$NVM_DIR/nvm.sh"
-    node "$@"
-  }
-  npm() {
-    unset -f nvm node npm npx yarn
-    \. "$NVM_DIR/nvm.sh"
-    npm "$@"
-  }
-  npx() {
-    unset -f nvm node npm npx yarn
-    \. "$NVM_DIR/nvm.sh"
-    npx "$@"
-  }
-  yarn() {
-    unset -f nvm node npm npx yarn
-    \. "$NVM_DIR/nvm.sh"
-    yarn "$@"
-  }
-fi
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # -----------------------------------------------
 # Homebrew
