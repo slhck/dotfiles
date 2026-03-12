@@ -48,6 +48,16 @@ _install_zshrc() {
 
     backup_file "$zshrc_dst"
 
+    # Always keep a .zshrc.pre-bootstrap copy for easy rollback
+    if [[ -f "$zshrc_dst" && ! -L "$zshrc_dst" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would backup: $zshrc_dst -> $zshrc_dst.pre-bootstrap"
+        else
+            cp -p "$zshrc_dst" "$zshrc_dst.pre-bootstrap"
+            log_success "Backed up: .zshrc -> .zshrc.pre-bootstrap"
+        fi
+    fi
+
     if [[ "$DRY_RUN" == "true" ]]; then
         log_dry "Would create: .zshrc (with OS-specific config)"
         return
