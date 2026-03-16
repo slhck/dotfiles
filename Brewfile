@@ -654,8 +654,6 @@ cask "audacity"
 cask "bibdesk"
 # Virtual Audio Driver
 cask "blackhole-2ch"
-# Terminal-based AI coding assistant
-cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Command-line display management utility

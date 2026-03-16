@@ -4,9 +4,11 @@
 install_agents() {
     log "Installing AI coding agents..."
 
-    # On Linux, Claude Code / Gemini CLI / Codex are not available as Homebrew casks
+    # Claude Code is always installed via its install script (not Homebrew)
+    _install_claude_code
+
+    # On Linux, Gemini CLI / Codex are not available as Homebrew casks
     if [[ "$OS" == "linux" ]]; then
-        _install_claude_code
         _install_gemini_cli
         _install_codex
     fi

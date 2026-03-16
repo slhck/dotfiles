@@ -173,7 +173,8 @@ export PATH=/some/local/tool:$PATH
 
 The `agents` component sets up AI coding tools:
 
-- **Claude Code**, **Codex**, **Gemini CLI** — installed via Homebrew (in the Brewfile, handled by the `packages` component)
+- **Claude Code** — installed via `curl -fsSL https://claude.ai/install.sh | bash` (handled by the `agents` component)
+- **Codex**, **Gemini CLI** — installed via Homebrew (in the Brewfile, handled by the `packages` component)
 - **pi-coding-agent** — installed globally via npm
 - **Agent skills** — installs [slhck/agent-skills](https://github.com/slhck/agent-skills) globally via `npx skills` for claude-code, gemini-cli, codex, pi, and opencode
 
