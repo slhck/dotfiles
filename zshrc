@@ -210,7 +210,11 @@ alias gpa='git push --all && git push --tags'
 alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
 alias grsh='git reset --soft "HEAD^"'
 ## AI Agents
-alias cl='claude --dangerously-skip-permissions'
+# reset terminal state after claude: https://github.com/anthropics/claude-code/issues/39272
+cl() {
+  command claude --dangerously-skip-permissions "$@"
+  printf '\e[?2004l\e[?1l\e[?25h\ec'
+}
 alias cx='codex --full-auto'
 # -----------------------------------------------
 #  User-defined Functions
