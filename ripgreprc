@@ -1,8 +1,2 @@
-# Search .md files by default
---type-add
-md:*.md
---type
-md
-
 # Smart case: case-insensitive when pattern is all lowercase
 --smart-case
