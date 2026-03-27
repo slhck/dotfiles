@@ -12,6 +12,7 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/test-bot"
 tap "lance0/tap"
+tap "mdp/tap"
 tap "minio/stable"
 tap "octave-app/octave-app"
 tap "oven-sh/bun"
@@ -122,12 +123,10 @@ brew "pkgconf"
 brew "hdf5"
 # Human-friendly and fast alternative to cut and (sometimes) awk
 brew "choose-rust"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
 # Low-level access to audio, keyboard, mouse, joystick, and graphics
 brew "sdl2"
 # Play, record, convert, and stream select audio and video codecs
-brew "ffmpeg", args: ["with-libvmaf"]
+brew "ffmpeg"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # Library to load and enumerate PKCS#11 modules
@@ -136,6 +135,8 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
 # Blu-Ray disc playback library for media players like VLC
 brew "libbluray"
 # C library for files containing sampled sound
@@ -230,10 +231,6 @@ brew "freetds"
 brew "gawk"
 # Graphics library to dynamically manipulate images
 brew "gd"
-# Multi-platform support library with a focus on asynchronous I/O
-brew "libuv"
-# Interact with Google Gemini AI models from the command-line
-brew "gemini-cli"
 # GitHub command-line tool
 brew "gh"
 # Interpreter for PostScript and PDF
@@ -252,6 +249,8 @@ brew "git-flow"
 brew "git-gui"
 # Git extension for versioning large files
 brew "git-lfs"
+# Audit git repos for secrets
+brew "gitleaks"
 # Update multiple git repositories at once
 brew "gitup"
 # Open-source GitLab command-line tool
@@ -340,6 +339,8 @@ brew "inetutils"
 brew "jack"
 # Dex to Java decompiler
 brew "jadx"
+# Serializes the output of command-line tools to structured JSON output
+brew "jc"
 # Command-line pager for JSON data
 brew "jless"
 # Lightweight and flexible command-line JSON processor
@@ -370,6 +371,8 @@ brew "libpcap"
 brew "libproxy"
 # Library for reading RAW files from digital photo cameras
 brew "libraw"
+# Multi-platform support library with a focus on asynchronous I/O
+brew "libuv"
 # Access large language models from the command-line
 brew "llm"
 # Next-gen compiler infrastructure
@@ -382,8 +385,6 @@ brew "lynx"
 brew "lzip"
 # Convert nroff man pages to HTML
 brew "man2html"
-# CLI for Node.js style checker and lint tool for Markdown files
-brew "markdownlint-cli"
 # Mac App Store command-line interface
 brew "mas"
 # Java-based project management
@@ -492,6 +493,8 @@ brew "python@3.8"
 brew "python@3.9"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
+# QR Code generation
+brew "qrencode"
 # Port to Qt of the Scintilla editing component
 brew "qscintilla2"
 # Cross-platform application and UI framework
@@ -544,10 +547,10 @@ brew "solargraph"
 brew "sox"
 # Soak up standard input and write to a file
 brew "sponge"
-# Cross-shell prompt
-brew "starship"
 # Add a public key to a remote machine's authorized_keys file
 brew "ssh-copy-id", link: true
+# Cross-shell prompt for astronauts
+brew "starship"
 # CLI for extracting streams from various websites to a video player
 brew "streamlink"
 # Version control system designed to be a better CVS
@@ -626,17 +629,17 @@ brew "discoteq/discoteq/flock"
 brew "grusell/vivictpp/vivictpp"
 # Packer
 brew "hashicorp/tap/packer"
-# Play, record, convert, and stream audio and video
-brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ["with-libvmaf"]
 # Modern traceroute/mtr-style TUI with hop stats and ASN/geo enrichment
 brew "lance0/tap/ttl"
+# Create and display QR codes on the command line
+brew "mdp/tap/qrterminal"
 # MinIO Client for object storage and filesystems
 brew "minio/stable/mc"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
 # Creates an XCFramework out of a Swift Package using xcodebuild
 brew "segment-integrations/formulae/swift-create-xcframework"
-# Google CLI for Gmail, Calendar, Drive, and Contacts
+# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
 brew "steipete/tap/gogcli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
@@ -697,7 +700,7 @@ cask "gcloud-cli"
 # Tool to measure the computer system's performance
 cask "geekbench"
 # Terminal emulator that uses platform-native UI and GPU acceleration
-cask "ghostty"
+cask "ghostty@tip"
 # Client for the Google Drive storage service
 cask "google-drive"
 # Graphically shows disk usage within a file system
@@ -712,8 +715,6 @@ cask "iterm2"
 cask "izotope-product-portal"
 # Open-source screen recorder built with web technology
 cask "kap"
-# Personal data manager focusing on security
-cask "keepassx"
 # Password manager app
 cask "keepassxc"
 # File archiver
@@ -722,6 +723,8 @@ cask "keka"
 cask "kekaexternalhelper"
 # Open-source keystroke visualiser
 cask "keycastr"
+# Open-source cross-platform alternative to AirDrop
+cask "localsend"
 # Scanner app for math and science
 cask "mathpix-snipping-tool"
 # Minimal installer for conda
@@ -743,10 +746,10 @@ cask "postman"
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
-# Thumbnails, static previews, cover art and metadata for video files
-cask "qlvideo"
 # Quick Look plugin for JSON files
 cask "quicklook-json"
+# Thumbnails, static previews, cover art and metadata for video files
+cask "quicklook-video"
 # Environment for statistical computing and graphics
 cask "r-app"
 # Move and resize windows using keyboard shortcuts or snap areas
@@ -769,6 +772,8 @@ cask "skim"
 cask "skype"
 # Team communication and collaboration software
 cask "slack"
+# CLI to create, run, and deploy Slack apps
+cask "slack-cli"
 # A CLI for Snowflake development
 cask "snowflakedb/snowflake-cli/snowflake-cli"
 # Music streaming service
@@ -791,8 +796,6 @@ cask "tunnelblick"
 cask "upscayl"
 # Gives Vagrant VMware plugin access to various VMware functionalities
 cask "vagrant-vmware-utility"
-# Turn any browser into your terminal
-cask "vibetunnel"
 # Open-source code editor
 cask "visual-studio-code"
 # Multimedia player
@@ -810,16 +813,14 @@ cask "yemuzip"
 cask "zoom"
 mas "Blackmagic Disk Speed Test", id: 425264550
 mas "Developer", id: 640199958
-mas "GarageBand", id: 682658836
 mas "Gifski", id: 1351639930
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "LanScan", id: 472226235
-mas "Microsoft Remote Desktop", id: 1295203466
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "Pasteboard Viewer", id: 1499215709
 mas "Tailscale", id: 1475387142
+mas "Windows App", id: 1295203466
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 vscode "anthropic.claude-code"
@@ -852,13 +853,13 @@ vscode "flesler.url-encode"
 vscode "foxundermoon.shell-format"
 vscode "fredericbonnet.cmake-test-adapter"
 vscode "fregante.ghost-text"
-vscode "github.copilot"
 vscode "github.copilot-chat"
 vscode "github.github-vscode-theme"
 vscode "github.remotehub"
 vscode "github.vscode-github-actions"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"
+vscode "google.gemini-cli-vscode-ide-companion"
 vscode "gruntfuggly.todo-tree"
 vscode "guyskk.language-cython"
 vscode "hbenl.vscode-test-explorer"
@@ -908,6 +909,7 @@ vscode "ms-vscode-remote.remote-wsl"
 vscode "ms-vscode-remote.vscode-remote-extensionpack"
 vscode "ms-vscode.azure-repos"
 vscode "ms-vscode.cmake-tools"
+vscode "ms-vscode.cpp-devtools"
 vscode "ms-vscode.cpptools"
 vscode "ms-vscode.cpptools-extension-pack"
 vscode "ms-vscode.cpptools-themes"
@@ -979,5 +981,6 @@ go "github.com/evilmartians/lefthook"
 go "honnef.co/go/tools/cmd/staticcheck"
 cargo "create-tauri-app"
 cargo "dash-mpd-cli"
+cargo "gitoxide"
 cargo "tauri-driver"
 cargo "vsd"
