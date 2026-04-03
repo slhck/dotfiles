@@ -47,6 +47,35 @@ def decode_project_dir(dirname: str) -> str:
     return naive
 
 
+def extract_last_user_prompt(jsonl_path: Path, max_bytes: int = 50_000) -> str:
+    """Read the last user message from the tail of a JSONL file."""
+    try:
+        size = jsonl_path.stat().st_size
+        if size == 0:
+            return ""
+        with open(jsonl_path, "r", errors="replace") as f:
+            if size > max_bytes:
+                f.seek(size - max_bytes)
+                f.readline()  # discard partial line
+            last_msg = ""
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if obj.get("type") == "user":
+                    msg = obj.get("message", {})
+                    content = msg.get("content", "")
+                    if isinstance(content, str) and content.strip():
+                        last_msg = content.strip()[:200]
+        return last_msg
+    except OSError:
+        return ""
+
+
 def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | None:
     """Extract minimal session metadata from a JSONL file.
 
@@ -102,11 +131,14 @@ def extract_session_from_jsonl(jsonl_path: Path, fallback_path: str) -> dict | N
             stat.st_mtime, tz=timezone.utc
         ).isoformat().replace("+00:00", "Z")
 
+        last_prompt = extract_last_user_prompt(jsonl_path)
+
         return {
             "sessionId": session_id,
             "fullPath": str(jsonl_path),
             "fileMtime": int(stat.st_mtime * 1000),
             "firstPrompt": first_prompt,
+            "lastPrompt": last_prompt if last_prompt != first_prompt else "",
             "summary": summary,
             "messageCount": est_messages,
             "created": created or modified_iso,
@@ -153,6 +185,10 @@ def load_sessions():
                             entry["fileMtime"] = int(real_mtime * 1000)
                         except OSError:
                             pass
+                        # Extract last user prompt for context
+                        last = extract_last_user_prompt(jsonl)
+                        first = entry.get("firstPrompt", "")
+                        entry["lastPrompt"] = last if last != first else ""
                     sessions.append(entry)
             except (json.JSONDecodeError, OSError):
                 pass
@@ -182,36 +218,15 @@ def open_terminal_with_session(project_path: str, session_id: str) -> dict:
     if ghostty.exists():
         # Escape for AppleScript string
         as_cmd = shell_cmd.replace("\\", "\\\\").replace('"', '\\"')
-        # Try native AppleScript API (Ghostty 1.3+ with macos-applescript = true),
-        # fall back to System Events keystroke approach
         native_script = (
             'tell application "Ghostty"\n'
             "  activate\n"
-            "  tell front window to make new tab\n"
-            f'  set term to focused terminal of selected tab of front window\n'
+            "  set newTab to (new tab in front window)\n"
+            "  set term to focused terminal of newTab\n"
             f'  input text "{as_cmd}\\n" to term\n'
             "end tell\n"
         )
-        fallback_script = (
-            'tell application "Ghostty" to activate\n'
-            "delay 0.3\n"
-            'tell application "System Events" to tell process "Ghostty" '
-            'to keystroke "t" using command down\n'
-            "delay 0.3\n"
-            'tell application "System Events" to tell process "Ghostty"\n'
-            f'  keystroke "{as_cmd}"\n'
-            "  key code 36\n"
-            "end tell\n"
-        )
-        # Try native first; on syntax/compilation error, fall back
-        result = subprocess.run(
-            ["osacompile", "-e", native_script],
-            capture_output=True, timeout=5,
-        )
-        if result.returncode == 0:
-            subprocess.Popen(["osascript", "-e", native_script])
-        else:
-            subprocess.Popen(["osascript", "-e", fallback_script])
+        subprocess.Popen(["osascript", "-e", native_script])
         return {"ok": True, "terminal": "Ghostty"}
 
     # iTerm2 fallback
@@ -614,7 +629,7 @@ select option { background: var(--bg-elevated); }
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 col.col-dir { width: 240px; }
 col.col-session { }
-col.col-branch { width: 90px; }
+col.col-branch { width: 120px; }
 col.col-msgs { width: 55px; }
 col.col-active { width: 110px; }
 col.col-started { width: 110px; }
@@ -687,6 +702,8 @@ td {
   font-size: 0.74rem;
   color: var(--purple);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .td-count {
   font-family: 'JetBrains Mono', monospace;
@@ -938,13 +955,16 @@ function appendRows(sessions) {
     tr.dataset.sid = s.sessionId;
     tr.dataset.path = s.projectPath || '';
     const title = s.summary || s.firstPrompt || '(untitled)';
-    const prompt = s.summary && s.firstPrompt ? s.firstPrompt : '';
+    let promptParts = [];
+    if (s.firstPrompt) promptParts.push(s.firstPrompt);
+    if (s.lastPrompt) promptParts.push(s.lastPrompt);
+    const prompt = promptParts.join(' … ');
     tr.innerHTML =
       '<td class="td-dir" title="' + esc(shortDir(s.projectPath)) + '">' + esc(tailDir(s.projectPath)) + '</td>' +
       '<td><div class="td-title" title="' + esc(title) + '">' + esc(title) + '</div>' +
-        (prompt ? '<div class="td-prompt">' + esc(prompt) + '</div>' : '') +
+        (s.lastPrompt ? '<div class="td-prompt">' + esc(prompt) + '</div>' : '') +
       '</td>' +
-      '<td class="td-branch hide-sm">' + esc(s.gitBranch || '—') + '</td>' +
+      '<td class="td-branch hide-sm" title="' + esc(s.gitBranch || '') + '">' + esc(s.gitBranch || '—') + '</td>' +
       '<td class="td-count">' + (s.messageCount || 0) + '</td>' +
       '<td class="td-meta" title="' + fmtDate(s.modified) + '">' + relTime(s.modified) + '</td>' +
       '<td class="td-meta hide-sm" title="' + fmtDate(s.created) + '">' + relTime(s.created) + '</td>';
