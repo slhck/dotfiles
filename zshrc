@@ -373,6 +373,25 @@ fm() {
     f "${cmd_args[@]}" -- --max-depth 1 "$@"
 }
 
+# Fuzzy-select one or more files and copy their absolute paths
+# (newline-delimited) to the system clipboard. Extra args are passed to fd.
+fyp() {
+    local sels
+    sels=$(fd -a "${fd_default[@]}" "$@" | fzf -m) || return
+    [[ -z "$sels" ]] && return
+    if command -v pbcopy &>/dev/null; then
+        print -r -- "$sels" | pbcopy
+    elif command -v wl-copy &>/dev/null; then
+        print -r -- "$sels" | wl-copy
+    elif command -v xclip &>/dev/null; then
+        print -r -- "$sels" | xclip -selection clipboard
+    else
+        echo "fyp: no clipboard tool found (need pbcopy, wl-copy, or xclip)" >&2
+        return 1
+    fi
+    echo "copied $(print -r -- "$sels" | grep -c .) path(s) to clipboard"
+}
+
 # shortcut to bump a file containing just a version number
 semver-bump() {
   local file="$1"
