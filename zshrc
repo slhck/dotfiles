@@ -212,7 +212,7 @@ alias grsh='git reset --soft "HEAD^"'
 ## AI Agents
 # reset terminal state after claude: https://github.com/anthropics/claude-code/issues/39272
 cl() {
-  command claude --dangerously-skip-permissions "$@"
+  command claude --enable-auto-mode --dangerously-skip-permissions "$@"
   printf '\e[?2004l\e[?1l\e[?25h\ec'
 }
 alias cx='codex --full-auto'
