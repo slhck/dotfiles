@@ -403,6 +403,27 @@ pw() {
   pwgen -y 24 -1 "$@"
 }
 
+# encrypt a file with AES256 via gpg, producing <file>.gpg
+# Uses $GPG_PASSPHRASE if set (non-interactive); otherwise prompts interactively.
+encrypt() {
+  if [ "$#" -lt 1 ]; then
+    echo "Usage: encrypt <file> [<file> ...]" && return 1
+  fi
+  local f
+  for f in "$@"; do
+    if [ ! -f "$f" ]; then
+      echo "encrypt: '$f' is not a valid file" >&2
+      continue
+    fi
+    if [ -n "$GPG_PASSPHRASE" ]; then
+      gpg --batch --yes --pinentry-mode loopback --passphrase-fd 3 \
+        --cipher-algo AES256 -c -o "$f.gpg" "$f" 3<<<"$GPG_PASSPHRASE"
+    else
+      gpg --yes --cipher-algo AES256 -c -o "$f.gpg" "$f"
+    fi
+  done
+}
+
 # -----------------------------------------------
 #  Color for ls
 # -----------------------------------------------
