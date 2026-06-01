@@ -209,13 +209,11 @@ alias gcane='git add -A && git commit --amend --no-edit'
 alias gpa='git push --all && git push --tags'
 alias git-update-fork='git fetch upstream && git checkout master && git merge upstream/master'
 alias grsh='git reset --soft "HEAD^"'
-## AI Agents
-# reset terminal state after claude: https://github.com/anthropics/claude-code/issues/39272
-cl() {
-  command claude --enable-auto-mode --dangerously-skip-permissions "$@"
-  printf '\e[?2004l\e[?1l\e[?25h\ec'
-}
-alias cx='codex --full-auto'
+
+# Agents
+alias cx='codex --sandbox workspace-write --ask-for-approval on-request -c sandbox_workspace_write.network_access=true'
+alias cl='claude --permission-mode auto'
+
 # -----------------------------------------------
 #  User-defined Functions
 # -----------------------------------------------
