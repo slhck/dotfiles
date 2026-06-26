@@ -40,6 +40,11 @@ cp zshrc ~/.zshrc && echo -e "\n# === OS-SPECIFIC CONFIG ===" >> ~/.zshrc && cat
 
 **Scripts in `scripts/`** are copied to `~/.bin` by the `scripts` installer.
 
+**Global Claude config lives in `claude/`.** The `agents` installer deploys it to `~/.claude/`:
+
+- `claude/CLAUDE.md` → `~/.claude/CLAUDE.md` (global instructions). User-authored, so it's a plain copy with a backup — edit the repo copy and re-run `agents` to update.
+- `claude/hooks/` → `~/.claude/hooks/`, registered in `~/.claude/settings.json` with a `jq` merge that adds the command to the `PreToolUse` "Bash" group only if missing — it never overwrites the rest of `settings.json` (model, plugins, etc. are managed by Claude itself).
+
 ## Key Conventions
 
 - All installers are idempotent — safe to re-run

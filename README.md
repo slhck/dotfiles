@@ -177,6 +177,8 @@ The `agents` component sets up AI coding tools:
 - **Codex**, **Gemini CLI** — installed via Homebrew (in the Brewfile, handled by the `packages` component)
 - **pi-coding-agent** — installed globally via npm
 - **Agent skills** — installs [slhck/agent-skills](https://github.com/slhck/agent-skills) globally via `npx skills` for claude-code, gemini-cli, codex, pi, and opencode
+- **Global Claude instructions** — copies `claude/CLAUDE.md` to `~/.claude/CLAUDE.md` (with a backup), so the same house rules apply on every machine. This file is user-authored; edit the repo copy and re-run `agents` to update.
+- **Claude Code hooks** — copies `claude/hooks/` to `~/.claude/hooks/` and registers them in `~/.claude/settings.json`. Currently a single `PreToolUse` hook (`block-rg-replace.py`) that stops Claude from misusing ripgrep's replace flag (`-r` / `--replace`) when it actually means recursion — ripgrep searches recursively by default. Registration is idempotent and leaves the rest of `settings.json` untouched.
 
 Shell aliases (defined in `zshrc`):
 
