@@ -214,7 +214,7 @@ alias git-update-fork='git fetch upstream && git checkout master && git merge up
 alias grsh='git reset --soft "HEAD^"'
 
 # Agents
-alias cx='codex --sandbox workspace-write --ask-for-approval on-request -c sandbox_workspace_write.network_access=true'
+alias cx='codex --sandbox workspace-write --ask-for-approval on-request -c sandbox_workspace_write.network_access=true -c approvals_reviewer=auto_review'
 alias cl='claude --permission-mode auto'
 
 # -----------------------------------------------
