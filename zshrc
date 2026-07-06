@@ -66,6 +66,7 @@ autoload zmv
 # -----------------------------------------------
 
 autoload -Uz compinit
+zmodload zsh/complist
 # Only regenerate .zcompdump once a day for speed
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
   compinit
@@ -73,6 +74,7 @@ else
   compinit -C
 fi
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu select
 
 # -----------------------------------------------
 # Aliases from oh-my-zsh plugins (standalone)
@@ -135,6 +137,7 @@ setopt \
   no_beep \
   correct \
   auto_list \
+  auto_menu \
   auto_pushd \
   complete_in_word \
   extended_glob \
