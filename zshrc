@@ -214,7 +214,7 @@ alias git-update-fork='git fetch upstream && git checkout master && git merge up
 alias grsh='git reset --soft "HEAD^"'
 
 # Agents
-alias cx='codex --sandbox workspace-write --ask-for-approval on-request -c sandbox_workspace_write.network_access=true -c approvals_reviewer=auto_review'
+alias cx='YARN_CACHE_FOLDER="$HOME/Library/Caches/Yarn" codex --sandbox workspace-write --ask-for-approval on-request --add-dir "$PWD/.git" --add-dir "$HOME/Library/Caches/Yarn" --add-dir "$HOME/.yarn" -c sandbox_workspace_write.network_access=true -c approvals_reviewer=auto_review'
 alias cl='claude --permission-mode auto'
 
 # -----------------------------------------------
