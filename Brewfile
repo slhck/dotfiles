@@ -2,15 +2,13 @@ tap "anomalyco/tap"
 tap "cube2222/octosql"
 tap "discoteq/discoteq"
 tap "github/gh"
-tap "grusell/vivictpp"
 tap "hashicorp/tap"
 tap "heroku/brew"
 tap "homebrew-ffmpeg/ffmpeg"
-tap "homebrew/bundle"
+tap "homebrew-ffmpeg/tapnewtest"
 tap "homebrew/cask"
 tap "homebrew/core"
-tap "homebrew/services"
-tap "homebrew/test-bot"
+tap "hudochenkov/sshpass"
 tap "lance0/tap"
 tap "mdp/tap"
 tap "minio/stable"
@@ -18,7 +16,7 @@ tap "octave-app/octave-app"
 tap "oven-sh/bun"
 tap "pamburus/tap"
 tap "randy3k/r"
-tap "saulpw/vd"
+tap "rkuska/carn"
 tap "segment-integrations/formulae"
 tap "slhck/moreutils"
 tap "snowflakedb/snowflake-cli"
@@ -26,9 +24,15 @@ tap "steipete/tap"
 tap "supabase/tap"
 tap "svt/avtools"
 tap "teamookla/speedtest"
+tap "visidata/vd", "https://github.com/visidata/homebrew-vd.git"
+tap "vivictorg/vivictpp", "https://github.com/vivictorg/homebrew-vivictpp.git"
 tap "yt-dlp/taps"
 # Search tool like grep, but optimized for programmers
 brew "ack"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Static checker for GitHub Actions workflow files
+brew "actionlint"
 # Software library to render fonts
 brew "freetype"
 # Core application library for C
@@ -39,6 +43,8 @@ brew "cairo"
 brew "zstd"
 # Toolkit for image loading and pixel buffer manipulation
 brew "gdk-pixbuf"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@78"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Framework for layout and rendering of i18n text
@@ -57,8 +63,6 @@ brew "libssh"
 brew "tree"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
-# Color management engine supporting ICC profiles
-brew "little-cms2"
 # Perceptual video quality assessment based on multi-method fusion
 brew "libvmaf"
 # Codec library for encoding and decoding AV1 video streams
@@ -75,10 +79,6 @@ brew "asciinema"
 brew "at-spi2-core"
 # Configuration editing tool and API
 brew "augeas"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@1.1"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
 # Shell extension to jump to frequently used directories
 brew "autojump"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -95,6 +95,8 @@ brew "libssh2"
 brew "libgit2"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Color management engine supporting ICC profiles
+brew "little-cms2"
 # Google's own build tool
 brew "bazel"
 # GNU binary tools for native development
@@ -123,30 +125,10 @@ brew "pkgconf"
 brew "hdf5"
 # Human-friendly and fast alternative to cut and (sometimes) awk
 brew "choose-rust"
-# Low-level access to audio, keyboard, mouse, joystick, and graphics
-brew "sdl2"
+# SDL2 compatibility layer that uses SDL3 behind the scenes
+brew "sdl2-compat"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
-# International domain name library (IDNA2008, Punycode and TR46)
-brew "libidn2"
-# Library to load and enumerate PKCS#11 modules
-brew "p11-kit"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
-# Blu-Ray disc playback library for media players like VLC
-brew "libbluray"
-# C library for files containing sampled sound
-brew "libsndfile"
-# Secure Reliable Transport
-brew "srt"
-# OCR (Optical Character Recognition) engine
-brew "tesseract"
-# Scaling, colorspace conversion, and dithering library
-brew "zimg"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
@@ -169,6 +151,8 @@ brew "csvkit"
 brew "ddclient"
 # GNU data recovery tool
 brew "ddrescue"
+# Load/unload environment variables based on $PWD
+brew "direnv"
 # Tool for exploring each layer in a docker image
 brew "dive"
 # XML vocabulary to create presentation-neutral documents
@@ -209,6 +193,26 @@ brew "exiv2"
 brew "fd"
 # Identify or delete duplicate files
 brew "fdupes"
+# International domain name library (IDNA2008, Punycode and TR46)
+brew "libidn2"
+# Library to load and enumerate PKCS#11 modules
+brew "p11-kit"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# Blu-Ray disc playback library for media players like VLC
+brew "libbluray"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# C library for files containing sampled sound
+brew "libsndfile"
+# Secure Reliable Transport
+brew "srt"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# Scaling, colorspace conversion, and dithering library
+brew "zimg"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg@4"
 # Play, record, convert, and stream audio and video
@@ -243,8 +247,8 @@ brew "git-cliff"
 brew "git-delta"
 # Small git utilities
 brew "git-extras"
-# Extensions to follow Vincent Driessen's branching model
-brew "git-flow"
+# Quickly rewrite git repository history
+brew "git-filter-repo"
 # Tcl/Tk UI for the git revision control system
 brew "git-gui"
 # Git extension for versioning large files
@@ -273,14 +277,14 @@ brew "gnuplot"
 brew "go"
 # Generate introspection data for GObject libraries
 brew "gobject-introspection"
+# Google Suite CLI
+brew "gogcli"
 # Fast linters runner for Go
 brew "golangci-lint"
 # Multimedia framework for research and academic purposes
 brew "gpac"
 # Library access to GnuPG
 brew "gpgme"
-# Ping, but with a graph
-brew "gping", link: false
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -327,14 +331,14 @@ brew "hurl"
 brew "hyperfine"
 # ID3 tag manipulation
 brew "id3lib"
-# ID3 editing tool
-brew "id3tool"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Image loading and rendering library
 brew "imlib2"
 # GNU utilities for networking
 brew "inetutils"
+# Update of iperf: measures TCP, UDP, and SCTP bandwidth
+brew "iperf3"
 # Audio Connection Kit
 brew "jack"
 # Dex to Java decompiler
@@ -437,8 +441,6 @@ brew "openvino"
 brew "vtk"
 # Open source computer vision library
 brew "opencv"
-# Development kit for the Java programming language
-brew "openjdk@11"
 # C library to read whole-slide images (a.k.a. virtual slides)
 brew "openslide"
 # Library to simplify the interaction with PKCS#11
@@ -465,8 +467,6 @@ brew "pmtiles"
 brew "pngquant"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
-# Object-relational database system
-brew "postgresql@14"
 # Parallel versions of OpenSSH and related tools
 brew "pssh"
 # Monitor data's progress through a pipe
@@ -486,11 +486,9 @@ brew "pyqt"
 # Python bindings for v5 of Qt
 brew "pyqt@5"
 # Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
+# Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.8"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
 # QR Code generation
@@ -529,8 +527,6 @@ brew "sd"
 brew "sdl2_ttf"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
-# Static analysis and lint tool, for (ba)sh scripts
-brew "shellcheck"
 # Tool to create Python bindings for C and C++ libraries
 brew "sip"
 # Work with remote images registries
@@ -569,8 +565,6 @@ brew "terminal-notifier"
 brew "thefuck"
 # Terminal image and video viewer
 brew "timg"
-# Simplified and community-driven man pages
-brew "tldr"
 # Terminal multiplexer
 brew "tmux"
 # Vulnerability scanner for container images, file systems, and Git repos
@@ -619,30 +613,7 @@ brew "zellij"
 brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
-# The AI coding agent built for the terminal.
-brew "anomalyco/tap/opencode"
-# OctoSQL is a query tool that allows you to join, analyse and transform data from multiple databases and file formats using SQL.
-brew "cube2222/octosql/octosql"
-# Lock file during command
-brew "discoteq/discoteq/flock"
-# Vivict++ is an easy to use tool for subjective comparison of the visual quality of different encodings of the same video source.
-brew "grusell/vivictpp/vivictpp"
-# Packer
-brew "hashicorp/tap/packer"
-# Modern traceroute/mtr-style TUI with hop stats and ASN/geo enrichment
-brew "lance0/tap/ttl"
-# Create and display QR codes on the command line
-brew "mdp/tap/qrterminal"
-# MinIO Client for object storage and filesystems
-brew "minio/stable/mc"
-# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
-brew "oven-sh/bun/bun"
-# Creates an XCFramework out of a Swift Package using xcodebuild
-brew "segment-integrations/formulae/swift-create-xcframework"
-# Google CLI for Gmail, Calendar, Drive, Docs, Sheets, and more
-brew "steipete/tap/gogcli"
-# Ookla Speedtest
-brew "teamookla/speedtest/speedtest"
+brew "hudochenkov/sshpass/sshpass", trusted: true
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -663,8 +634,6 @@ cask "codex"
 cask "cscreen"
 # Server and cloud storage browser
 cask "cyberduck"
-# Photography workflow application and raw developer
-cask "darktable"
 # Virtual monitor for screen sharing
 cask "deskpad"
 # Voice and text chat software
@@ -675,8 +644,6 @@ cask "docker-desktop"
 cask "dropbox"
 # Matrix collaboration client
 cask "element"
-# Reimagine your terminal
-cask "fig"
 # Web browser
 cask "firefox"
 # Virtual workspace manager
@@ -700,7 +667,7 @@ cask "gcloud-cli"
 # Tool to measure the computer system's performance
 cask "geekbench"
 # Terminal emulator that uses platform-native UI and GPU acceleration
-cask "ghostty@tip"
+cask "ghostty"
 # Client for the Google Drive storage service
 cask "google-drive"
 # Graphically shows disk usage within a file system
@@ -723,6 +690,8 @@ cask "keka"
 cask "kekaexternalhelper"
 # Open-source keystroke visualiser
 cask "keycastr"
+# Free cross-platform office suite, fresh version
+cask "libreoffice"
 # Open-source cross-platform alternative to AirDrop
 cask "localsend"
 # Scanner app for math and science
@@ -731,6 +700,8 @@ cask "mathpix-snipping-tool"
 cask "miniconda"
 # Online collaborative whiteboard platform
 cask "miro"
+# Intercept, modify, replay, save HTTP/S traffic
+cask "mitmproxy"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
 # Open-source software for live streaming and screen recording
@@ -746,8 +717,6 @@ cask "postman"
 cask "qctools"
 # Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
-# Quick Look plugin for JSON files
-cask "quicklook-json"
 # Thumbnails, static previews, cover art and metadata for video files
 cask "quicklook-video"
 # Environment for statistical computing and graphics
@@ -768,18 +737,16 @@ cask "shottr"
 cask "signal"
 # PDF reader and note-taking application
 cask "skim"
-# Video chat, voice call and instant messaging application
-cask "skype"
 # Team communication and collaboration software
 cask "slack"
 # CLI to create, run, and deploy Slack apps
 cask "slack-cli"
-# A CLI for Snowflake development
-cask "snowflakedb/snowflake-cli/snowflake-cli"
 # Music streaming service
 cask "spotify"
 # Replacement for RCDefaultApps, written in Swift
 cask "swiftdefaultappsprefpane"
+# Minimal GUI for AI code agents
+cask "t3-code"
 # Remote access and connectivity software focused on security
 cask "teamviewer"
 # Messaging app with a focus on speed and security
@@ -800,25 +767,24 @@ cask "vagrant-vmware-utility"
 cask "visual-studio-code"
 # Multimedia player
 cask "vlc"
-# Quick Look plugin for webp files
-cask "webpquicklook"
 # Native desktop client for WhatsApp
 cask "whatsapp"
 # Network protocol analyzer
 cask "wireshark-app"
 # Open-source version of the X.Org X Window System
 cask "xquartz"
-cask "yemuzip"
 # Video communication and virtual meeting platform
 cask "zoom"
 mas "Blackmagic Disk Speed Test", id: 425264550
 mas "Developer", id: 640199958
+mas "GarageBand", id: 682658836
 mas "Gifski", id: 1351639930
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "LanScan", id: 472226235
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Pasteboard Viewer", id: 1499215709
 mas "Tailscale", id: 1475387142
 mas "Windows App", id: 1295203466
 mas "WireGuard", id: 1451685025
@@ -853,7 +819,6 @@ vscode "flesler.url-encode"
 vscode "foxundermoon.shell-format"
 vscode "fredericbonnet.cmake-test-adapter"
 vscode "fregante.ghost-text"
-vscode "github.copilot-chat"
 vscode "github.github-vscode-theme"
 vscode "github.remotehub"
 vscode "github.vscode-github-actions"
@@ -942,6 +907,7 @@ vscode "reditorsupport.r-syntax"
 vscode "shopify.ruby-extensions-pack"
 vscode "shopify.ruby-lsp"
 vscode "sleistner.vscode-fileutils"
+vscode "slhck.vscode-image-converter"
 vscode "sorbet.sorbet-vscode-extension"
 vscode "sst-dev.opencode"
 vscode "stkb.rewrap"
@@ -957,20 +923,19 @@ vscode "twxs.cmake"
 vscode "usernamehw.vscode-join-lines"
 vscode "vadimcn.vscode-lldb"
 vscode "vitest.explorer"
-vscode "vknabel.vscode-apple-swift-format"
 vscode "vscjava.migrate-java-to-azure"
 vscode "vscjava.vscode-gradle"
 vscode "vscjava.vscode-java-debug"
 vscode "vscjava.vscode-java-dependency"
 vscode "vscjava.vscode-java-pack"
 vscode "vscjava.vscode-java-test"
-vscode "vscjava.vscode-java-upgrade"
 vscode "vscjava.vscode-maven"
 vscode "wholroyd.jinja"
 vscode "wmaurer.change-case"
 vscode "yo1dog.cursor-align"
 vscode "yoavbls.pretty-ts-errors"
 vscode "yzhang.markdown-all-in-one"
+vscode "zensical.zensical-studio"
 vscode "zhuangtongfa.material-theme"
 go "github.com/codesenberg/bombardier"
 go "github.com/unknwon/bra"
@@ -984,3 +949,22 @@ cargo "dash-mpd-cli"
 cargo "gitoxide"
 cargo "tauri-driver"
 cargo "vsd"
+npm "@google/gemini-cli"
+npm "@googleworkspace/cli"
+npm "@hubspot/cli"
+npm "@mariozechner/gmcli"
+npm "@mariozechner/pi-coding-agent"
+npm "@mariozechner/terminalcp"
+npm "@mermaid-js/mermaid-cli"
+npm "@openai/codex"
+npm "chromedriver"
+npm "corepack"
+npm "docx"
+npm "happy-coder"
+npm "happy"
+npm "lighthouse"
+npm "markdownlint-cli"
+npm "markit-ai"
+npm "patch-package"
+npm "playwright"
+npm "yarn"
