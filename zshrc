@@ -514,6 +514,12 @@ compdef _uv_run_mod uv
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # -----------------------------------------------
+# direnv (per-project environments)
+# -----------------------------------------------
+
+command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
+
+# -----------------------------------------------
 # Local overrides (not tracked by dotfiles repo)
 # -----------------------------------------------
 
