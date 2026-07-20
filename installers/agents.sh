@@ -12,6 +12,9 @@ install_agents() {
     _install_codex
     _install_pi_agent
     _install_herdr
+    _install_herdr_plugins
+    _install_herdr_renderers
+    _install_herdr_config
 
     # Gemini CLI has no Homebrew cask on Linux, so install it via npm there.
     # On macOS it comes from the Brewfile (packages component).
@@ -165,6 +168,87 @@ _install_herdr() {
         curl -fsSL https://herdr.dev/install.sh | sh
         log_success "herdr installed"
     fi
+}
+
+# Resolve the herdr binary even before ~/.local/bin is on PATH (herdr's
+# installer drops it there). Prints nothing if herdr can't be found.
+_herdr_bin() {
+    command -v herdr 2>/dev/null && return
+    [[ -x "$HOME/.local/bin/herdr" ]] && echo "$HOME/.local/bin/herdr"
+}
+
+# Installs the herdr plugins we rely on: the reviewr sidebar and the git-aware
+# file viewer. `plugin install` is idempotent — it re-syncs an existing plugin.
+_install_herdr_plugins() {
+    local herdr_bin plugin
+    herdr_bin="$(_herdr_bin)"
+    if [[ -z "$herdr_bin" ]]; then
+        log_warning "herdr not found — skipping herdr plugins"
+        return
+    fi
+
+    for plugin in persiyanov/herdr-reviewr smarzban/herdr-file-viewer; do
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install herdr plugin: $plugin"
+        elif "$herdr_bin" plugin install "$plugin" --yes; then
+            log_success "herdr plugin installed: $plugin"
+        else
+            log_warning "herdr plugin install failed: $plugin"
+        fi
+    done
+}
+
+# The herdr-file-viewer plugin renders diffs with delta and code with bat when
+# they're on PATH, and falls back to plain text otherwise. (glow/markdown
+# rendering is intentionally not set up.)
+_install_herdr_renderers() {
+    if [[ "$OS" == "macos" ]]; then
+        # git-delta (provides `delta`) and bat come from the Brewfile.
+        log_success "herdr renderers (delta/bat) come from the Brewfile on macOS"
+        return
+    fi
+
+    # Linux, no sudo required. Debian packages git-delta's binary as `git-delta`,
+    # but the viewer looks for `delta` — bridge it with a symlink.
+    if is_installed git-delta && ! is_installed delta; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would symlink delta -> git-delta"
+        else
+            mkdir -p "$HOME/.local/bin"
+            ln -sf "$(command -v git-delta)" "$HOME/.local/bin/delta"
+            log_success "Bridged delta -> git-delta"
+        fi
+    fi
+
+    # bat is expected from the distro package manager; the viewer degrades
+    # gracefully if it — or any renderer — is missing.
+    if ! is_installed bat && ! is_installed batcat; then
+        log_warning "bat not found — 'apt install bat' for syntax highlighting in the herdr file viewer"
+    fi
+}
+
+# Deploys the herdr config (a keybinding for the file viewer) to
+# ~/.config/herdr/config.toml. Like CLAUDE.md this is user-editable, so it's a
+# plain copy with a backup — edit the repo copy (herdr/config.toml) and re-run.
+_install_herdr_config() {
+    local src="$SCRIPT_DIR/herdr/config.toml"
+    local dst="$HOME/.config/herdr/config.toml"
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install herdr config: config.toml -> $dst"
+        return
+    fi
+
+    mkdir -p "$HOME/.config/herdr"
+    backup_file "$dst"
+    cp "$src" "$dst"
+    log_success "Installed herdr config: config.toml"
+
+    # Apply immediately if a herdr server is already running (no-op otherwise).
+    local herdr_bin
+    herdr_bin="$(_herdr_bin)"
+    [[ -n "$herdr_bin" ]] && "$herdr_bin" server reload-config >/dev/null 2>&1
+    return 0
 }
 
 _install_agent_skills() {

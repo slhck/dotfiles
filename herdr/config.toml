@@ -1,0 +1,12 @@
+# herdr configuration — deployed to ~/.config/herdr/config.toml by the `agents` installer.
+# herdr works without this file; it only adds a keybinding. Edit the repo copy
+# and re-run the `agents` component (then `herdr server reload-config`) to update.
+
+# One-press access to the git-aware file viewer (herdr-file-viewer plugin):
+# press the herdr prefix, then "f", to open it in a split beside your work.
+# type = "shell" runs the command detached; do NOT use "pane" (a pane would
+# close as soon as the command exits).
+[[keys.command]]
+key = "prefix+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"

@@ -177,6 +177,9 @@ The `agents` component sets up AI coding tools:
 - **Codex** — installed via `curl -fsSL https://chatgpt.com/codex/install.sh | sh` (handled by the `agents` component)
 - **pi-coding-agent** — installed via `curl -fsSL https://pi.dev/install.sh | sh` (handled by the `agents` component)
 - **herdr** (terminal agent multiplexer) — installed via `curl -fsSL https://herdr.dev/install.sh | sh` (handled by the `agents` component)
+- **herdr plugins** — installs [`persiyanov/herdr-reviewr`](https://github.com/persiyanov/herdr-reviewr) and [`smarzban/herdr-file-viewer`](https://github.com/smarzban/herdr-file-viewer) via `herdr plugin install`
+- **herdr config** — copies `herdr/config.toml` to `~/.config/herdr/config.toml` (with a backup), binding the herdr prefix + `f` to open the file viewer in a split. User-editable; edit the repo copy and re-run `agents`, then `herdr server reload-config`
+- **herdr renderers** — the file viewer styles diffs with `delta` and code with `bat` (plain-text fallback otherwise; markdown rendering via `glow` is intentionally not set up). On macOS these come from the Brewfile; on Linux the installer bridges `delta` → the distro's `git-delta`, while `bat` is expected from `apt`
 - **Gemini CLI** — installed via Homebrew on macOS (in the Brewfile, handled by the `packages` component) and via npm on Linux
 - **Agent skills** — installs [slhck/agent-skills](https://github.com/slhck/agent-skills) globally via `npx skills` for claude-code, gemini-cli, codex, pi, and opencode
 - **Global Claude instructions** — copies `claude/CLAUDE.md` to `~/.claude/CLAUDE.md` (with a backup), so the same house rules apply on every machine. This file is user-authored; edit the repo copy and re-run `agents` to update.
