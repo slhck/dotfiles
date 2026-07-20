@@ -628,9 +628,6 @@ cask "audacity"
 cask "bibdesk"
 # Virtual Audio Driver
 cask "blackhole-2ch"
-# OpenAI's coding agent that runs in your terminal
-cask "codex"
-# Command-line display management utility
 cask "cscreen"
 # Server and cloud storage browser
 cask "cyberduck"
@@ -715,7 +712,6 @@ cask "paintbrush"
 cask "postman"
 # Audiovisual analytics and filtering for video files
 cask "qctools"
-# Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
 # Thumbnails, static previews, cover art and metadata for video files
 cask "quicklook-video"
@@ -953,10 +949,8 @@ npm "@google/gemini-cli"
 npm "@googleworkspace/cli"
 npm "@hubspot/cli"
 npm "@mariozechner/gmcli"
-npm "@mariozechner/pi-coding-agent"
 npm "@mariozechner/terminalcp"
 npm "@mermaid-js/mermaid-cli"
-npm "@openai/codex"
 npm "chromedriver"
 npm "corepack"
 npm "docx"

@@ -4,18 +4,21 @@
 install_agents() {
     log "Installing AI coding agents..."
 
-    # Claude Code is always installed via its install script (not Homebrew)
+    # Claude Code, Codex, pi, and herdr are installed via their official
+    # install scripts (not Homebrew or npm) on both macOS and Linux.
     _install_claude_code
     _install_claude_md
     _install_claude_hooks
+    _install_codex
+    _install_pi_agent
+    _install_herdr
 
-    # On Linux, Gemini CLI / Codex are not available as Homebrew casks
+    # Gemini CLI has no Homebrew cask on Linux, so install it via npm there.
+    # On macOS it comes from the Brewfile (packages component).
     if [[ "$OS" == "linux" ]]; then
         _install_gemini_cli
-        _install_codex
     fi
 
-    _install_pi_agent
     _install_agent_skills
 }
 
@@ -128,15 +131,10 @@ _install_codex() {
         return
     fi
 
-    if ! is_installed npm; then
-        log_warning "npm not available — install Node.js first (run 'node' component), then re-run 'agents'"
-        return
-    fi
-
     if [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would install Codex globally via npm"
+        log_dry "Would install Codex via install script"
     else
-        npm install -g @openai/codex
+        curl -fsSL https://chatgpt.com/codex/install.sh | sh
         log_success "Codex installed"
     fi
 }
@@ -147,16 +145,25 @@ _install_pi_agent() {
         return
     fi
 
-    if ! is_installed npm; then
-        log_warning "npm not available — install Node.js first (run 'node' component), then re-run 'agents'"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install pi-coding-agent via install script"
+    else
+        curl -fsSL https://pi.dev/install.sh | sh
+        log_success "pi-coding-agent installed"
+    fi
+}
+
+_install_herdr() {
+    if is_installed herdr; then
+        log_success "herdr already installed"
         return
     fi
 
     if [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would install pi-coding-agent globally via npm"
+        log_dry "Would install herdr via install script"
     else
-        npm install -g @mariozechner/pi-coding-agent
-        log_success "pi-coding-agent installed"
+        curl -fsSL https://herdr.dev/install.sh | sh
+        log_success "herdr installed"
     fi
 }
 
