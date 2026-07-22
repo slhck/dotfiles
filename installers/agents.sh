@@ -208,15 +208,44 @@ _install_herdr_renderers() {
         return
     fi
 
-    # Linux, no sudo required. Debian packages git-delta's binary as `git-delta`,
-    # but the viewer looks for `delta` — bridge it with a symlink.
-    if is_installed git-delta && ! is_installed delta; then
-        if [[ "$DRY_RUN" == "true" ]]; then
-            log_dry "Would symlink delta -> git-delta"
+    # Linux, no sudo required. Careful: /usr/bin/git-delta on Debian belongs to
+    # git-extras — a script that lists files differing from a branch, NOT the
+    # delta pager. The real pager isn't packaged in Debian stable, so install
+    # the static musl build from GitHub releases into ~/.local/bin.
+
+    # Clean up the bad bridge from an earlier version of this installer, which
+    # symlinked delta -> git-extras' git-delta. That made `git diff` pipe into
+    # a script that never reads stdin: blank screen, hung pager.
+    if [[ -L "$HOME/.local/bin/delta" ]] && [[ "$(readlink "$HOME/.local/bin/delta")" == *git-delta* ]]; then
+        rm -f "$HOME/.local/bin/delta"
+        log_warning "Removed bad delta symlink (pointed at git-extras' git-delta)"
+    fi
+
+    # ~/.local/bin may not be on PATH yet during bootstrap — check it directly.
+    local delta_bin
+    delta_bin="$(command -v delta 2>/dev/null || true)"
+    [[ -z "$delta_bin" && -x "$HOME/.local/bin/delta" ]] && delta_bin="$HOME/.local/bin/delta"
+    if [[ -n "$delta_bin" ]] && "$delta_bin" --version 2>/dev/null | grep -q "^delta "; then
+        log_success "delta already installed"
+    elif [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install delta from GitHub releases"
+    else
+        local arch tag url tmpdir
+        arch="$(uname -m)"  # x86_64 and aarch64 both have musl builds
+        tag="$(curl -fsSL https://api.github.com/repos/dandavison/delta/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')"
+        if [[ -z "$tag" ]]; then
+            log_warning "Could not resolve latest delta release — skipping delta install"
         else
-            mkdir -p "$HOME/.local/bin"
-            ln -sf "$(command -v git-delta)" "$HOME/.local/bin/delta"
-            log_success "Bridged delta -> git-delta"
+            url="https://github.com/dandavison/delta/releases/download/${tag}/delta-${tag}-${arch}-unknown-linux-musl.tar.gz"
+            tmpdir="$(mktemp -d)"
+            if curl -fsSL "$url" | tar xz -C "$tmpdir"; then
+                mkdir -p "$HOME/.local/bin"
+                install -m 755 "$tmpdir/delta-${tag}-${arch}-unknown-linux-musl/delta" "$HOME/.local/bin/delta"
+                log_success "delta ${tag} installed to ~/.local/bin"
+            else
+                log_warning "delta download failed — git pager and herdr diff rendering unavailable"
+            fi
+            rm -rf "$tmpdir"
         fi
     fi
 

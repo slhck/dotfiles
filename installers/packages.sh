@@ -32,7 +32,6 @@ _install_apt_packages() {
         build-essential
         curl
         git
-        git-delta
         git-extras
         htop
         jq
