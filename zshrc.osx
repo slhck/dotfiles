@@ -96,7 +96,13 @@ fi
 # -----------------------------------------------
 # JAVA
 # -----------------------------------------------
-export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+# -v is a minimum with fallback, so this only fails when no JDK is installed at
+# all — in which case java_home would print "Unable to locate a Java Runtime"
+# to stderr on every login. Leave JAVA_HOME unset instead.
+if _java_home=$(/usr/libexec/java_home -v 21 2>/dev/null); then
+  export JAVA_HOME=$_java_home
+fi
+unset _java_home
 
 # -----------------------------------------------
 # Android
