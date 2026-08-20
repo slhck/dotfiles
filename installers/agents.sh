@@ -256,21 +256,41 @@ _install_herdr_renderers() {
     fi
 }
 
-# Deploys the herdr config (a keybinding for the file viewer) to
-# ~/.config/herdr/config.toml. Like CLAUDE.md this is user-editable, so it's a
-# plain copy with a backup — edit the repo copy (herdr/config.toml) and re-run.
+# Deploys the herdr config (theme, UI, and the plugin keybindings) to
+# ~/.config/herdr/config.toml: the base herdr/config.toml plus the OS-specific
+# overlay, assembled the same way .zshrc is. Like CLAUDE.md this is user-editable,
+# so it's a plain copy with a backup — edit the repo copy and re-run. herdr itself
+# rewrites the deployed file when a setting changes in its UI, so mirror any such
+# change back into the repo copy or the next run will overwrite it.
 _install_herdr_config() {
     local src="$SCRIPT_DIR/herdr/config.toml"
     local dst="$HOME/.config/herdr/config.toml"
+    local os_marker="# === OS-SPECIFIC CONFIG ==="
+    local os_src=""
+
+    if [[ "$OS" == "macos" ]]; then
+        os_src="$SCRIPT_DIR/herdr/config.osx.toml"
+    elif [[ "$OS" == "linux" ]]; then
+        os_src="$SCRIPT_DIR/herdr/config.linux.toml"
+    fi
 
     if [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would install herdr config: config.toml -> $dst"
+        log_dry "Would install herdr config: config.toml (+ OS overlay) -> $dst"
         return
     fi
 
     mkdir -p "$HOME/.config/herdr"
     backup_file "$dst"
     cp "$src" "$dst"
+
+    # No marker check needed for idempotency: the copy above starts from a clean file.
+    if [[ -n "$os_src" && -f "$os_src" ]]; then
+        {
+            echo ""
+            echo "$os_marker"
+            cat "$os_src"
+        } >>"$dst"
+    fi
     log_success "Installed herdr config: config.toml"
 
     # Apply immediately if a herdr server is already running (no-op otherwise).

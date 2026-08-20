@@ -1,0 +1,7 @@
+# Linux-specific herdr settings, appended to config.toml by the `agents` installer.
+
+[ui.toast]
+# The Linux boxes are headless and reached over SSH, so there is no local
+# notification service to talk to. Ask the outer terminal to raise the
+# notification instead — that reaches the machine actually sitting in front of us.
+delivery = "terminal"

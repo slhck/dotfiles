@@ -1,12 +1,44 @@
 # herdr configuration — deployed to ~/.config/herdr/config.toml by the `agents` installer.
-# herdr works without this file; it only adds a keybinding. Edit the repo copy
-# and re-run the `agents` component (then `herdr server reload-config`) to update.
+#
+# This is the whole config, not just a fragment: herdr rewrites
+# ~/.config/herdr/config.toml whenever a setting is changed in its UI, so anything
+# worth keeping across machines has to live here. Edit the repo copy, re-run the
+# `agents` component (it reloads a running server), or `herdr server reload-config`.
+#
+# OS-specific settings live in config.osx.toml / config.linux.toml and are appended
+# after the "# === OS-SPECIFIC CONFIG ===" marker, the same way .zshrc is assembled.
+#
+# `herdr config check` validates the deployed file and prints diagnostics.
 
-# One-press access to the git-aware file viewer (herdr-file-viewer plugin):
-# press the herdr prefix, then "f", to open it in a split beside your work.
-# type = "shell" runs the command detached; do NOT use "pane" (a pane would
-# close as soon as the command exits).
+# Skip the first-run notification setup.
+onboarding = false
+
+[theme]
+name = "nord"
+auto_switch = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+# Plugin keybindings. Both are prefix chords: press the herdr prefix (ctrl+b by
+# default), then the letter. type = "shell" runs the command detached; do NOT use
+# "pane" (a pane would close as soon as the command exits). A plain `herdr` resolves
+# through the server's PATH, which includes ~/.local/bin, where the installer puts it.
+
+# prefix+f — git-aware file viewer (smarzban/herdr-file-viewer) in a split beside the
+# current work. The action is a toggle: it opens the pane, focuses it if it is already
+# open, and closes it if it is the focused pane.
 [[keys.command]]
 key = "prefix+f"
 type = "shell"
 command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
+
+# prefix+d — reviewr (persiyanov/herdr-reviewr): review the agent's diff next to the
+# chat and send line comments to it. "d" as in diff, because herdr already uses
+# prefix+r for resize mode. The action toggles the pane in the focused workspace;
+# where it opens is reviewr's own setting, in
+# ~/.config/herdr/plugins/config/persiyanov.reviewr/config.toml (default: split right).
+[[keys.command]]
+key = "prefix+d"
+type = "shell"
+command = "herdr plugin action invoke toggle --plugin persiyanov.reviewr"

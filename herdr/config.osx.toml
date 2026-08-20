@@ -1,0 +1,6 @@
+# macOS-specific herdr settings, appended to config.toml by the `agents` installer.
+
+[ui.toast]
+# herdr runs on the same machine as the desktop, so it can post notifications to
+# the macOS notification service itself.
+delivery = "system"
