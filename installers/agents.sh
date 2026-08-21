@@ -177,8 +177,9 @@ _herdr_bin() {
     [[ -x "$HOME/.local/bin/herdr" ]] && echo "$HOME/.local/bin/herdr"
 }
 
-# Installs the herdr plugins we rely on: the reviewr sidebar and the git-aware
-# file viewer. `plugin install` is idempotent — it re-syncs an existing plugin.
+# Installs the herdr plugins we rely on: the reviewr sidebar, the git-aware file
+# viewer, and the workspace navigator. `plugin install` is idempotent — it
+# re-syncs an existing plugin.
 _install_herdr_plugins() {
     local herdr_bin plugin
     herdr_bin="$(_herdr_bin)"
@@ -196,6 +197,34 @@ _install_herdr_plugins() {
             log_warning "herdr plugin install failed: $plugin"
         fi
     done
+
+    plugin="thanhdat77/herdr-navigator"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        if ! is_installed cargo && [[ ! -x "$HOME/.cargo/bin/cargo" ]]; then
+            log_dry "Would install the minimal Rust toolchain for $plugin"
+        fi
+        log_dry "Would install herdr plugin: $plugin (v0.3.3)"
+        return
+    fi
+
+    # Navigator is distributed as source and Herdr builds it during installation.
+    # Keep the agents component self-contained on Linux hosts where the default
+    # package set does not provide Cargo.
+    if ! is_installed cargo && [[ ! -x "$HOME/.cargo/bin/cargo" ]]; then
+        if curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal; then
+            log_success "Installed minimal Rust toolchain for $plugin"
+        else
+            log_warning "Rust installation failed — skipping $plugin"
+            return
+        fi
+    fi
+    [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
+
+    if "$herdr_bin" plugin install "$plugin" --ref v0.3.3 --yes; then
+        log_success "herdr plugin installed: $plugin (v0.3.3)"
+    else
+        log_warning "herdr plugin install failed: $plugin"
+    fi
 }
 
 # The herdr-file-viewer plugin renders diffs with delta and code with bat when

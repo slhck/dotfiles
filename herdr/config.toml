@@ -20,10 +20,10 @@ auto_switch = false
 [ui]
 show_agent_labels_on_pane_borders = true
 
-# Plugin keybindings. Both are prefix chords: press the herdr prefix (ctrl+b by
-# default), then the letter. type = "shell" runs the command detached; do NOT use
-# "pane" (a pane would close as soon as the command exits). A plain `herdr` resolves
-# through the server's PATH, which includes ~/.local/bin, where the installer puts it.
+# Plugin keybindings are prefix chords: press the herdr prefix (ctrl+b by default),
+# then the letter. type = "shell" runs a command detached; do NOT use "pane" (a
+# pane would close as soon as the command exits). A plain `herdr` resolves through
+# the server's PATH, which includes ~/.local/bin, where the installer puts it.
 
 # prefix+f — git-aware file viewer (smarzban/herdr-file-viewer) in a split beside the
 # current work. The action is a toggle: it opens the pane, focuses it if it is already
@@ -42,3 +42,12 @@ command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewe
 key = "prefix+d"
 type = "shell"
 command = "herdr plugin action invoke toggle --plugin persiyanov.reviewr"
+
+# prefix+t — fuzzy navigator (thanhdat77/herdr-navigator) for workspaces, agents,
+# projects, sessions, remotes, directories, and actions. Invoking it again focuses
+# the existing Navigator overlay instead of opening a duplicate.
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
