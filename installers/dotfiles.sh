@@ -24,6 +24,40 @@ install_dotfiles() {
     _install_zshrc
     _install_zsh_aliases
     _install_ghostty_config
+    _install_glow_config
+}
+
+_install_glow_config() {
+    local src_path="$SCRIPT_DIR/glow/github-dark.json"
+    local dst_dir config_path style_path
+
+    if [[ "$OS" == "macos" ]]; then
+        dst_dir="$HOME/Library/Preferences/glow"
+    else
+        dst_dir="$HOME/.config/glow"
+    fi
+    config_path="$dst_dir/glow.yml"
+    style_path="$dst_dir/github-dark.json"
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install glow config and GitHub Dark style to $dst_dir"
+        return
+    fi
+
+    mkdir -p "$dst_dir"
+    backup_file "$config_path"
+    backup_file "$style_path"
+    cp "$src_path" "$style_path"
+    cat >"$config_path" <<EOF
+# GitHub Dark-inspired Glow configuration
+style: "$style_path"
+pager: false
+width: 0
+all: false
+showLineNumbers: false
+preserveNewLines: true
+EOF
+    log_success "Installed glow config and GitHub Dark style"
 }
 
 _copy_dotfile() {
