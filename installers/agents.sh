@@ -227,13 +227,12 @@ _install_herdr_plugins() {
     fi
 }
 
-# The herdr-file-viewer plugin renders diffs with delta and code with bat when
-# they're on PATH, and falls back to plain text otherwise. (glow/markdown
-# rendering is intentionally not set up.)
+# The herdr-file-viewer plugin renders markdown with glow, diffs with delta, and
+# code with bat when they're on PATH, and falls back to plain text otherwise.
 _install_herdr_renderers() {
     if [[ "$OS" == "macos" ]]; then
-        # git-delta (provides `delta`) and bat come from the Brewfile.
-        log_success "herdr renderers (delta/bat) come from the Brewfile on macOS"
+        # glow, git-delta (provides `delta`), and bat come from the Brewfile.
+        log_success "herdr renderers (glow/delta/bat) come from the Brewfile on macOS"
         return
     fi
 

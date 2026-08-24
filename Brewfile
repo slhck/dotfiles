@@ -261,6 +261,8 @@ brew "gitup"
 brew "glab"
 # Multi-platform library for OpenGL applications
 brew "glfw"
+# Terminal markdown renderer
+brew "glow"
 # GNU implementation of the famous stream editor
 brew "gnu-sed"
 # GNU version of the tar archiving utility

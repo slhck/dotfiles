@@ -33,6 +33,7 @@ _install_apt_packages() {
         curl
         git
         git-extras
+        glow
         htop
         jq
         libbz2-dev
@@ -62,6 +63,21 @@ _install_apt_packages() {
         zlib1g-dev
         zsh
     )
+
+    run sudo apt update
+
+    # Charm's apt repository provides glow on Debian/Ubuntu.
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install apt repository prerequisites: ca-certificates gnupg"
+        log_dry "Would configure Charm's apt repository"
+    else
+        sudo apt install --assume-yes ca-certificates gnupg
+        sudo mkdir -p /etc/apt/keyrings
+        curl -fsSL https://repo.charm.sh/apt/gpg.key | \
+            sudo gpg --dearmor --yes -o /etc/apt/keyrings/charm.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | \
+            sudo tee /etc/apt/sources.list.d/charm.list >/dev/null
+    fi
 
     run sudo apt update
 
