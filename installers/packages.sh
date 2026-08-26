@@ -195,4 +195,43 @@ _install_linux_extras() {
     else
         log_success "uv already installed"
     fi
+
+    # git-cliff
+    if ! is_installed git-cliff; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install git-cliff from its latest Linux binary release"
+        else
+            local target url tmpdir binary
+            case "$(uname -m)" in
+                x86_64)  target="x86_64-unknown-linux-gnu" ;;
+                aarch64) target="aarch64-unknown-linux-gnu" ;;
+                *)       log_error "Unsupported architecture for git-cliff: $(uname -m)"; return 1 ;;
+            esac
+
+            url=$(curl -fsSL https://api.github.com/repos/orhun/git-cliff/releases/latest | \
+                jq -r --arg target "$target" \
+                    '.assets[] | select(.name | endswith("-" + $target + ".tar.gz")) | .browser_download_url' | \
+                head -1)
+            if [[ -z "$url" ]]; then
+                log_error "Could not find a git-cliff binary for $target"
+                return 1
+            fi
+
+            tmpdir=$(mktemp -d)
+            curl -fsSL "$url" -o "$tmpdir/git-cliff.tar.gz"
+            tar -xzf "$tmpdir/git-cliff.tar.gz" -C "$tmpdir"
+            binary=$(find "$tmpdir" -type f -name git-cliff -print -quit)
+            if [[ -z "$binary" ]]; then
+                rm -rf "$tmpdir"
+                log_error "git-cliff binary was not found in the release archive"
+                return 1
+            fi
+
+            install -m 755 "$binary" "$HOME/.local/bin/git-cliff"
+            rm -rf "$tmpdir"
+            log_success "git-cliff installed"
+        fi
+    else
+        log_success "git-cliff already installed"
+    fi
 }
