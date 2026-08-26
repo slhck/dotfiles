@@ -455,7 +455,24 @@ fi
 # -----------------------------------------------
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# nvm 0.40.7 strips comments from its alias files with ${line%%#*}. zsh rejects
+# that pattern while extended_glob is on (set further up in this file), so
+# nvm_alias dies with "bad pattern: #*", nvm never activates a node version, and
+# node/npm/yarn are missing from PATH entirely. Load nvm, and call it, with the
+# option switched off locally.
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  () {
+    setopt local_options no_extended_glob
+    \. "$NVM_DIR/nvm.sh"
+  }
+  if (( $+functions[nvm] )); then
+    functions[_nvm_real]=$functions[nvm]
+    nvm() {
+      setopt local_options no_extended_glob
+      _nvm_real "$@"
+    }
+  fi
+fi
 
 # -----------------------------------------------
 # Homebrew
