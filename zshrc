@@ -448,7 +448,14 @@ fi
 # -----------------------------------------------
 # fzf
 # -----------------------------------------------
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Homebrew provides the fzf shell integration on macOS.  Prefer it over the
+# legacy ~/.fzf.zsh loader, which is not created by `brew install fzf`.
+if [[ -r "${HOMEBREW_PREFIX:-}/opt/fzf/shell/key-bindings.zsh" ]]; then
+  [[ $- == *i* ]] && source "${HOMEBREW_PREFIX}/opt/fzf/shell/completion.zsh"
+  source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
+elif [[ -r ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
+fi
 
 # -----------------------------------------------
 # NVM

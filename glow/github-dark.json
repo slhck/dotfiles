@@ -20,6 +20,7 @@
   "link_text": { "color": "#58a6ff", "bold": true },
   "image": { "color": "#bc8cff", "underline": true },
   "image_text": { "color": "#8b949e", "format": "Image: {{.text}} →" },
+  "inline_code": { "color": "#ffa657", "background_color": "#161b22" },
   "code": { "prefix": " ", "suffix": " ", "color": "#ffa657", "background_color": "#161b22" },
   "code_block": {
     "color": "#c9d1d9",
