@@ -5,9 +5,6 @@ tap "github/gh"
 tap "hashicorp/tap"
 tap "heroku/brew"
 tap "homebrew-ffmpeg/ffmpeg"
-tap "homebrew-ffmpeg/tapnewtest"
-tap "homebrew/cask"
-tap "homebrew/core"
 tap "hudochenkov/sshpass"
 tap "lance0/tap"
 tap "mdp/tap"
@@ -203,8 +200,6 @@ brew "gnutls"
 brew "libass"
 # Blu-Ray disc playback library for media players like VLC
 brew "libbluray"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # C library for files containing sampled sound
 brew "libsndfile"
 # Secure Reliable Transport
@@ -261,7 +256,7 @@ brew "gitup"
 brew "glab"
 # Multi-platform library for OpenGL applications
 brew "glfw"
-# Terminal markdown renderer
+# Render markdown on the CLI
 brew "glow"
 # GNU implementation of the famous stream editor
 brew "gnu-sed"
@@ -479,18 +474,12 @@ brew "pwgen"
 brew "py3cairo"
 # Seamless operability between C++11 and Python
 brew "pybind11"
-# Python version management
-brew "pyenv"
 # GNOME Python bindings (based on GObject Introspection)
 brew "pygobject3"
 # Python bindings for v6 of Qt
 brew "pyqt"
 # Python bindings for v5 of Qt
 brew "pyqt@5"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
 # QR Code generation
@@ -517,6 +506,8 @@ brew "rpm"
 brew "rsync"
 # Safe, concurrent, practical language
 brew "rust"
+# Rust toolchain installer
+brew "rustup"
 # Substitute for classic 'make' tool with autoconf/automake functionality
 brew "scons"
 # Display and control your Android device
@@ -569,6 +560,8 @@ brew "thefuck"
 brew "timg"
 # Terminal multiplexer
 brew "tmux"
+# Lightweight BitTorrent client
+brew "transmission-cli"
 # Vulnerability scanner for container images, file systems, and Git repos
 brew "trivy"
 # MPEG Transport Stream Toolkit
@@ -577,6 +570,8 @@ brew "tsduck"
 brew "typst"
 # Unidata unit conversion library
 brew "udunits"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # File synchronization tool
 brew "unison"
 # Extremely fast Python package installer and resolver, written in Rust
@@ -628,9 +623,6 @@ cask "android-studio"
 cask "audacity"
 # Edit and manage bibliographies
 cask "bibdesk"
-# Virtual Audio Driver
-cask "blackhole-2ch"
-cask "cscreen"
 # Server and cloud storage browser
 cask "cyberduck"
 # Virtual monitor for screen sharing
@@ -639,8 +631,6 @@ cask "deskpad"
 cask "discord"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
-# Client for the Dropbox cloud storage service
-cask "dropbox"
 # Matrix collaboration client
 cask "element"
 # Web browser
@@ -654,11 +644,8 @@ cask "font-merriweather"
 cask "font-monaspace"
 cask "font-oswald"
 cask "font-quicksand"
-cask "font-roboto"
-cask "font-source-code-pro"
 cask "font-source-sans-3"
-cask "font-source-sans-pro"
-cask "font-source-serif-pro"
+cask "font-source-serif-4"
 # Horizontal and vertical rulers
 cask "free-ruler"
 # Set of tools to manage resources and applications hosted on Google Cloud
@@ -667,8 +654,6 @@ cask "gcloud-cli"
 cask "geekbench"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# Client for the Google Drive storage service
-cask "google-drive"
 # Graphically shows disk usage within a file system
 cask "grandperspective"
 # Open-source video transcoder
@@ -677,8 +662,6 @@ cask "handbrake-app"
 cask "hex-fiend"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
-# Professional audio software for audio recording, mixing, broadcast and others
-cask "izotope-product-portal"
 # Open-source screen recorder built with web technology
 cask "kap"
 # Password manager app
@@ -703,22 +686,20 @@ cask "miro"
 cask "mitmproxy"
 # Tool to control external monitor brightness & volume
 cask "monitorcontrol"
+# GameStream client
+cask "moonlight"
 # Open-source software for live streaming and screen recording
 cask "obs"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
-cask "octave-app"
 # Image editor
 cask "paintbrush"
 # Collaboration platform for API development
 cask "postman"
 # Audiovisual analytics and filtering for video files
 cask "qctools"
-cask "qlimagesize"
 # Thumbnails, static previews, cover art and metadata for video files
 cask "quicklook-video"
-# Environment for statistical computing and graphics
-cask "r-app"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
 # Official desktop client for Rocket.Chat
@@ -745,46 +726,29 @@ cask "spotify"
 cask "swiftdefaultappsprefpane"
 # Minimal GUI for AI code agents
 cask "t3-code"
-# Remote access and connectivity software focused on security
-cask "teamviewer"
 # Messaging app with a focus on speed and security
 cask "telegram"
-# JDK from the Eclipse Foundation (Adoptium)
-cask "temurin@8"
 # Unpacks archive files
 cask "the-unarchiver"
+# Multi-platform VNC client and server
+cask "tigervnc"
 # Open-source BitTorrent client
 cask "transmission"
 # Free and open-source OpenVPN client
 cask "tunnelblick"
 # AI image upscaler
 cask "upscayl"
-# Gives Vagrant VMware plugin access to various VMware functionalities
-cask "vagrant-vmware-utility"
 # Open-source code editor
 cask "visual-studio-code"
 # Multimedia player
 cask "vlc"
 # Native desktop client for WhatsApp
 cask "whatsapp"
-# Network protocol analyzer
-cask "wireshark-app"
-# Open-source version of the X.Org X Window System
-cask "xquartz"
-# Video communication and virtual meeting platform
-cask "zoom"
-mas "Blackmagic Disk Speed Test", id: 425264550
-mas "Developer", id: 640199958
 mas "GarageBand", id: 682658836
-mas "Gifski", id: 1351639930
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
-mas "LanScan", id: 472226235
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "Pasteboard Viewer", id: 1499215709
-mas "Tailscale", id: 1475387142
-mas "Windows App", id: 1295203466
 mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 vscode "anthropic.claude-code"
@@ -918,6 +882,7 @@ vscode "tamasfe.even-better-toml"
 vscode "telesoho.vscode-markdown-paste-image"
 vscode "timonwong.shellcheck"
 vscode "twxs.cmake"
+vscode "unifiedjs.vscode-mdx"
 vscode "usernamehw.vscode-join-lines"
 vscode "vadimcn.vscode-lldb"
 vscode "vitest.explorer"
@@ -936,31 +901,26 @@ vscode "yzhang.markdown-all-in-one"
 vscode "zensical.zensical-studio"
 vscode "zhuangtongfa.material-theme"
 go "github.com/codesenberg/bombardier"
-go "github.com/unknwon/bra"
 go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/gopls"
 go "github.com/hsiafan/httpdump"
-go "github.com/evilmartians/lefthook"
 go "honnef.co/go/tools/cmd/staticcheck"
 cargo "create-tauri-app"
-cargo "dash-mpd-cli"
-cargo "gitoxide"
 cargo "tauri-driver"
 cargo "vsd"
+uv "aveq-pdf-generator"
+npm "@earendil-works/pi-coding-agent"
 npm "@google/gemini-cli"
 npm "@googleworkspace/cli"
 npm "@hubspot/cli"
-npm "@mariozechner/gmcli"
 npm "@mariozechner/terminalcp"
 npm "@mermaid-js/mermaid-cli"
 npm "chromedriver"
 npm "corepack"
 npm "docx"
 npm "happy-coder"
-npm "happy"
 npm "lighthouse"
 npm "markdownlint-cli"
-npm "markit-ai"
 npm "patch-package"
 npm "playwright"
 npm "yarn"

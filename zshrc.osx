@@ -126,6 +126,8 @@ esac
 export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
+# Rustup
+export PATH="$HOMEBREW_PREFIX/opt/rustup/bin:$PATH"
 # Go
 export PATH="$HOME/go/bin:$PATH"
 # Whisper
