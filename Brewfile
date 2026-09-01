@@ -550,6 +550,8 @@ brew "sundials"
 brew "swift-format"
 # Generate scripting interfaces to C/C++ code
 brew "swig"
+# Netcat-like tool over Tailscale's data plane, without its control plane
+brew "tailcat"
 # Command-line packet analyzer
 brew "tcpdump"
 # Send macOS User Notifications from the command-line
@@ -906,6 +908,7 @@ go "golang.org/x/tools/gopls"
 go "github.com/hsiafan/httpdump"
 go "honnef.co/go/tools/cmd/staticcheck"
 cargo "create-tauri-app"
+cargo "streamtop"
 cargo "tauri-driver"
 cargo "vsd"
 uv "aveq-pdf-generator"

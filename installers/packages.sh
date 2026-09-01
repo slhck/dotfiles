@@ -184,6 +184,23 @@ _install_linux_extras() {
         log_success "hyperfine already installed"
     fi
 
+    # tailcat
+    if ! is_installed tailcat; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install tailcat"
+        else
+            local url
+            url=$(curl -s "https://api.github.com/repos/tailscale/tailcat/releases/latest" | \
+                jq -r '.assets[] | .browser_download_url' | grep "linux_${arch}" | grep '\.deb$' | head -1)
+            wget -qO /tmp/tailcat.deb "$url"
+            sudo dpkg -i /tmp/tailcat.deb
+            rm -f /tmp/tailcat.deb
+            log_success "tailcat installed"
+        fi
+    else
+        log_success "tailcat already installed"
+    fi
+
     # uv
     if ! is_installed uv; then
         if [[ "$DRY_RUN" == "true" ]]; then
