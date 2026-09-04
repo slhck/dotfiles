@@ -251,4 +251,43 @@ _install_linux_extras() {
     else
         log_success "git-cliff already installed"
     fi
+
+    # GitLab CLI (glab)
+    if ! is_installed glab; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install glab from its latest Linux release"
+        else
+            local glab_arch glab_url glab_tmpdir glab_binary
+            case "$(uname -m)" in
+                x86_64)  glab_arch="amd64" ;;
+                aarch64) glab_arch="arm64" ;;
+                *)       log_error "Unsupported architecture for glab: $(uname -m)"; return 1 ;;
+            esac
+
+            glab_url=$(curl -fsSL "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases/permalink/latest" | \
+                jq -r --arg arch "$glab_arch" \
+                    '.assets.links[] | select(.name | endswith("_linux_" + $arch + ".tar.gz")) | .url' | \
+                head -1)
+            if [[ -z "$glab_url" ]]; then
+                log_error "Could not find a glab binary for linux_$glab_arch"
+                return 1
+            fi
+
+            glab_tmpdir=$(mktemp -d)
+            curl -fsSL "$glab_url" -o "$glab_tmpdir/glab.tar.gz"
+            tar -xzf "$glab_tmpdir/glab.tar.gz" -C "$glab_tmpdir"
+            glab_binary=$(find "$glab_tmpdir" -type f -name glab -print -quit)
+            if [[ -z "$glab_binary" ]]; then
+                rm -rf "$glab_tmpdir"
+                log_error "glab binary was not found in the release archive"
+                return 1
+            fi
+
+            install -m 755 "$glab_binary" "$HOME/.local/bin/glab"
+            rm -rf "$glab_tmpdir"
+            log_success "glab installed"
+        fi
+    else
+        log_success "glab already installed"
+    fi
 }
