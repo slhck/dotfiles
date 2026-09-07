@@ -221,6 +221,11 @@ alias cl='claude --permission-mode auto'
 #  User-defined Functions
 # -----------------------------------------------
 
+# Run Google Workspace CLI with isolated personal credentials.
+gwsp() {
+  GOOGLE_WORKSPACE_CLI_CONFIG_DIR="$HOME/.config/gws-personal" command gws "$@"
+}
+
 # check the weather
 weather() {
   curl v2.wttr.in
