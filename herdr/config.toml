@@ -20,6 +20,12 @@ auto_switch = false
 [ui]
 show_agent_labels_on_pane_borders = true
 
+[keys]
+previous_agent = "prefix+p"
+next_agent = "prefix+n"
+previous_tab = ""
+next_tab = ""
+
 # Plugin keybindings are prefix chords: press the herdr prefix (ctrl+b by default),
 # then the letter. type = "shell" runs a command detached; do NOT use "pane" (a
 # pane would close as soon as the command exits). A plain `herdr` resolves through
