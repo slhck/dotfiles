@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Open a remote folder in VS Code on the computer this SSH session came from.
+set -e
+set -u
+set -o pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: remote-code [directory]
+
+Open a directory on this SSH host in VS Code on the originating computer.
+The directory defaults to the current working directory.
+
+Overrides:
+  REMOTE_CODE_ORIGIN_HOST  Host on which VS Code should be launched
+  REMOTE_CODE_TARGET_HOST  SSH host name VS Code should connect to
+EOF
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if (( $# > 1 )); then
+  usage >&2
+  exit 2
+fi
+
+if [[ -z "${SSH_CONNECTION:-}" ]]; then
+  echo "remote-code: not running in an SSH session" >&2
+  exit 1
+fi
+
+remote_directory="${1:-$PWD}"
+if [[ ! -d "$remote_directory" ]]; then
+  echo "remote-code: directory does not exist: $remote_directory" >&2
+  exit 1
+fi
+remote_directory="$(cd "$remote_directory" && pwd -P)"
+
+origin_ip="${SSH_CONNECTION%% *}"
+
+resolve_origin_host() {
+  local address="$1"
+  local resolved=""
+
+  if command -v getent >/dev/null 2>&1; then
+    resolved="$(getent hosts "$address" 2>/dev/null | awk 'NR == 1 { print $2 }')"
+  elif command -v dscacheutil >/dev/null 2>&1; then
+    resolved="$(dscacheutil -q host -a ip_address "$address" 2>/dev/null | awk '/^name: / { print $2; exit }')"
+  elif command -v host >/dev/null 2>&1; then
+    resolved="$(host "$address" 2>/dev/null | awk '/domain name pointer/ { print $NF; exit }')"
+    resolved="${resolved%.}"
+  fi
+
+  printf '%s\n' "${resolved:-$address}"
+}
+
+if [[ -n "${REMOTE_CODE_ORIGIN_HOST:-}" ]]; then
+  origin_host="$REMOTE_CODE_ORIGIN_HOST"
+else
+  origin_host="$(resolve_origin_host "$origin_ip")"
+  origin_short_host="${origin_host%%.*}"
+
+  # Reverse DNS often returns a fully qualified Tailscale name even though the
+  # machine is already trusted in known_hosts under its short SSH alias.
+  if [[ "$origin_short_host" != "$origin_host" ]] && \
+      ssh-keygen -F "$origin_short_host" >/dev/null 2>&1; then
+    origin_host="$origin_short_host"
+  fi
+fi
+target_host="${REMOTE_CODE_TARGET_HOST:-$(hostname -s)}"
+
+# ssh concatenates its command arguments into a command line for the remote
+# shell, so quote values explicitly before sending paths that may contain spaces.
+shell_quote() {
+  local value="$1"
+  printf "'%s'" "${value//\'/\'\\\'\'}"
+}
+
+target_host_quoted="$(shell_quote "$target_host")"
+remote_directory_quoted="$(shell_quote "$remote_directory")"
+
+ssh -o BatchMode=yes -- "$origin_host" \
+  "sh -s -- $target_host_quoted $remote_directory_quoted" <<'REMOTE_LAUNCHER'
+set -eu
+
+target_host="$1"
+remote_directory="$2"
+
+if command -v code >/dev/null 2>&1; then
+  code_command="$(command -v code)"
+elif [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
+  code_command="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+else
+  echo "remote-code: VS Code command not found on $(hostname)" >&2
+  exit 1
+fi
+
+exec "$code_command" --new-window \
+  --remote "ssh-remote+$target_host" \
+  "$remote_directory"
+REMOTE_LAUNCHER
