@@ -57,6 +57,34 @@ _check_gh_and_git_cliff() {
   fi
 }
 
+_create_github_release() {
+  local attempt=1
+  local maxAttempts=3
+  local retryDelay=2
+  local output
+  local status
+
+  while true; do
+    if output=$(gh release create "$@" 2>&1); then
+      [[ -n "$output" ]] && echo "$output"
+      return 0
+    else
+      status=$?
+    fi
+
+    echo "$output" >&2
+
+    if [[ $attempt -ge $maxAttempts || ! $output =~ HTTP[[:space:]]5[0-9][0-9] ]]; then
+      return "$status"
+    fi
+
+    _warn "GitHub returned a server error. Retrying in ${retryDelay}s ($attempt/$maxAttempts) ..."
+    sleep "$retryDelay"
+    attempt=$((attempt + 1))
+    retryDelay=$((retryDelay * 2))
+  done
+}
+
 _check_repo() {
   [[ -d "$1/.git" ]] || \
     { _error "Project directory $projectDir is not a Git repo!"; exit 1; }
@@ -333,7 +361,7 @@ else
   git push origin "v$newVersion"
 
   # Create GitHub release if gh is available.
-  # We needw git-cliff too because gitchangelog's filtering is not intuitive.
+  # We need git-cliff too because gitchangelog's filtering is not intuitive.
   if [[ $noGithubRelease -eq 1 ]]; then
     _warn "Skipping GitHub release!"
   elif _check_gh_and_git_cliff; then
@@ -350,22 +378,25 @@ else
       releaseNotes=$(git-cliff --strip all --latest 2>/dev/null)
     fi
 
-    # Create the release with assets
+    # Create the release with assets. Retry transient GitHub 5xx responses.
     if [[ -n "$(ls -A dist 2>/dev/null)" ]]; then
-      echo "$releaseNotes" | gh release create "v$newVersion" \
+      releaseAssets=(dist/*)
+      if _create_github_release "v$newVersion" \
         --title "v$newVersion" \
-        --notes-file - \
-        dist/*
+        --notes "$releaseNotes" \
+        "${releaseAssets[@]}"; then
+        _info "GitHub release created successfully!"
+      else
+        _warn "Failed to create GitHub release. Continuing anyway..."
+      fi
     else
-      echo "$releaseNotes" | gh release create "v$newVersion" \
+      if _create_github_release "v$newVersion" \
         --title "v$newVersion" \
-        --notes-file -
-    fi
-
-    if [[ $? -eq 0 ]]; then
-      _info "GitHub release created successfully!"
-    else
-      _warn "Failed to create GitHub release. Continuing anyway..."
+        --notes "$releaseNotes"; then
+        _info "GitHub release created successfully!"
+      else
+        _warn "Failed to create GitHub release. Continuing anyway..."
+      fi
     fi
   else
     _warn "gh CLI or git-cliff not found. Skipping GitHub release creation."
