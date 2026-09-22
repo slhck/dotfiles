@@ -284,15 +284,16 @@ _install_herdr_renderers() {
     fi
 }
 
-# Deploys the herdr config (theme, UI, and the plugin keybindings) to
-# ~/.config/herdr/config.toml: the base herdr/config.toml plus the OS-specific
-# overlay, assembled the same way .zshrc is. Like CLAUDE.md this is user-editable,
-# so it's a plain copy with a backup — edit the repo copy and re-run. herdr itself
-# rewrites the deployed file when a setting changes in its UI, so mirror any such
-# change back into the repo copy or the next run will overwrite it.
+# Deploys the herdr config (theme, UI, and the plugin keybindings) and the
+# reviewr plugin config. Like CLAUDE.md these are user-editable, so they are plain
+# copies with backups — edit the repo copies and re-run. herdr itself rewrites its
+# main config when a setting changes in its UI, so mirror any such change back
+# into the repo copy or the next run will overwrite it.
 _install_herdr_config() {
     local src="$SCRIPT_DIR/herdr/config.toml"
     local dst="$HOME/.config/herdr/config.toml"
+    local reviewr_src="$SCRIPT_DIR/herdr/reviewr.toml"
+    local reviewr_dst="$HOME/.config/herdr/plugins/config/persiyanov.reviewr/config.toml"
     local os_marker="# === OS-SPECIFIC CONFIG ==="
     local os_src=""
 
@@ -304,6 +305,7 @@ _install_herdr_config() {
 
     if [[ "$DRY_RUN" == "true" ]]; then
         log_dry "Would install herdr config: config.toml (+ OS overlay) -> $dst"
+        log_dry "Would install reviewr config: reviewr.toml -> $reviewr_dst"
         return
     fi
 
@@ -320,6 +322,11 @@ _install_herdr_config() {
         } >>"$dst"
     fi
     log_success "Installed herdr config: config.toml"
+
+    mkdir -p "$(dirname "$reviewr_dst")"
+    backup_file "$reviewr_dst"
+    cp "$reviewr_src" "$reviewr_dst"
+    log_success "Installed reviewr config: reviewr.toml"
 
     # Apply immediately if a herdr server is already running (no-op otherwise).
     local herdr_bin

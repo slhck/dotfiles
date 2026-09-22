@@ -1,0 +1,5 @@
+# herdr-reviewr plugin configuration — deployed to the plugin's global config
+# directory by the `agents` installer.
+
+gitlab_host = "git.aveq.info"
+theme = "nord"
