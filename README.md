@@ -183,11 +183,12 @@ The `agents` component sets up AI coding tools:
 - **Gemini CLI** — installed via Homebrew on macOS (in the Brewfile, handled by the `packages` component) and via npm on Linux
 - **Agent skills** — installs [slhck/agent-skills](https://github.com/slhck/agent-skills) globally via `npx skills` for claude-code, gemini-cli, codex, pi, and opencode
 - **Global Claude instructions** — copies `claude/CLAUDE.md` to `~/.claude/CLAUDE.md` (with a backup), so the same house rules apply on every machine. This file is user-authored; edit the repo copy and re-run `agents` to update.
-- **Claude Code hooks** — copies `claude/hooks/` to `~/.claude/hooks/` and registers them in `~/.claude/settings.json`. Currently a single `PreToolUse` hook (`block-rg-replace.py`) that stops Claude from misusing ripgrep's replace flag (`-r` / `--replace`) when it actually means recursion — ripgrep searches recursively by default. Registration is idempotent and leaves the rest of `settings.json` untouched.
+- **Claude Code hooks** — copies `claude/hooks/` to `~/.claude/hooks/` and registers the `block-rg-replace.py` hook, which prevents accidental use of ripgrep’s replace flag for recursion.
+- **Claude Code settings and status line** — merges `claude/settings.json` plus `claude/settings.macos.json` on macOS into `~/.claude/settings.json`, with a backup before changes. Shared defaults take precedence; private settings such as company-specific `autoMode` permissions and additional hooks are retained. The status line shows model, directory, Git branch, current context tokens (including cached input), and available rate limits. Edit the repo defaults and re-run `agents`, or run `python3 claude/install-settings.py --os macos` (`--os linux` on Linux) to apply settings alone. AVEQ permission context stays outside this repo; herdr manages its own integration hook.
 
 Shell aliases (defined in `zshrc`):
 
-- `cl` — `claude --dangerously-skip-permissions`
+- `cl` — `claude --permission-mode auto`
 - `cx` — `codex --full-auto`
 
 On machines with a GUI editor, set `EDITOR="code --wait"` in `~/.zshrc.local` and tools like Claude Code will pick it up automatically.

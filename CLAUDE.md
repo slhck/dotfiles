@@ -43,7 +43,11 @@ cp zshrc ~/.zshrc && echo -e "\n# === OS-SPECIFIC CONFIG ===" >> ~/.zshrc && cat
 **Global Claude config lives in `claude/`.** The `agents` installer deploys it to `~/.claude/`:
 
 - `claude/CLAUDE.md` → `~/.claude/CLAUDE.md` (global instructions). User-authored, so it's a plain copy with a backup — edit the repo copy and re-run `agents` to update.
-- `claude/hooks/` → `~/.claude/hooks/`, registered in `~/.claude/settings.json` with a `jq` merge that adds the command to the `PreToolUse` "Bash" group only if missing — it never overwrites the rest of `settings.json` (model, plugins, etc. are managed by Claude itself).
+- `claude/hooks/` → `~/.claude/hooks/`, registered idempotently in `~/.claude/settings.json`.
+- `claude/settings.json` plus the macOS overlay → `~/.claude/settings.json` via `claude/install-settings.py`. Shared defaults override matching settings; private company-specific permissions and additional hooks survive the merge. Changed settings are backed up.
+- `claude/statusline-command.sh` → `~/.claude/statusline-command.sh`. Uses Bash, jq, and Git on both platforms.
+
+Keep company-specific `autoMode` permission context out of the tracked settings. herdr manages its own integration hook. To apply settings alone, run `python3 claude/install-settings.py --os macos` or `--os linux`.
 
 ## Key Conventions
 

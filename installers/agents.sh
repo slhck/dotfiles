@@ -9,6 +9,7 @@ install_agents() {
     _install_claude_code
     _install_claude_md
     _install_claude_hooks
+    _install_claude_settings
     _install_codex
     _install_pi_agent
     _install_herdr
@@ -107,6 +108,20 @@ _install_claude_hooks() {
         rm -f "$tmp"
         log_warning "Could not update settings.json automatically (left unchanged)"
     fi
+}
+
+_install_claude_settings() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would merge shared Claude settings and install the status line"
+        return
+    fi
+
+    if ! is_installed python3; then
+        log_warning "python3 not available — skipped installing Claude settings"
+        return
+    fi
+
+    python3 "$SCRIPT_DIR/claude/install-settings.py" --os "$OS"
 }
 
 _install_gemini_cli() {

@@ -1,0 +1,106 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-rg-replace.py"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/.claude/statusline-command.sh\""
+  },
+  "outputStyle": "Concise",
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "high"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
+  "promptSuggestionEnabled": false,
+  "tui": "fullscreen",
+  "autoMemoryEnabled": true,
+  "autoDreamEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "verbose": true,
+  "preferredNotifChannel": "auto",
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "skillOverrides": {
+    "claude-handoff": "off"
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": false,
+    "security-guidance@claude-code-plugins": false,
+    "code-review@claude-code-plugins": false,
+    "feature-dev@claude-code-plugins": false,
+    "plugin-dev@claude-code-plugins": false,
+    "ralph-wiggum@claude-code-plugins": false,
+    "agent-sdk-dev@claude-code-plugins": false,
+    "frontend-design@claude-code-plugins": false,
+    "pr-review-toolkit@claude-code-plugins": false,
+    "frontend-design@claude-plugins-official": false,
+    "clangd-lsp@claude-plugins-official": false,
+    "data@knowledge-work-plugins": false,
+    "ralph-loop@claude-plugins-official": false,
+    "swift-lsp@claude-plugins-official": true,
+    "document-skills@anthropic-agent-skills": false,
+    "discord@claude-plugins-official": false,
+    "telegram@claude-plugins-official": false,
+    "typescript-lsp@claude-plugins-official": false,
+    "codex@openai-codex": true,
+    "voice-plugin@voice-plugin-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      },
+      "autoUpdate": true
+    },
+    "voice-plugin-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "slhck/claude-code-voice-plugin"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "showClearContextOnPlanAccept": true,
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "editorMode": "normal",
+  "autoCompactEnabled": false,
+  "teammateMode": "in-process",
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
+}
