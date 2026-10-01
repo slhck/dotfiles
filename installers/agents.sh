@@ -12,10 +12,12 @@ install_agents() {
     _install_claude_settings
     _install_codex
     _install_codex_settings
+    _install_codex_md
     _install_pi_agent
     _install_herdr
     _install_herdr_plugins
     _install_herdr_renderers
+    _install_kitten
     _install_herdr_config
 
     # Gemini CLI has no Homebrew cask on Linux, so install it via npm there.
@@ -156,6 +158,60 @@ _install_codex_settings() {
     fi
 
     uv run "$SCRIPT_DIR/codex/install-settings.py" --os "$OS"
+}
+
+# Deploy global Codex instructions with the same backup policy as Claude.
+_install_codex_md() {
+    local src="$SCRIPT_DIR/codex/AGENTS.md"
+    local dst="$HOME/.codex/AGENTS.md"
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install global Codex instructions: AGENTS.md -> $dst"
+        return
+    fi
+
+    mkdir -p "$HOME/.codex"
+    backup_file "$dst"
+    cp "$src" "$dst"
+    log_success "Installed global Codex instructions: AGENTS.md"
+}
+
+# macOS gets kitten from the Kitty cask; Linux uses the standalone executable.
+_install_kitten() {
+    if is_installed kitten || [[ -x "$HOME/.local/bin/kitten" ]]; then
+        log_success "kitten already installed"
+        return
+    fi
+
+    if [[ "$OS" == "macos" ]]; then
+        log_warning "kitten not found — install the Kitty cask via the packages component"
+        return
+    fi
+
+    local arch version="0.49.2" tmpfile
+    case "$(uname -m)" in
+        x86_64) arch="amd64" ;;
+        aarch64|arm64) arch="arm64" ;;
+        *) log_warning "Unsupported architecture for kitten: $(uname -m)"; return ;;
+    esac
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would install standalone kitten $version ($arch) to ~/.local/bin"
+        return
+    fi
+
+    tmpfile="$(mktemp)"
+    if curl -fsSL "https://github.com/kovidgoyal/kitty/releases/download/v${version}/kitten-linux-${arch}" -o "$tmpfile"; then
+        mkdir -p "$HOME/.local/bin"
+        if install -m 755 "$tmpfile" "$HOME/.local/bin/kitten"; then
+            log_success "kitten $version installed to ~/.local/bin"
+        else
+            log_warning "Could not install kitten"
+        fi
+    else
+        log_warning "kitten download failed"
+    fi
+    rm -f "$tmpfile"
 }
 
 _install_codex() {

@@ -6,6 +6,14 @@ While you should be concise in your user-facing messages at the end of turns, do
 For instance, do not write "Cap the study-lifecycle handlers so a hung study can't wedge the deep-link"  – instead write: "Add a timeout to the lifecycle handlers of studies, so that when a study hangs, it does not cause the deep link ...".
 Avoid words or phrases like: "lever", "wedge", "that's exactly the X", "honest caveat:", "the one X you need to", etc.
 
+## Code Comments and Docstrings
+
+Write plain, direct comments. Say what the thing is or does, not the story behind it.
+
+- Lead with the fact: "Timeout for reading stats from the page in milliseconds", not "How long one read may take before it counts as failed, in milliseconds".
+- Use imperative or noun phrases: "Abort the study (for example, if the service displays an error page)", not "Asks the automator to abort the study, e.g. when ...".
+- No personification ("the content script gives up"), no long "so that ... which ..." chains.
+
 ## Markdown Output to Files
 
 - Begin with a Level-1 Title. Use Level-2 headings for the rest of the document.
@@ -26,6 +34,8 @@ Avoid words or phrases like: "lever", "wedge", "that's exactly the X", "honest c
 - Use `rg` instead of `grep` (rg is already recursive by default, do not use '-r'; '-n' enables line numbers)
 - Use `fd` instead of `find` for speed ('-H' includes hidden, '-I' means: do not use ignore-files)
 - `tree` is installed; use this instead of `find` if you need a brief repository overview
+
+- When running inside Herdr, preview images with `kitten icat /absolute/path/to/image.png` in an ordinary shell pane on the host containing the image.
 
 ## Google Drive
 

@@ -664,6 +664,8 @@ cask "handbrake-app"
 cask "hex-fiend"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# Provides kitten icat for image previews in Herdr and Ghostty
+cask "kitty"
 # Open-source screen recorder built with web technology
 cask "kap"
 # Password manager app

@@ -49,6 +49,8 @@ cp zshrc ~/.zshrc && echo -e "\n# === OS-SPECIFIC CONFIG ===" >> ~/.zshrc && cat
 
 Keep company-specific `autoMode` permission context out of the tracked settings. herdr manages its own integration hook. To apply settings alone, run `python3 claude/install-settings.py --os macos` or `--os linux`.
 
+The `agents` installer also copies `codex/AGENTS.md` to `~/.codex/AGENTS.md` with a backup; both global instruction files include the `kitten icat` image preview command. macOS gets `kitten` from the Kitty cask in the Brewfile, while Linux installs the pinned standalone binary into `~/.local/bin`.
+
 Global Codex defaults live in `codex/`. The `agents` installer uses `uv run codex/install-settings.py --os macos` (or `--os linux`) to merge `config.toml` and the OS overlay into `~/.codex/config.toml`, preserving comments and making a backup before changes. Keep project trust, company-specific permissions, notification paths, MCP servers, installed plugins, and app-managed state out of the shared defaults. herdr manages Codex integration hooks.
 
 ## Key Conventions
