@@ -1,0 +1,40 @@
+# Desktop appearance preferences; app-managed paths stay local.
+
+[desktop]
+preventSleepWhileRunning = true
+appearanceLightCodeThemeId = "github"
+appearanceDarkCodeThemeId = "github"
+reduced-motion-preference = "off"
+followUpQueueMode = "queue"
+dock-icon-preference = "codex-system"
+conversationDetailMode = "STEPS_PROSE"
+ambient-suggestions-enabled = false
+
+[desktop.appearanceLightChromeTheme]
+accent = "#0969da"
+contrast = 45
+ink = "#1f2328"
+opaqueWindows = false
+surface = "#ffffff"
+
+[desktop.appearanceLightChromeTheme.fonts]
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#1a7f37"
+diffRemoved = "#cf222e"
+skill = "#8250df"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#1f6feb"
+contrast = 60
+ink = "#e6edf3"
+opaqueWindows = false
+surface = "#0d1117"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#3fb950"
+diffRemoved = "#f85149"
+skill = "#bc8cff"
+

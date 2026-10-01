@@ -11,6 +11,7 @@ install_agents() {
     _install_claude_hooks
     _install_claude_settings
     _install_codex
+    _install_codex_settings
     _install_pi_agent
     _install_herdr
     _install_herdr_plugins
@@ -141,6 +142,20 @@ _install_gemini_cli() {
         npm install -g @google/gemini-cli
         log_success "Gemini CLI installed"
     fi
+}
+
+_install_codex_settings() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Would merge shared Codex settings and the OS overlay"
+        return
+    fi
+
+    if ! is_installed uv; then
+        log_warning "uv not available — skipped installing Codex settings"
+        return
+    fi
+
+    uv run "$SCRIPT_DIR/codex/install-settings.py" --os "$OS"
 }
 
 _install_codex() {
