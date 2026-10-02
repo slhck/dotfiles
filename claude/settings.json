@@ -102,5 +102,6 @@
   "autoCompactEnabled": false,
   "teammateMode": "in-process",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "attribution": false
 }
