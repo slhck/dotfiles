@@ -103,5 +103,6 @@
   "teammateMode": "in-process",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "attribution": false
+  "attribution": false,
+  "cleanupPeriodDays": 365
 }
