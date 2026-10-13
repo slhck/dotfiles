@@ -99,7 +99,8 @@
     "mode": "hold"
   },
   "editorMode": "normal",
-  "autoCompactEnabled": false,
+  "autoCompactEnabled": true,
+  "autoCompactWindow": 300000,
   "teammateMode": "in-process",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
