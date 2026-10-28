@@ -106,15 +106,26 @@ _install_ghostty_linux() {
         return
     fi
 
-    if ! is_installed snap; then
-        log_warning "snap not installed, skipping Ghostty"
+    local distro_id version_id
+    distro_id=$(. /etc/os-release && echo "${ID:-}")
+    version_id=$(. /etc/os-release && echo "${VERSION_ID:-}")
+
+    # Ubuntu 26.04 and later ship Ghostty in the official repository
+    if [[ "$distro_id" == "ubuntu" ]] && dpkg --compare-versions "$version_id" ge "26.04"; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install Ghostty via apt"
+        else
+            sudo apt install --assume-yes ghostty
+            log_success "Ghostty installed"
+        fi
         return
     fi
 
+    # Older Ubuntu and Debian: community-built .deb from ghostty-ubuntu
     if [[ "$DRY_RUN" == "true" ]]; then
-        log_dry "Would install Ghostty via snap"
+        log_dry "Would install Ghostty via ghostty-ubuntu installer"
     else
-        sudo snap install ghostty --classic
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
         log_success "Ghostty installed"
     fi
 }
