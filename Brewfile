@@ -1,29 +1,6 @@
-tap "anomalyco/tap"
-tap "cube2222/octosql"
-tap "discoteq/discoteq"
-tap "github/gh"
-tap "hashicorp/tap"
-tap "heroku/brew"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "hudochenkov/sshpass"
-tap "lance0/tap"
-tap "mdp/tap"
-tap "minio/stable"
-tap "octave-app/octave-app"
-tap "oven-sh/bun"
-tap "pamburus/tap"
-tap "randy3k/r"
-tap "rkuska/carn"
-tap "segment-integrations/formulae"
-tap "slhck/moreutils"
-tap "snowflakedb/snowflake-cli"
-tap "steipete/tap"
-tap "supabase/tap"
-tap "svt/avtools"
-tap "teamookla/speedtest"
-tap "visidata/vd", "https://github.com/visidata/homebrew-vd.git"
 tap "vivictorg/vivictpp", "https://github.com/vivictorg/homebrew-vivictpp.git"
-tap "yt-dlp/taps"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # Static analysis and lint tool, for (ba)sh scripts
@@ -613,6 +590,7 @@ brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
 brew "hudochenkov/sshpass/sshpass", trusted: true
+brew "vivictorg/vivictpp/vivictpp", trusted: true
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
