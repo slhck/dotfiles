@@ -9,6 +9,7 @@ install_agents() {
     _install_claude_code
     _install_claude_md
     _install_claude_hooks
+    _install_claude_mods
     _install_claude_settings
     _install_codex
     _install_codex_settings
@@ -111,6 +112,29 @@ _install_claude_hooks() {
         rm -f "$tmp"
         log_warning "Could not update settings.json automatically (left unchanged)"
     fi
+}
+
+# Deploys Claude Code mods from claude/mods/ to ~/.claude/skills/<name>, where
+# Claude Code loads them as plugins in every session. Currently just no-email
+# (vendored from github.com/AlexErrant/claude-code-no-email at 06ddeb6), which
+# removes the user's email address from the context Claude Code attaches.
+_install_claude_mods() {
+    local mods_src="$SCRIPT_DIR/claude/mods"
+    local skills_dst="$HOME/.claude/skills"
+    local mod name
+
+    for mod in "$mods_src"/*/; do
+        name="$(basename "$mod")"
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install Claude Code mod: $name -> $skills_dst/$name"
+            continue
+        fi
+
+        mkdir -p "$skills_dst"
+        rm -rf "$skills_dst/$name"
+        cp -R "$mod" "$skills_dst/$name"
+        log_success "Installed Claude Code mod: $name"
+    done
 }
 
 _install_claude_settings() {

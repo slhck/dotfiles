@@ -44,6 +44,7 @@ cp zshrc ~/.zshrc && echo -e "\n# === OS-SPECIFIC CONFIG ===" >> ~/.zshrc && cat
 
 - `claude/CLAUDE.md` → `~/.claude/CLAUDE.md` (global instructions). User-authored, so it's a plain copy with a backup — edit the repo copy and re-run `agents` to update.
 - `claude/hooks/` → `~/.claude/hooks/`, registered idempotently in `~/.claude/settings.json`.
+- `claude/mods/<name>/` → `~/.claude/skills/<name>/`, which Claude Code loads as a plugin in every session. Replaced on each run, so edit the repo copy.
 - `claude/settings.json` plus the macOS overlay → `~/.claude/settings.json` via `claude/install-settings.py`. Shared defaults override matching settings; private company-specific permissions and additional hooks survive the merge. Changed settings are backed up.
 - `claude/statusline-command.sh` → `~/.claude/statusline-command.sh`. Uses Bash, jq, and Git on both platforms.
 
