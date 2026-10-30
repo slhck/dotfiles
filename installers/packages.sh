@@ -212,6 +212,18 @@ _install_linux_extras() {
         log_success "tailcat already installed"
     fi
 
+    # Grafana Cloud CLI (gcx)
+    if ! is_installed gcx; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Would install gcx"
+        else
+            curl -fsSL https://raw.githubusercontent.com/grafana/gcx/main/scripts/install.sh | sh
+            log_success "gcx installed"
+        fi
+    else
+        log_success "gcx already installed"
+    fi
+
     # uv
     if ! is_installed uv; then
         if [[ "$DRY_RUN" == "true" ]]; then

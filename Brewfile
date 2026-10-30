@@ -205,6 +205,8 @@ brew "forgit"
 brew "freetds"
 # GNU awk utility
 brew "gawk"
+# Grafana Cloud command-line tool
+brew "grafana/grafana/gcx"
 # Graphics library to dynamically manipulate images
 brew "gd"
 # GitHub command-line tool
