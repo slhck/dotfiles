@@ -13,7 +13,14 @@ alias open='xdg-open &>/dev/null'
 # Chained Aliases (Global, Linux specific)
 # -----------------------------------------------
 
-alias -g C='| xclip -selection clipboard'
+# Copy stdin to the local terminal's clipboard using an OSC 52 escape sequence
+osc52copy() { printf '\e]52;c;%s\a' "$(base64 | tr -d '\n')" > /dev/tty }
+
+if [[ -n $SSH_TTY ]]; then
+    alias -g C='| osc52copy'
+else
+    alias -g C='| xclip -selection clipboard'
+fi
 
 # -----------------------------------------------
 # Linuxbrew
